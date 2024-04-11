@@ -1,7 +1,6 @@
 import datetime as dt
 import pymysql
 import re
-import django
 
 #Função para abri o banco de dados
 def openBD():
