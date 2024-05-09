@@ -12,10 +12,10 @@ const InputEmail=()=>{
     email.setAttribute('placeholder', 'E-mail'); // Define o placeholder do novo input
     email.setAttribute('id','email');
 
-    var senhaInput = document.getElementById('senha'); // Obtém a referência ao input de senha
-    var container = senhaInput.parentNode; // Obtém o elemento pai do input de senha
+    var senhaInput = document.getElementById('senha'); 
+    var container = senhaInput.parentNode;
 
-    container.insertBefore(email, senhaInput); // Insere o novo input antes do input de senha;
+    container.insertBefore(email, senhaInput);
 
     email.style.width="90%";
 }
@@ -59,4 +59,3 @@ const check=()=>{
         checkLogin.textContent="Senha incorreta";
     }
 }
-

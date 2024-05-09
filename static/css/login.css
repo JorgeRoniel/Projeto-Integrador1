@@ -1,113 +1,82 @@
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono&display=swap');
-
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: 'JetBrains Mono', monospace;
-            display: flex;
-            min-height: 100vh;
-            max-height: 100vh;
-            background: linear-gradient(900deg,#08a0a0, black);
-        }
-        .textLogin{
-            font-size: small;
-            color: red;
-        }
-        input{
-            border-radius: 10px;
-            width: 25vw;
-            padding:2%;
-            margin-top: 10px;
-            font-family: 'JetBrains Mono', monospace;
-        }
-        button{
-            padding: 15px;
-            border-radius: 10px;
-            width: 35%;
-            margin-top: 20px;
-            background-color: #07acff;
-            font-family: 'JetBrains Mono', monospace;
-            margin-left: 20px;
-        }
-        .botoes{
-            display: flex;
-            flex: 1;
-            flex-direction: row;
-            width: 100%;
-        }
-
-        .login-container {
-            flex: 1;
-            display: flex;
-            height: 100vh;
-            overflow: hidden;
-        }
-
-        .login-form {
-            flex: 1;
-            color: #fff;
-            padding: 20px;
-            max-width: 35%;
-            display: flex;
-            left: 0;
-            height: 100vh;
-            background-color: black;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        .moved {
-            top: -100%; /* Define a posição original do elemento fora da tela */
-            left: -100%; /* Define a posição original do elemento fora da tela */
-            transition: top 1s ease, left 1s ease,height 2s ease; /* Adiciona uma transição suave para top e left */
-            position: relative;
-            height: 50%;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            border-radius: 10px;
-            flex: 1;
-            color: #fff;
-            display: flex;
-            align-items: center;
-            border-radius:20px;
-            overflow: hidden;
-        }
-
-        .moved button,
-        .moved .textLogin {
-            width: 100%;
-        }   
-        .moved input,
-        .moved button,
-        .moved .textLogin {
-            padding:2%;
-            max-width: 95%;
-        }   
-
-        .side-content {
-            flex: 1;
-            color: #fff;
-            padding: 20px;
-        }
-        
-
-        @media only screen and (max-width: 768px) {
-            input{
-                width: calc(100% - 20px);
-            }
-            button{
-                margin-left: 0px;
-                width: 100%;
-                padding: 0px;
-            }
-            h1{
-                font-size: 30px;
-            }
-            .login-form {
-                max-width: 100%; /* Altera a largura máxima para preencher toda a largura da tela */
-            }
-            .moved{
-                max-width: 100%;
-            }
-        }
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap');
+body {
+    margin: 0;
+    padding: 0;
+    font-family: "Nunito Sans", sans-serif;
+    height: 100%;
+    min-width: 100%;
+    min-height: 100vh;
+}
+input{
+    width: 85%;
+    padding: 2%;
+    margin-top: 0.5rem;
+    margin-bottom: 0;
+}
+button{
+    border: none;
+    outline: none;
+    width: 90%;
+    padding: 3%;
+    background-color: rgb(20, 20, 59);
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 16px;
+}
+a{
+    text-decoration: none;
+    color: rgb(20, 20, 59);
+}
+.container {
+    display: flex;
+    flex-direction: row-reverse;
+    background-color: rgb(34, 32, 32);
+    height: 100%;
+    min-width: 100%;
+    min-height: 100vh;
+}
+.apresentacao{
+    margin-bottom: 10%;
+}
+.apresentacao h1{
+    margin-bottom: 0.5rem;
+    color: rgb(20, 20, 59);
+}
+.apresentacao p{
+    margin-top: 0;
+}
+.login-form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 45%;
+    background-color: white;
+    height: 100vh;
+    overflow: auto;
+}
+form{
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20%;
+    color: rgb(20, 20, 59);
+}
+.recuperaSenha{
+    align-self: end;
+    margin-right: 10%;
+    font-size: 15px;
+}
+.cadastro{
+    display: flex;
+    justify-content: center;
+    align-items: end;
+    font-size: 18px;
+}
+.cadastro p{
+    color: grey;
+}
+.side{
+    height: 100%;
+}

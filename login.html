@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="static\css\login.css">
+    <title>Login</title>
+</head>
+
+<body>
+    <div class="container">
+        <div class="login-form">
+            <form action="">
+                <div class="apresentacao">
+                    <img src="static\img\login\codigo.png" width="15%">
+                    <h1 id="TextAcao">Acesse sua conta</h1>
+                    <p class="titulo">e tenha controle sobre sua maratona de programação</p>
+                </div>
+                <label for="usuario">Email</label>
+                <input id="usuario" type="text" placeholder="mail@abc.com"><br>
+                <label for="senha">Senha</label>
+                <input id="senha" type="password" placeholder="**********"><br>
+                <a class="recuperaSenha" href="">Esqueceu sua senha?</a>
+                <p class="textLogin" id="textLogin"></p>
+                <button id="entrar" type="button" onclick="check()">Login</button>
+            </form>
+            <div class="cadastro">
+                <p>Não tem conta? | 
+                    <a href="">Criar conta</a>
+                </p>
+            </div>
+        </div>
+        <div class="side">
+            
+        </div>
+    </div>
+</body>
+
+</html>
