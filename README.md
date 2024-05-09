@@ -1,4 +1,4 @@
-#Gerenciador de maratona de programação
+# Gerenciador de maratona de programação
 
 ## Passo a passo para rodar o projeto: 
 1. Certifique-se de ter o python baixado e adicionado ao PATH de sua máquina.
