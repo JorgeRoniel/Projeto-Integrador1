@@ -13,7 +13,7 @@
         <div id="side" class="side">
             <h1>Imagem tema</h1>
         </div>
-        <div id="login-form" class="login-form">
+        <div id="formularioCampos" class="login-form">
             <form id="campos" action="">
                 <div class="apresentacao">
                     <img src="static\js\login\img\codigo.png" width="15%">
@@ -24,15 +24,38 @@
                 <input id="usuario" type="text" placeholder="mail@abc.com"><br>
                 <label for="senha">Senha</label>
                 <input id="senha" type="password" placeholder="**********"><br>
-                <a class="recuperaSenha" href="">Esqueceu sua senha?</a>
-                <p class="textLogin" id="textLogin"></p>
+                <div class="mensagens">
+                    <a class="recuperaSenha" href="">Esqueceu sua senha?</a>
+                    <a class="textLogin" id="textLogin"></a>
+                </div>
                 <button id="entrar" type="button" onclick="check()">Login</button>
             </form>
-            <div class="cadastro">
-                <p>Não tem conta? | 
-                    <a id="criarConta">Criar conta</a>
+            <div id="naoTemConta" class="cadastro">
+                <p>Não tem conta? |
+                    <a id="criarConta"> Criar conta</a>
                 </p>
             </div>
+
+            <form id="cadastro-form" action="">
+                <div class="apresentacao">
+                    <img src="static\js\login\img\codigo.png" width="15%">
+                    <h1>Cadastre-se</h1>
+                </div>
+                <label for="nomeCriar">Nome</label>
+                <input id="nomeCriar" type="text" placeholder="João Rodrigues Lacerda"><br>
+                <label for="usuarioCriar">Email</label>
+                <input id="usuarioCriar" type="text" placeholder="mail@abc.com"><br>
+                <label for="senhaCriar">Senha</label>
+                <input id="senhaCriar" type="password" placeholder="**********"><br>
+                <p class="textLogin"></p>
+                <button type="button">Cadastrar</button>
+            </form>
+            <div id="jaTemConta" class="cadastro">
+                <p>Já tem uma conta? |
+                    <a id="logar"> Entrar</a>
+                </p>
+            </div>
+            </form>
         </div>
     </div>
 

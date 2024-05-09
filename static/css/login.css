@@ -35,6 +35,7 @@ a{
     background-color: rgb(34, 32, 32);
     height: 100vh;
     width: 100vw;
+    overflow: hidden;
 }
 .apresentacao{
     margin-bottom: 10%;
@@ -57,7 +58,7 @@ a{
     overflow: auto;
     transition: transform 1s ease;
 }
-.cadastro-form{
+.formMoveLeft{
     transform: translateX(-100%);
 }
 form{
@@ -66,10 +67,21 @@ form{
     margin-bottom: 10%;
     color: rgb(20, 20, 59);
 }
+.mensagens{
+    display: flex;
+    flex-direction: row-reverse;
+    width: 100%;
+}
+.textLogin{
+    color: red;
+    font-size: 15px;
+    margin-right: 24%;
+    margin-bottom: 5%;
+}
 .recuperaSenha{
-    align-self: end;
     margin-right: 10%;
     font-size: 15px;
+    margin-bottom: 5%;
 }
 .cadastro{
     display: flex;
@@ -88,7 +100,7 @@ form{
     align-items: center;
     justify-content: center;
 }
-.sideCadastro{
+.sideMoveLeft{
     transform:translateX(100%);
     width: 45%;
 }
