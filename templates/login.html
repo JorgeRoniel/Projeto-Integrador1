@@ -11,12 +11,12 @@
 <body>
     <div id="container" class="container">
         <div id="side" class="side">
-            <h1>Imagem tema</h1>
+            <img src="static\img\OIG2.png" alt="" width="100%">
         </div>
         <div id="formularioCampos" class="login-form">
             <form id="campos" action="">
                 <div class="apresentacao">
-                    <img src="static\js\login\img\codigo.png" width="15%">
+                    <img src="static\img\codigo.png" width="15%">
                     <h1 id="TextAcao">Acesse sua conta</h1>
                     <p class="titulo">e tenha controle sobre sua maratona de programação</p>
                 </div>
@@ -38,7 +38,7 @@
 
             <form id="cadastro-form" action="">
                 <div class="apresentacao">
-                    <img src="static\js\login\img\codigo.png" width="15%">
+                    <img src="static\img\codigo.png" width="15%">
                     <h1>Cadastre-se</h1>
                 </div>
                 <label for="nomeCriar">Nome</label>
@@ -47,8 +47,8 @@
                 <input id="usuarioCriar" type="text" placeholder="mail@abc.com"><br>
                 <label for="senhaCriar">Senha</label>
                 <input id="senhaCriar" type="password" placeholder="**********"><br>
-                <p class="textLogin"></p>
-                <button type="button">Cadastrar</button>
+                <p style="margin-top: 0;" id="textSigin" class="textLogin"></p>
+                <button type="button" onclick="cadastrar()">Cadastrar</button>
             </form>
             <div id="jaTemConta" class="cadastro">
                 <p>Já tem uma conta? |

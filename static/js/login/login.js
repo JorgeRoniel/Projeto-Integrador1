@@ -7,6 +7,7 @@ const naoTemConta = document.getElementById("naoTemConta");
 const mudarParaLogin = document.getElementById("logar");
 const jaTemConta = document.getElementById("jaTemConta");
 const mensagemVerificaSenha = document.getElementById("textLogin");
+const mensagemVerificaCadastro = document.getElementById("textSigin");
 
 cadastroScreen.remove();
 jaTemConta.remove();
@@ -18,7 +19,7 @@ mudarParaCadastro.addEventListener("click", function(){
     container.classList.add("formMoveLeft");
     container.appendChild(cadastroScreen);
     container.appendChild(jaTemConta);
-    side.classList.add("sideMoveLeft");
+    side.classList.add("sideMoveRight");
 });
 
 mudarParaLogin.addEventListener("click",function(){
@@ -27,7 +28,7 @@ mudarParaLogin.addEventListener("click",function(){
     container.classList.remove("formMoveLeft");
     container.appendChild(loginScreen);
     container.appendChild(naoTemConta);
-    side.classList.remove("sideMoveLeft");
+    side.classList.remove("sideMoveRight");
 });
 
 const check = () =>{
@@ -38,5 +39,14 @@ const check = () =>{
     }
     else{
         mensagemVerificaSenha.textContent = "Usuário e/ou senha inválidos";
+    }
+}
+
+const cadastrar = () =>{
+    const nome = document.getElementById("nomeCriar").value;
+    const user = document.getElementById("usuarioCriar").value;
+    const senha = document.getElementById("senhaCriar").value;
+    if(nome.length === 0 || user.length === 0 || senha.length === 0){
+        mensagemVerificaCadastro.textContent = "Todos os campos devem ser preenchidos";
     }
 }
