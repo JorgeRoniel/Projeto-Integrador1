@@ -14,21 +14,21 @@
             <img src="static\img\OIG2.png" alt="" width="100%">
         </div>
         <div id="formularioCampos" class="login-form">
-            <form id="campos" action="">
+            <form id="campos" action="{{ url_for('rotas.submit') }}" method="POST">
                 <div class="apresentacao">
                     <img src="static\img\codigo.png" width="15%">
                     <h1 id="TextAcao">Acesse sua conta</h1>
                     <p class="titulo">e tenha controle sobre sua maratona de programação</p>
                 </div>
                 <label for="usuario">Email</label>
-                <input id="usuario" type="text" placeholder="mail@abc.com"><br>
+                <input id="usuario" type="text" name="email" placeholder="mail@abc.com"><br>
                 <label for="senha">Senha</label>
-                <input id="senha" type="password" placeholder="**********"><br>
+                <input id="senha" type="password" name="senha" placeholder="**********"><br>
                 <div class="mensagens">
                     <a class="recuperaSenha" href="">Esqueceu sua senha?</a>
                     <a class="textLogin" id="textLogin"></a>
                 </div>
-                <button id="entrar" type="button" onclick="check()">Login</button>
+                <button id="entrar" type="submit">Login</button>
             </form>
             <div id="naoTemConta" class="cadastro">
                 <p>Não tem conta? |
@@ -36,19 +36,19 @@
                 </p>
             </div>
 
-            <form id="cadastro-form" action="">
+            <form id="cadastro-form" action="" method="POST">
                 <div class="apresentacao">
                     <img src="static\img\codigo.png" width="15%">
                     <h1>Cadastre-se</h1>
                 </div>
                 <label for="nomeCriar">Nome</label>
-                <input id="nomeCriar" type="text" placeholder="João Rodrigues Lacerda"><br>
+                <input id="nomeCriar" type="text" name="novoNome" placeholder="João Rodrigues Lacerda"><br>
                 <label for="usuarioCriar">Email</label>
-                <input id="usuarioCriar" type="text" placeholder="mail@abc.com"><br>
+                <input id="usuarioCriar" type="text" name="novoEmail" placeholder="mail@abc.com"><br>
                 <label for="senhaCriar">Senha</label>
-                <input id="senhaCriar" type="password" placeholder="**********"><br>
+                <input id="senhaCriar" type="password" name="novaSenha" placeholder="**********"><br>
                 <p style="margin-top: 0;" id="textSigin" class="textLogin"></p>
-                <button type="button" onclick="cadastrar()">Cadastrar</button>
+                <button type="submit">Cadastrar</button>
             </form>
             <div id="jaTemConta" class="cadastro">
                 <p>Já tem uma conta? |
