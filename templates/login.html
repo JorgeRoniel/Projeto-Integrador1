@@ -36,7 +36,7 @@
                 </p>
             </div>
 
-            <form id="cadastro-form" action="" method="POST">
+            <form id="cadastro-form" action="{{ url_for('rotas.create_user') }}" method="POST">
                 <div class="apresentacao">
                     <img src="static\img\codigo.png" width="15%">
                     <h1>Cadastre-se</h1>
@@ -60,6 +60,7 @@
     </div>
 
     <script src="static\js\login\login.js"></script>
+    <script src="/static/js/lib/cru.js"></script>
 </body>
 
 </html>
