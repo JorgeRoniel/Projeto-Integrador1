@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect
+from flask import Blueprint, render_template, request, redirect, jsonify
 
 rotas = Blueprint('rotas', __name__)
 
@@ -13,10 +13,14 @@ def submit():
     else:
         data = request.form.to_dict()
     
-    username = data.get('email')
-    password = data.get('senha')
-    print(username)
-    return redirect('/')
+    response = {
+        'status':'success',
+        'user': {
+            'email': data['email'],
+            'nome': 'Jorge'
+        }
+    }
+    return jsonify(response)
 
 @rotas.route('/create', methods=['POST'])
 def create_user():
@@ -28,3 +32,7 @@ def create_user():
     nome = data.get('novoNome')
     print(nome)
     return redirect('/')
+
+@rotas.route('/teste')
+def teste():
+    return render_template('teste.html')

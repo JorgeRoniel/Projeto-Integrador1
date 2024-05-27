@@ -50,3 +50,35 @@ const cadastrar = () =>{
         mensagemVerificaCadastro.textContent = "Todos os campos devem ser preenchidos";
     }
 }
+
+loginScreen.addEventListener('submit', (event) => {
+    event.preventDefault();
+
+    const formData = new FormData(loginScreen);
+    const data ={};
+    formData.forEach((value, key) => {
+        data[key] = value;
+    })
+
+    const options = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+    }
+
+    fetch('/submit', options)
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                localStorage.setItem('userData', JSON.stringify(data.user))
+                window.location.href = "/teste"
+            } else {
+                alert('error')
+            }
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+})
