@@ -72,13 +72,45 @@ loginScreen.addEventListener('submit', (event) => {
         .then(response => response.json())
         .then(data => {
             if (data.status === 'success') {
-                localStorage.setItem('userData', JSON.stringify(data.user))
                 window.location.href = "/teste"
             } else {
-                alert('error')
+                alert('Usuario ou senha incorretas!')
             }
         })
         .catch((error) => {
             console.error('Error:', error);
         });
+})
+
+cadastroScreen.addEventListener('submit', (event) => {
+    event.preventDefault()
+
+    const formData = new FormData(cadastroScreen)
+    const data = {}
+
+    formData.forEach((value, key) => {
+        data[key] = value
+    })
+
+    const options = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+    }
+
+    fetch('/create', options)
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success'){
+                alert(data.message)
+                window.location.href = '/'
+            }else{
+                alert('error!')
+            }
+        })
+        .catch((error) => {
+            console.error('Error: ', error)
+        })
 })

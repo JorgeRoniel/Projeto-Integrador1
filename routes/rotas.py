@@ -13,13 +13,15 @@ def submit():
     else:
         data = request.form.to_dict()
     
-    response = {
-        'status':'success',
-        'user': {
-            'email': data['email'],
-            'nome': 'Jorge'
+    if data['email'] == 'email@mail.com' and data['senha'] == '12345678':
+        response = {
+            'status': 'success'
         }
-    }
+    else:
+        response = {
+            'status': 'error'
+        }
+    
     return jsonify(response)
 
 @rotas.route('/create', methods=['POST'])
@@ -29,9 +31,17 @@ def create_user():
     else:
         data = request.form.to_dict()
     
-    nome = data.get('novoNome')
-    print(nome)
-    return redirect('/')
+    response = {
+        'status': 'success',
+        'message': 'created!',
+        'User': {
+            'nome': data['novoNome'],
+            'email': data['novoEmail'],
+            'senha': data['novaSenha']
+        }
+    }
+
+    return jsonify(response)
 
 @rotas.route('/teste')
 def teste():
