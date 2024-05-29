@@ -105,7 +105,7 @@ cadastroScreen.addEventListener('submit', (event) => {
         .then(data => {
             if (data.status === 'success'){
                 alert(data.message)
-                window.location.href = '/'
+                window.location.href = 'templates\\home.html'
             }else{
                 alert('error!')
             }

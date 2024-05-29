@@ -45,4 +45,4 @@ def create_user():
 
 @rotas.route('/teste')
 def teste():
-    return render_template('teste.html')
+    return render_template('home.html')
