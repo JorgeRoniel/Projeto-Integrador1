@@ -60,16 +60,19 @@ body {
 .spacer {
     flex-grow: 1;
 }
-.escudoTimePerfil{
-    border-radius: 100%; 
+
+.escudoTimePerfil {
+    border-radius: 100%;
     margin-right: 15px;
 }
-.containerOpcoes{
+
+.containerOpcoes {
     display: flex;
     height: 10%;
     width: 100%;
 }
-.OpcoesExpandidas{
+
+.OpcoesExpandidas {
     display: none;
     width: 9%;
     margin-right: 0.5%;
@@ -80,12 +83,25 @@ body {
     overflow: auto;
 }
 
-.OpcoesExpandidas button{
+.OpcoesExpandidas button {
     width: 100%;
     height: 100%;
     margin: 0;
 }
 
-.OpcoesExpandidas button:hover{
+.OpcoesExpandidas button:hover {
     background-color: rgb(81, 85, 128);
+}
+
+.textTitulo {
+    margin-top: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 5%;
+    color: rgb(20, 20, 59);
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 20px;
 }
