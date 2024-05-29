@@ -1,21 +1,36 @@
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="home.css">
+    <link rel="stylesheet" href="static\css\home.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <title>Home</title>
 </head>
+
 <body>
     <div class="container">
-        <header class="headerHome"></header>
+        <header class="headerHome" style="background-image: url('static\\img\\OIG2.png');"></header>
         <nav class="navbar">
+            <div class="vertical-bar"></div>
+            <img class="escudoTimePerfil" src="static\img\Logo.png" width="15%">
+            <img src="static\img\LogoReduzida.png" width="2%" style="border-radius: 100%;">
             <div class="vertical-bar"></div>
             <button class="criarMais">+ Criar Mais</button>
             <div class="spacer"></div>
             <div class="vertical-bar"></div>
-            <button class="contaManipular">Conta <i class="fas fa-chevron-down" style="color: rgb(65, 65, 131)"></i></button>
+            <button id="contaOpcoes" class="contaManipular" style="margin-left: 3%;">Conta <i class="fas fa-chevron-down"
+                    style="color: rgb(65, 65, 131)"></i></button>
         </nav>
+        <div class="containerOpcoes">
+            <div class="spacer"></div>
+            <div id="OpcoesExpandidas" class="OpcoesExpandidas">
+                <button class="contaManipular">Editar Conta</button>
+                <button class="contaManipular">Sair</button>
+            </div>
+        </div>
     </div>
+    <script src="static\js\homePage\home.js"></script>
 </body>
+
 </html>
