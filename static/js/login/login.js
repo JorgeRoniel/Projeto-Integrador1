@@ -12,11 +12,21 @@ const mensagemVerificaCadastro = document.getElementById("textSigin");
 cadastroScreen.remove();
 jaTemConta.remove();
 
+if(window.innerWidth <=768){
+    cadastroScreen.style.transform = "rotateY(180deg)";
+    jaTemConta.style.transform = "rotateY(180deg)";
+}
+
 mudarParaCadastro.addEventListener("click", function(){
     mensagemVerificaSenha.textContent="";
     loginScreen.remove();
     naoTemConta.remove();
-    container.classList.add("formMoveLeft");
+    if(window.innerWidth>768){
+        container.classList.add("formMoveLeft");
+    }
+    else{
+        container.classList.add("formMoveLeftMobile");
+    }
     container.appendChild(cadastroScreen);
     container.appendChild(jaTemConta);
     side.classList.add("sideMoveRight");
@@ -25,31 +35,16 @@ mudarParaCadastro.addEventListener("click", function(){
 mudarParaLogin.addEventListener("click",function(){
     cadastroScreen.remove();
     jaTemConta.remove();
-    container.classList.remove("formMoveLeft");
+    if(window.innerWidth > 768){
+        container.classList.remove("formMoveLeft");
+    }
+    else{
+        container.classList.remove("formMoveLeftMobile");
+    }
     container.appendChild(loginScreen);
     container.appendChild(naoTemConta);
     side.classList.remove("sideMoveRight");
 });
-
-const check = () =>{
-    const user = document.getElementById("usuario").value;
-    const senha = document.getElementById("senha").value;
-    if(user === "nelson" && senha==="123"){
-        alert("login bem sucedido");
-    }
-    else{
-        mensagemVerificaSenha.textContent = "Usuário e/ou senha inválidos";
-    }
-}
-
-const cadastrar = () =>{
-    const nome = document.getElementById("nomeCriar").value;
-    const user = document.getElementById("usuarioCriar").value;
-    const senha = document.getElementById("senhaCriar").value;
-    if(nome.length === 0 || user.length === 0 || senha.length === 0){
-        mensagemVerificaCadastro.textContent = "Todos os campos devem ser preenchidos";
-    }
-}
 
 loginScreen.addEventListener('submit', (event) => {
     event.preventDefault();
@@ -74,7 +69,7 @@ loginScreen.addEventListener('submit', (event) => {
             if (data.status === 'success') {
                 window.location.href = "/home"
             } else {
-                alert('Usuario ou senha incorretas!')
+                alert('error');
             }
         })
         .catch((error) => {
@@ -85,8 +80,16 @@ loginScreen.addEventListener('submit', (event) => {
 cadastroScreen.addEventListener('submit', (event) => {
     event.preventDefault()
 
+    const nome = document.getElementById("nomeCriar").value;
+    const user = document.getElementById("usuarioCriar").value;
+    const senha = document.getElementById("senhaCriar").value;
     const formData = new FormData(cadastroScreen)
     const data = {}
+
+    if(nome.length === 0 || user.length === 0 || senha.length === 0){
+        mensagemVerificaCadastro.textContent = "Todos os campos devem ser preenchidos";
+        return;
+    }
 
     formData.forEach((value, key) => {
         data[key] = value
@@ -107,7 +110,7 @@ cadastroScreen.addEventListener('submit', (event) => {
                 alert(data.message)
                 window.location.href = '/'
             }else{
-                alert('error!')
+                mensagemVerificaCadastro.textContent = "Erro ao cadastrar";
             }
         })
         .catch((error) => {

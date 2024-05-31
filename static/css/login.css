@@ -62,6 +62,9 @@ a{
 .formMoveLeft{
     transform: translateX(-100%);
 }
+.formMoveLeftMobile {
+    transform: rotateY(180deg);
+}
 form{
     display: flex;
     width: 65%;
@@ -90,6 +93,7 @@ form{
     justify-content: center;
     align-items: end;
     font-size: 18px;
+    transition: transform 1s ease;
 }
 .cadastro p{
     color: grey;
@@ -104,4 +108,38 @@ form{
 }
 .sideMoveRight{
     transform:translateX(100%);
+}
+
+@media only screen and (max-width: 768px) {
+    .container{
+        align-items: center;
+        justify-content: center;
+    }
+    .side{
+        display: none;
+    }
+    .login-form{
+        width: 100%;
+        align-items: center;
+        justify-content: center;
+        margin-left: 0;
+        margin-right: 0;
+    }
+    .recuperaSenha{
+        margin-right: 10%;
+    }
+    .apresentacao{
+        align-items: center;
+        justify-content: center;
+    }
+    .apresentacao h1{
+        font-size: 28px;
+    }
+    .cadastro{
+        align-items: center;
+        justify-content: center;
+    }
+    .container{
+        background-color: rgb(58, 57, 57);
+    }
 }

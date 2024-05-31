@@ -36,7 +36,7 @@
                 </p>
             </div>
 
-            <form id="cadastro-form" action="{{ url_for('rotas.create_user') }}" method="POST">
+            <form class="cadastroForm" id="cadastro-form" action="{{ url_for('rotas.create_user') }}" method="POST">
                 <div class="apresentacao">
                     <img src="static\img\codigo.png" width="15%">
                     <h1>Cadastre-se</h1>
@@ -48,9 +48,9 @@
                 <label for="senhaCriar">Senha</label>
                 <input id="senhaCriar" type="password" name="novaSenha" placeholder="**********"><br>
                 <p style="margin-top: 0;" id="textSigin" class="textLogin"></p>
-                <button type="submit">Cadastrar</button>
+                <button id="botaoCadastrar" type="submit">Cadastrar</button>
             </form>
-            <div id="jaTemConta" class="cadastro">
+            <div id="jaTemConta" class="cadastro criacao">
                 <p>Já tem uma conta? |
                     <a id="logar"> Entrar</a>
                 </p>
