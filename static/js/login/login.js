@@ -72,7 +72,7 @@ loginScreen.addEventListener('submit', (event) => {
         .then(response => response.json())
         .then(data => {
             if (data.status === 'success') {
-                window.location.href = "/teste"
+                window.location.href = "/home"
             } else {
                 alert('Usuario ou senha incorretas!')
             }
@@ -105,7 +105,7 @@ cadastroScreen.addEventListener('submit', (event) => {
         .then(data => {
             if (data.status === 'success'){
                 alert(data.message)
-                window.location.href = 'templates\\home.html'
+                window.location.href = '/'
             }else{
                 alert('error!')
             }

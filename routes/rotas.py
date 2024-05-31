@@ -43,6 +43,10 @@ def create_user():
 
     return jsonify(response)
 
-@rotas.route('/teste')
-def teste():
+@rotas.route('/home')
+def home():
     return render_template('home.html')
+
+@rotas.route('/logout')
+def logout():
+    return redirect('/')
