@@ -21,8 +21,8 @@
             <button class="criarMais">+ Criar Mais</button>
             <div class="spacer"></div>
             <div class="vertical-bar"></div>
-            <button id="contaOpcoes" class="contaManipular" style="margin-left: 3%;">Conta <i class="fas fa-chevron-down"
-                    style="color: rgb(65, 65, 131)"></i></button>
+            <button id="contaOpcoes" class="contaManipular" style="margin-left: 3%;">Conta <i
+                    class="fas fa-chevron-down" style="color: rgb(65, 65, 131)"></i></button>
         </nav>
         <div class="containerOpcoes">
             <div class="spacer"></div>
@@ -34,11 +34,27 @@
         <div class="textTitulo">
             <h1 style="margin-bottom: 0;">CRIE E GERENCIE SUAS</h1>
             <h1 style="margin-top: 0;">MARATONAS DE PROGRAMAÇÃO!</h1>
+            <hr style="margin-top: 0;" class="horizontal-bar">
         </div>
-        <hr class="horizontal-bar">
+
+        <div class="categorias">
+            <div id="containerBotaoMaratonas" class="containerBotao">
+                <button id="maratonas">Maratonas</button>
+                <hr id="underline" style="margin-top: 0;margin-bottom: 0;width: 100%;" class="horizontal-bar">
+            </div>
+            <div class="vertical-bar"></div>
+            <div id="containerBotaoCompeticoes" class="containerBotao">
+                <button id="competicoes">Competições</button>
+            </div>
+            <div class="vertical-bar"></div>
+            <div id="containerBotaoTimes" class="containerBotao">
+                <button id="times">Times</button>
+            </div>
+        </div>
 
         <div class="filtrar">
-            <p>Filrar Itens</p>
+            <p>Filrar Itens:</p>
+            <input type="text" placeholder="Digite o nome do item">
         </div>
     </div>
     <script src="static\js\homePage\home.js"></script>
