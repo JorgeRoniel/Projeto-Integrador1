@@ -4,12 +4,17 @@ import re
 
 #Função para abri o banco de dados
 def openBD():
-    connection = pymysql.connect(host='localhost',
-                             user='root',
-                             password='',
-                             database='cadastro',
-                             cursorclass=pymysql.cursors.DictCursor)
-    return connection
+    try:
+        connection = pymysql.connect(host='',
+                                user='',
+                                password='',
+                                database='',
+                                port=0,
+                                cursorclass=pymysql.cursors.DictCursor)
+        print('Conectado ao banco!')
+        return connection
+    except NameError as e:
+        print(e)
 #Pegar dados do banco(Por agr ta só pegando da mesa Accounts)
 def captureAccounts(connection):
 
@@ -33,11 +38,16 @@ def captureAccounts(connection):
             accounts = [nick, email, passw, num]
             return accounts
     
-def insertAccount(connection, nick, email, passw):
-    with connection.cursor() as cursor:
-        #Create a new record
-        sql = "INSERT INTO `accounts` (`nickname`, `email`,`password`,`id`) VALUES (%s, %s, %s, default)"
-        cursor.execute(sql, (nick, email, passw))
+def insertAccount(nick, email, passw):
+    try:
+        connection = openBD()
+        cursor = connection.cursor()
+
+        cursor.execute(f"INSERT INTO accounts(nickname, email, senha) VALUES ('{nick}', '{email}', '{passw}');")
+        connection.commit()
+        return True
+    except NameError:
+        return False
 
 #Criação de Contas.
 def signIn(connection):
@@ -205,12 +215,12 @@ if __name__ == "__main__":
     # Imprimindo chaveamento
     #chaveamento.print_chaveamento()
     
-    conn = openBD()
+    
     #signIn(conn)
     #insertAccount(conn, nick, email, passw)
-    data = captureAccounts(conn)
+    insertAccount("Jorge", "jorge@email.com", "123")
 
-    print(data)
+
 
     # Exemplo de uso:
     #string_original = data[1]

@@ -1,4 +1,5 @@
 from flask import Blueprint, render_template, request, redirect, jsonify
+from database import main
 
 rotas = Blueprint('rotas', __name__)
 
@@ -30,15 +31,23 @@ def create_user():
         data = request.get_json()
     else:
         data = request.form.to_dict()
-    
-    response = {
-        'status': 'success',
-        'message': 'created!',
-        'User': {
-            'nome': data['novoNome'],
-            'email': data['novoEmail'],
-            'senha': data['novaSenha']
+
+    #Essa linha comentada é pra quando tiver a conexão com bd, comentei p não quebrar.
+    '''
+    if main.insertAccount(data['novoNome'], data['novoEmail'], data['novaSenha']):
+        response = {
+            "status":"success",
+            "message": "created!"
         }
+    else:
+        response = {
+            "status": "error",
+            "message": "ERROR"
+        }
+    '''
+    response = {
+        "status": "success",
+        "message": "created!"
     }
 
     return jsonify(response)
