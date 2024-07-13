@@ -3,6 +3,7 @@ create schema dbMaratona;
 create table usuario(id INT AUTO_INCREMENT PRIMARY KEY,
 					nome VARCHAR(255) NOT NULL,
                     email varchar(255) not null,
+                    senha varchar(100) not null,
                     avatar BLOB);
 
 create table maratona(id INT AUTO_INCREMENT PRIMARY KEY, 
@@ -26,16 +27,18 @@ create table competidores(id INT AUTO_INCREMENT,
                         PRIMARY KEY (id, timeId),
                         FOREIGN KEY (timeId) REFERENCES times(id) ON DELETE CASCADE ON UPDATE CASCADE);
                         
+                        
+ -- TABELA AINDA NÃO CRIADA                      
 create table partida(id INT AUTO_INCREMENT,
 					data_partida DATE NOT NULL,
                     horario TIME NOT NULL,
-                    local_partida varchar(100) NOT NULL,
                     id_timeUm int NOT NULL,
                     id_timeDois int NOT NULL,
+                    id_vencedor int not null,
+                    desafio text not null,
                     id_maratona int NOT NULL,
-                    -- Talvez o momento Momento da pontuação e as Estatísticas sejam tabelas diferentes, por isso não adicionei
-                    placar varchar(10) NOT NULL,
                     PRIMARY KEY (id, id_timeUm,id_timeDois,id_maratona),
                     FOREIGN KEY (id_timeUm) REFERENCES times(id) ON DELETE CASCADE ON UPDATE CASCADE,
                     FOREIGN KEY (id_timeDois) REFERENCES times(id) ON DELETE CASCADE ON UPDATE CASCADE,
-                    FOREIGN KEY (id_maratona) REFERENCES maratona(id) ON DELETE CASCADE ON UPDATE CASCADE);
+                    FOREIGN KEY (id_maratona) REFERENCES maratona(id) ON DELETE CASCADE ON UPDATE CASCADE,
+					FOREIGN KEY (id_vencedor) REFERENCES times(id) ON DELETE CASCADE ON UPDATE CASCADE);
