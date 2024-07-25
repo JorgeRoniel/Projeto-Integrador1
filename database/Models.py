@@ -1,5 +1,4 @@
 import datetime as dt
-import conexao as c
 import re
 
 class User:

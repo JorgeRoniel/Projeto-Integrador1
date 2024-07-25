@@ -16,7 +16,7 @@ def openBD():
                                 user=DB_USER,
                                 password=DB_PASSWORD,
                                 database=DB_NAME,
-                                port=DB_PORT,
+                                port=int(DB_PORT),
                                 cursorclass=pymysql.cursors.DictCursor)
         print('Conectado ao banco!')
         return connection

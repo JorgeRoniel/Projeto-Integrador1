@@ -35,7 +35,7 @@ def create_user():
 
     if s.insertAccount(data['novoNome'], data['novoEmail'], data['novaSenha']):
         response = {
-            "status":"success",
+            "status":'success',
             "message": "created!"
         }
     else:

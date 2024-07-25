@@ -1,6 +1,5 @@
-from database import conexao as c
 import re
-
+from database import conexao as c
 #Pegar dados do banco(Por agr ta só pegando da mesa Accounts)
 def captureAccounts(connection):
 
