@@ -1,27 +1,5 @@
 import re
 from database import conexao as c
-#Pegar dados do banco(Por agr ta só pegando da mesa Accounts)
-def captureAccounts(connection):
-
-    with connection.cursor() as cursor:
-            nick = []
-            email = []
-            passw = []
-            num = []
-
-            sql = "SELECT * FROM `accounts`"
-            cursor.execute(sql)
-
-            datadic = cursor.fetchall()
-
-            for acc in datadic:
-                nick.append(acc.get('nickname', 'N/A'))
-                email.append(acc.get('email', 'N/A'))
-                passw.append(acc.get('password', 'N/A'))
-                num.append(acc.get('id', 'N/A'))
-
-            accounts = [nick, email, passw, num]
-            return accounts
     
 def insertAccount(nome, email, passw):
     try:

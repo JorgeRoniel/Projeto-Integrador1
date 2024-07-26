@@ -16,7 +16,9 @@ def submit():
     else:
         data = request.form.to_dict()
     
-    if s.login(data['email'], data['senha']):
+    user = Models.User(None, data['senha'], data['email'])
+    
+    if s.login(user.email, user.password):
         response = {
             'status': 'success'
         }
@@ -33,9 +35,11 @@ def create_user():
         data = request.get_json()
     else:
         data = request.form.to_dict()
+    
+    user = Models.User(data['novoNome'], data['novaSenha'], data['novoEmail'])
 
-    if(verifyPass(data['novaSenha'])):
-        if s.insertAccount(data['novoNome'], data['novoEmail'], data['novaSenha']):
+    if(verifyPass(user.password)):
+        if s.insertAccount(user.username, user.email, user.password):
             response = {
                 "status":'success',
                 "message": "created!"
