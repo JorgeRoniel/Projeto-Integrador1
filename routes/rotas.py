@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, request, redirect, jsonify
 from database import Models
 from services import UserServices as s
+from services.UserServices import verifyPass
 
 rotas = Blueprint('rotas', __name__)
 
@@ -33,15 +34,21 @@ def create_user():
     else:
         data = request.form.to_dict()
 
-    if s.insertAccount(data['novoNome'], data['novoEmail'], data['novaSenha']):
-        response = {
-            "status":'success',
-            "message": "created!"
-        }
+    if(verifyPass(data['novaSenha'])):
+        if s.insertAccount(data['novoNome'], data['novoEmail'], data['novaSenha']):
+            response = {
+                "status":'success',
+                "message": "created!"
+            }
+        else:
+            response = {
+                "status": "error",
+                "message": "ERROR"
+            }
     else:
         response = {
-            "status": "error",
-            "message": "ERROR"
+            "status": "wrongPass",
+            "message": "Senha fora de Padrão"
         }
 
     return jsonify(response)

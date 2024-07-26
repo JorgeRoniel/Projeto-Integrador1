@@ -109,6 +109,8 @@ cadastroScreen.addEventListener('submit', (event) => {
             if (data.status === 'success'){
                 alert(data.message)
                 window.location.href = '/'
+            }else if(data.status === 'wrongPass'){
+                mensagemVerificaCadastro.textContent = data.message;
             }else{
                 mensagemVerificaCadastro.textContent = "Erro ao cadastrar";
             }
