@@ -6,7 +6,7 @@ def criarMaratona(nome, descricao, qtdTimes, premiacao, userId):
         conn = c.openBD()
         cursor = conn.cursor()
 
-        cursor.execute(f"INSERT INTO maratona (nome, descricao, qtdTimes, premiacao, userId) VALUES ('{nome}', '{descricao}', {qtdTimes}, '{premiacao}', {userId});")
+        cursor.execute(f"INSERT INTO maratona (nome_maratona, descricao, qtdTimes, premiacao, userId) VALUES ('{nome}', '{descricao}', {qtdTimes}, '{premiacao}', {userId});")
         conn.commit()
         conn.close()
 
@@ -19,7 +19,7 @@ def atualizarMaratona(id, nome, descricao, qtdTimes, premiacao):
         conn = c.openBD()
         cursor = conn.cursor()
 
-        cursor.execute(f"UPDATE maratonas SET nome='{nome}', descricao='{descricao}', qtdTimes='{qtdTimes}', premiacao='{premiacao}' WHERE id = {id}")
+        cursor.execute(f"UPDATE maratonas SET nome_maratona='{nome}', descricao='{descricao}', qtdTimes='{qtdTimes}', premiacao='{premiacao}' WHERE id = {id}")
         conn.commit()
         conn.close()
 
@@ -34,8 +34,8 @@ def listarMaratonas():
         conn = c.openBD()
         cursor = conn.cursor()
 
-        cursor.execute(f"SELECT m.nome, m.descricao, m.qtdTimes, m.premiacao FROM maratona m INNER JOIN usuario u ON m.userId = u.id;")
-        data = cursor.fetchAll()
+        cursor.execute(f"SELECT m.nome_maratona, m.descricao, m.qtdTimes, m.premiacao FROM maratona m INNER JOIN usuario u ON m.userId = u.id;")
+        data = cursor.fetchall()
 
         nomes = []
         descricao = []
@@ -44,10 +44,10 @@ def listarMaratonas():
 
 
         for maratonas in data:
-            nomes.append(maratonas.get('m.nome'))
-            descricao.append(maratonas.get('m.descricao'))
-            qtdTimes.append(maratonas.get('m.qtdTimes'))
-            premiacoes.append(maratonas.get('m.premiacao'))
+            nomes.append(maratonas.get('nome_maratona'))
+            descricao.append(maratonas.get('descricao'))
+            qtdTimes.append(maratonas.get('qtdTimes'))
+            premiacoes.append(maratonas.get('premiacao'))
         dados = [nomes, descricao, qtdTimes, premiacoes]
         print(dados)
     except Exception as e:
@@ -65,3 +65,6 @@ def deletarMaratona(id):
         print('del')
     except Exception as e:
         print(e)
+
+#criarMaratona('maratona_Teste', 'muito legal', 8, '100', 7)
+listarMaratonas()

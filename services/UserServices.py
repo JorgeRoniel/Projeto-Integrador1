@@ -7,13 +7,14 @@ def insertAccount(nome, email, passw):
         cursor = connection.cursor()
 
         if verifyPass(passw):
-            cursor.execute(f"INSERT INTO usuario(nome, email, senha) VALUES ('{nome}', '{email}', '{passw}');")
+            cursor.execute(f"INSERT INTO usuario(nome_user, email, senha) VALUES ('{nome}', '{email}', '{passw}');")
             connection.commit()
             connection.close()
             return True
         else:
             return False
-    except NameError:
+    except Exception as e:
+        print(e)
         return False
 
 #Criação de Contas.
@@ -30,7 +31,7 @@ def login(email, senha):
                 return True
             else:
                 return False
-    except NameError as e:
+    except Exception as e:
         print(e)
 
 def updateAccount(id, novoNome, novoEmail, novaSenha):
@@ -39,7 +40,7 @@ def updateAccount(id, novoNome, novoEmail, novaSenha):
         cursor = connection.cursor()
 
         if verifyPass(novaSenha):
-            cursor.execute(f"UPDATE usuario SET nome='{novoNome}', email='{novoEmail}', senha='{novaSenha}' WHERE id = {id}")
+            cursor.execute(f"UPDATE usuario SET nome_user='{novoNome}', email='{novoEmail}', senha='{novaSenha}' WHERE id = {id}")
             connection.commit()
             connection.close()
             
@@ -57,7 +58,7 @@ def deleteAccount(id):
         connection.close()
         print("yes")
     except Exception as e:
-        print(Exception)
+        print(e)
     
 def verifyPass(passw):
     # Pelo menos uma letra maiúscula
