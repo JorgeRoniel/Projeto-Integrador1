@@ -1,13 +1,26 @@
 const contaOpcoes = document.getElementById("contaOpcoes");
 const opcoes = document.getElementById('OpcoesExpandidas');
+const criarMaisButton = document.getElementById("criarMaisButton");
 const btn_logout = document.getElementById('logout');
 const maratonas = document.getElementById('maratonas');
-const competicoes = document.getElementById('competicoes');
+const partidas = document.getElementById('partidas');
 const times = document.getElementById('times');
+const maratonasCreation = document.getElementById('maratonasCreation');
+const partidasCreation = document.getElementById('partidasCreation');
+const timesCreation = document.getElementById('timesCreation');
 const underline = document.getElementById('underline');
-const containerBotaoCompeticoes = document.getElementById('containerBotaoCompeticoes');
+const underlineCreation = document.getElementById("underlineCreation");
+const containerBotaopartidas = document.getElementById('containerBotaopartidas');
 const containerBotaoMaratonas = document.getElementById('containerBotaoMaratonas');
 const containerBotaoTimes = document.getElementById('containerBotaoTimes');
+const containerBotaopartidasCreation = document.getElementById('containerBotaopartidasCreation');
+const containerBotaoMaratonasCreation = document.getElementById("containerBotaoMaratonasCreation");
+const containerBotaoTimesCreation = document.getElementById('containerBotaoTimesCreation');
+const criacao = document.getElementById("criacao");
+const fecharCriacao = document.getElementById("fecharCriacao");
+const criarMaratona = document.getElementById("criarMaratona");
+const criarTime = document.getElementById("criarTime");
+const criarPartida = document.getElementById("criarPartida");
 
 var checkExpansive = false; 
 
@@ -22,6 +35,14 @@ contaOpcoes.addEventListener('click',function(){
     }
 })
 
+fecharCriacao.addEventListener('click',function(){
+    criacao.style.display = "none";
+})
+
+criarMaisButton.addEventListener('click',function(){
+    criacao.style.display = "flex";
+})
+
 btn_logout.addEventListener('click', (event) => {
     event.preventDefault();
 
@@ -34,12 +55,34 @@ maratonas.addEventListener('click',function(){
 })
 
 
-competicoes.addEventListener('click',function(){
-    containerBotaoCompeticoes.appendChild(underline);
+partidas.addEventListener('click',function(){
+    containerBotaopartidas.appendChild(underline);
 })
 
 times.addEventListener('click',function(){
     containerBotaoTimes.appendChild(underline);
+})
+
+maratonasCreation.addEventListener('click',function(){
+    containerBotaoMaratonasCreation.appendChild(underlineCreation);
+    criarMaratona.style.display = "flex";
+    criarPartida.style.display = "none";
+    criarTime.style.display = "none";
+})
+
+
+partidasCreation.addEventListener('click',function(){
+    containerBotaopartidasCreation.appendChild(underlineCreation);
+    criarMaratona.style.display = "none";
+    criarPartida.style.display = "flex";
+    criarTime.style.display = "none";
+})
+
+timesCreation.addEventListener('click',function(){
+    containerBotaoTimesCreation.appendChild(underlineCreation);
+    criarMaratona.style.display = "none";
+    criarPartida.style.display = "none";
+    criarTime.style.display = "flex";
 })
 
 

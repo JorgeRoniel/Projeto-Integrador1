@@ -15,6 +15,8 @@ body {
     height: 100vh;
     width: 100vw;
     overflow: hidden;
+    position: relative;
+    z-index: 1;
 }
 
 .headerHome {
@@ -68,6 +70,54 @@ body {
     display: block;
     border-radius: 100%; 
 }
+
+.selectCreation{
+    background-color: white !important;
+}
+
+.criarMaratona{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 100%;
+    height: 70%;
+    gap: 20px;
+}
+
+.criarMaratona input{
+    padding: 10px;
+    width: 50%;
+    border: none;
+    outline: none;
+    margin-top: 0;
+}
+
+.criarMaratona label{
+    margin-bottom: 0;
+    color: black;
+    font-size: 16px;
+}
+
+.ConfirmarCriacao{
+    cursor: pointer;
+    padding: 10px;
+    width: 30%;
+    border: none;
+    background-color: blue;
+    border-radius: 5px;
+    font-size: 15x;
+    color: white;
+}
+
+.criarTime{
+    display: none;
+}
+
+.criarPartida{
+    display: none;
+}
+
 .spacer {
     flex-grow: 1;
 }
@@ -105,6 +155,41 @@ body {
 
 .OpcoesExpandidas button:hover {
     background-color: rgb(81, 85, 128);
+}
+
+.criacao{
+    width: 40%;
+    height: 90%;
+    background-color: rgb(77, 77, 255);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+    border-radius: 50px;
+    display: none;
+    flex-direction: column;
+}
+
+.menuCriar{
+   margin-top: 20px !important;
+   background-color: blue;
+}
+
+.selecionarCriar button{
+    color: white !important;
+}
+
+.fechar{
+    background-color: red;
+    margin-top: 30px;
+    align-self: end;
+    margin-right: 30px;
+    border: none;
+    padding: 5px;
+    width: 5%;
+    border-radius: 20px;
+    cursor: pointer;
 }
 
 .textTitulo {

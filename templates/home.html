@@ -18,7 +18,7 @@
             </div>
             <img class="imagemLogoNav" src="static\img\LogoReduzida.png" width="2%" style="border-radius: 100%;">
             <div class="vertical-bar"></div>
-            <button class="criarMais">+ Criar Mais</button>
+            <button id="criarMaisButton" class="criarMais">+ Criar Mais</button>
             <div class="spacer"></div>
             <div class="vertical-bar"></div>
             <button id="contaOpcoes" class="contaManipular" style="margin-left: 3%;">Conta <i
@@ -31,6 +31,39 @@
                 <button class="contaManipular" id="logout">Sair</button>
             </div>
         </div>
+
+        <div id="criacao" class="criacao">
+            <button id="fecharCriacao" class="fechar">X</button>
+            <div class="categorias menuCriar">
+                <div id="containerBotaoMaratonasCreation" class="containerBotao selecionarCriar">
+                    <button id="maratonasCreation">Maratonas</button>
+                    <hr id="underlineCreation" style="margin-top: 0;margin-bottom: 0;width: 100%;" class="horizontal-bar selectCreation">
+                </div>
+                <div class="vertical-bar"></div>
+                <div id="containerBotaopartidasCreation" class="containerBotao selecionarCriar">
+                    <button id="partidasCreation">Partidas</button>
+                </div>
+                <div class="vertical-bar"></div>
+                <div id="containerBotaoTimesCreation" class="containerBotao selecionarCriar">
+                    <button id="timesCreation">Times</button>
+                </div>
+            </div>
+            <div id="criarMaratona" class="criarMaratona">
+                <label for="nomeMaratona">Nome da Maratona</label>
+                <input name="nomeMaratona" type="text" placeholder="JavaCamp">
+                <label for="Descricao">Descrição</label>
+                <input name="Descricao" type="text" placeholder="Campeonato de java">
+                <label for="qtdTimes">Quantidade de Times</label>
+                <input name="qtdTimes" type="number" placeholder="0">
+                <label for="valor">Prêmio</label>
+                <input type="text" id="valor" name="valor" placeholder="R$100,00">
+                <button id="ConfirmarCriacao" class="ConfirmarCriacao">Criar</button>
+            </div>
+
+            <div id="criarTime" class="criarTime"></div>
+            <div id="criarPartida" class="criarPartida"></div>
+        </div>
+
         <div class="textTitulo">
             <h1 style="margin-bottom: 0;">CRIE E GERENCIE SUAS</h1>
             <h1 style="margin-top: 0;">MARATONAS DE PROGRAMAÇÃO!</h1>
@@ -43,8 +76,8 @@
                 <hr id="underline" style="margin-top: 0;margin-bottom: 0;width: 100%;" class="horizontal-bar">
             </div>
             <div class="vertical-bar"></div>
-            <div id="containerBotaoCompeticoes" class="containerBotao">
-                <button id="competicoes">Competições</button>
+            <div id="containerBotaopartidas" class="containerBotao">
+                <button id="partidas">Partidas</button>
             </div>
             <div class="vertical-bar"></div>
             <div id="containerBotaoTimes" class="containerBotao">
