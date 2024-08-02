@@ -49,15 +49,17 @@
                 </div>
             </div>
             <div id="criarMaratona" class="criarMaratona">
-                <label for="nomeMaratona">Nome da Maratona</label>
-                <input name="nomeMaratona" type="text" placeholder="JavaCamp">
-                <label for="Descricao">Descrição</label>
-                <input name="Descricao" type="text" placeholder="Campeonato de java">
-                <label for="qtdTimes">Quantidade de Times</label>
-                <input name="qtdTimes" type="number" placeholder="0">
-                <label for="valor">Prêmio</label>
-                <input type="text" id="valor" name="valor" placeholder="R$100,00">
-                <button id="ConfirmarCriacao" class="ConfirmarCriacao">Criar</button>
+                <form id="criar-maratona-form" action="{{ url_for('rotas.create_marathon') }}" method="post">
+                    <label for="nomeMaratona">Nome da Maratona</label>
+                    <input name="nomeMaratona" type="text" placeholder="JavaCamp">
+                    <label for="Descricao">Descrição</label>
+                    <input name="Descricao" type="text" placeholder="Campeonato de java">
+                    <label for="qtdTimes">Quantidade de Times</label>
+                    <input name="qtdTimes" type="number" placeholder="0">
+                    <label for="valor">Prêmio</label>
+                    <input type="text" id="valor" name="valor" placeholder="R$100,00">
+                    <button id="ConfirmarCriacao" class="ConfirmarCriacao" type="submit">Criar</button>
+                </form>
             </div>
 
             <div id="criarTime" class="criarTime"></div>

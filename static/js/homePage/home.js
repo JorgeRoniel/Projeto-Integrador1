@@ -21,6 +21,7 @@ const fecharCriacao = document.getElementById("fecharCriacao");
 const criarMaratona = document.getElementById("criarMaratona");
 const criarTime = document.getElementById("criarTime");
 const criarPartida = document.getElementById("criarPartida");
+const formMaratona = document.getElementById("criar-maratona-form");
 
 var checkExpansive = false; 
 
@@ -85,4 +86,35 @@ timesCreation.addEventListener('click',function(){
     criarTime.style.display = "flex";
 })
 
+formMaratona.addEventListener('submit', (event) => {
+    event.preventDefault();
+
+    const formData = new FormData(formMaratona);
+    data = {}
+
+    formData.forEach((value, key) => {
+        data[key] = value;
+    })
+
+    const options = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+    }
+
+    fetch('/createMarathon', options)
+        .then(response => response.json())
+        .then(data => {
+            if(data.status === "success"){
+                alert(data.message);
+            }else{
+                alert("error");
+            }
+        })
+        .catch((error) => {
+            console.log("Erro: ", error);
+        });
+});
 

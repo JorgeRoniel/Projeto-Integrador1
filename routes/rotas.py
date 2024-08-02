@@ -61,6 +61,15 @@ def create_user():
 def home():
     return render_template('home.html')
 
+@rotas.route('/createMarathon', methods=['POST'])
+def create_marathon():
+    response = {
+        "status": "success",
+        "message": "tudo ligado!"
+    };
+
+    return jsonify(response)
+
 @rotas.route('/logout')
 def logout():
     return redirect('/')
