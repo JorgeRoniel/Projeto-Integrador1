@@ -51,9 +51,39 @@ btn_logout.addEventListener('click', (event) => {
         window.location.href = '/'
 })
 
-maratonas.addEventListener('click',function(){
+maratonas.addEventListener('click', function(event){
     containerBotaoMaratonas.appendChild(underline);
-})
+
+    const options = {
+        method: 'GET'
+    }
+
+    fetch('/maratonas', options)
+        .then(response => response.json())
+        .then(data => {
+            console.log('Maratonas:', data); 
+
+            const maratonasContainer = document.getElementById('listarMaratonas');
+            maratonasContainer.innerHTML = ''; 
+
+            data.forEach(maratona => {
+                const maratonaDiv = document.createElement('div');
+                maratonaDiv.classList.add('maratona');
+
+                maratonaDiv.innerHTML = `
+                    <h3>${maratona.nome_maratona}</h3>
+                    <p>Descrição: ${maratona.descricao}</p>
+                    <p>Quantidade de Times: ${maratona.qtdTimes}</p>
+                    <p>Premiação: ${maratona.premiacao}</p>
+                `;
+
+                maratonasContainer.appendChild(maratonaDiv);
+            });
+        })
+        .catch((error) => {
+            console.error('ERRO: ', error);
+        });
+});
 
 
 partidas.addEventListener('click',function(){
@@ -110,7 +140,11 @@ formMaratona.addEventListener('submit', (event) => {
             if(data.status === "success"){
                 alert(data.message);
             }else{
-                alert("error");
+                if(data.status === "error"){
+                    alert("erro ao criar maratona");
+                }else if(data.status == "N/A"){
+                    alert(data.message);
+                }
             }
         })
         .catch((error) => {

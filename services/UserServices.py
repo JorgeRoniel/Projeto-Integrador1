@@ -23,14 +23,14 @@ def login(email, senha):
         connection = c.openBD()
         cursor = connection.cursor()
 
-        cursor.execute(f"SELECT email, senha FROM usuario a WHERE a.email = '{email}' AND a.senha = '{senha}'")
+        cursor.execute(f"SELECT id, email, senha FROM usuario a WHERE a.email = '{email}' AND a.senha = '{senha}'")
         data = cursor.fetchall()
 
         for acc in data:
             if acc['email'] == email and acc['senha'] == senha:
-                return True
+                return acc['id']
             else:
-                return False
+                return None
     except Exception as e:
         print(e)
 

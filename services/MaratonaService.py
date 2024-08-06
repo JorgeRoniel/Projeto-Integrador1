@@ -10,9 +10,10 @@ def criarMaratona(nome, descricao, qtdTimes, premiacao, userId):
         conn.commit()
         conn.close()
 
-        print('1')
+        return True
     except Exception as e:
         print(e)
+        return False
 
 def atualizarMaratona(id, nome, descricao, qtdTimes, premiacao):
     try:
@@ -29,29 +30,18 @@ def atualizarMaratona(id, nome, descricao, qtdTimes, premiacao):
         print(e)
         return False
 
-def listarMaratonas():
+def listarMaratonas(user_id):
     try:
         conn = c.openBD()
         cursor = conn.cursor()
 
-        cursor.execute(f"SELECT m.nome_maratona, m.descricao, m.qtdTimes, m.premiacao FROM maratona m INNER JOIN usuario u ON m.userId = u.id;")
+        cursor.execute(f"SELECT m.nome_maratona, m.descricao, m.qtdTimes, m.premiacao FROM maratona m INNER JOIN usuario u ON m.userId = u.id WHERE u.id = {user_id};")
         data = cursor.fetchall()
 
-        nomes = []
-        descricao = []
-        qtdTimes = []
-        premiacoes = []
-
-
-        for maratonas in data:
-            nomes.append(maratonas.get('nome_maratona'))
-            descricao.append(maratonas.get('descricao'))
-            qtdTimes.append(maratonas.get('qtdTimes'))
-            premiacoes.append(maratonas.get('premiacao'))
-        dados = [nomes, descricao, qtdTimes, premiacoes]
-        print(dados)
+        return data
     except Exception as e:
         print(e)
+        return []
 
 def deletarMaratona(id):
     try:
@@ -67,4 +57,3 @@ def deletarMaratona(id):
         print(e)
 
 #criarMaratona('maratona_Teste', 'muito legal', 8, '100', 7)
-listarMaratonas()
