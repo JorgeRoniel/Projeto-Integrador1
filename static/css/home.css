@@ -200,9 +200,10 @@ body {
 
 .criacao{
     width: 40%;
-    height: 90%;
+    height: 90vh;
     background-color: rgb(44, 52, 103);
-    position: absolute;
+    position: fixed;
+    justify-self: start;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -211,6 +212,12 @@ body {
     display: none;
     flex-direction: column;
     overflow: hidden;
+}
+
+.no-scroll {
+    overflow: hidden;
+    position: fixed;
+    width: 100%;
 }
 
 .menuCriar{
@@ -279,7 +286,7 @@ body {
     align-items: center;
     justify-content: center;
     gap: 30px;
-    margin-bottom: 50px;
+    margin-bottom: 20px;
     border-radius: 10px;
     font-size: 20px;
     background-color:rgb(20, 20, 59);
@@ -292,31 +299,54 @@ body {
     outline: none;
 }
 
-.ExibirCategorias{
+.ExibirCategorias {
     align-self: center;
     list-style-type: none;
     padding: 0;
     justify-self: center;
-    margin-top: 30px;
+    margin-top: 0;
     margin-bottom: 30px;
     width: 80%;
-    height: auto;
     display: flex;
     align-items: center;
     flex-direction: column;
     background-color: rgb(20, 20, 59);
+    border-radius: 15px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.ExibirCategorias li{
+.ExibirCategorias li {
     color: white;
     overflow: hidden;
-    width: 100%;
-    height: 10%;
-    gap: 30px;
+    width: 90%;
+    padding: 15px;
+    margin: 10px 0;
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
-    margin-top: 10px;
+    flex-wrap: wrap;
+    background-color: rgb(44, 44, 107);
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+}
+
+.ExibirCategorias li:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+.ExibirCategorias li::before, 
+.ExibirCategorias li::after {
+    content: "•";
+    margin-right: 10px;
+    font-size: 24px;
+    color: rgb(192, 203, 246);
+}
+
+.ExibirCategorias li button:hover {
+    background-color: rgb(172, 183, 226);
 }
 
 @media only screen and (max-width: 768px) {
@@ -366,17 +396,45 @@ body {
     .fechar{
         width: 10%;
     }
-    .ExibirCategorias{
-
-        margin-top:20px;
+    .ExibirCategorias {
+        align-items: start;
+        margin-top: 20px;
         margin-bottom: 20px;
         width: 90%;
         height: auto;
+        padding: 10px;
     }
-    
-    .ExibirCategorias li{
-        font-size:12px ;
+
+    .ExibirCategorias li {
+        font-size: 14px;
+        align-items: center;
+        flex-direction: column;
+        justify-content: center;
+        text-align: left;
+        text-justify: auto;
+        align-self: center;
+        justify-self: center;
+        padding: 0;
+        margin: 10px 5px 10px 5px;
         gap: 10px;
         flex-wrap: wrap;
+        background-color: rgb(44, 44, 107);;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
+
+    .ExibirCategorias li::before, 
+    .ExibirCategorias li::after {
+        content: "";
+        margin-right: 0;
+        font-size: 0;
+    }
+
+    .ExibirCategorias li hr {
+        margin: 10px 0;
+        border: none;
+        border-top: 1px solid rgba(255, 255, 255, 0.2);
+        width: 100%;
+    }
+    
 }

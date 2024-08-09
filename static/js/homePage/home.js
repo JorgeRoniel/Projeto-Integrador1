@@ -1,3 +1,4 @@
+const container = document.getElementById("mainContainer");
 const contaOpcoes = document.getElementById("contaOpcoes");
 const opcoes = document.getElementById('OpcoesExpandidas');
 const criarMaisButton = document.getElementById("criarMaisButton");
@@ -17,12 +18,14 @@ const containerBotaoMaratonasCreation = document.getElementById("containerBotaoM
 const containerBotaoTimesCreation = document.getElementById('containerBotaoTimesCreation');
 const criacao = document.getElementById("criacao");
 const fecharCriacao = document.getElementById("fecharCriacao");
+const fecharEdicaoMaratona = document.getElementById("fecharEdicaoMaratona");
 const criarMaratona = document.getElementById("criarMaratona");
 const criarTime = document.getElementById("criarTime");
 const criarPartida = document.getElementById("criarPartida");
 const formMaratona = document.getElementById("criar-maratona-form");
 const exibirCategorias = document.getElementById("ExibirCategorias");
 const filter = document.getElementById("filter");
+const editarMaratona = document.getElementById("edicaoMaratona");
 
 const underline = document.createElement('hr');
 underline.classList.add("horizontal-bar");
@@ -62,10 +65,17 @@ contaOpcoes.addEventListener('click', function () {
 
 fecharCriacao.addEventListener('click', function () {
     criacao.style.display = "none";
+    container.classList.remove("no-scroll");
+})
+
+fecharEdicaoMaratona.addEventListener('click', function () {
+    editarMaratona.style.display = "none";
+    container.classList.remove("no-scroll");
 })
 
 criarMaisButton.addEventListener('click', function () {
     criacao.style.display = "flex";
+    container.classList.add("no-scroll");
 })
 
 btn_logout.addEventListener('click', (event) => {
@@ -75,7 +85,7 @@ btn_logout.addEventListener('click', (event) => {
     window.location.href = '/'
 })
 
-maratonas.addEventListener('click', async function (event) {
+maratonas.addEventListener('click', async function ExibirMaratona(event) {
     getMaratona = true;
     getTimes = false;
     getPartidas = false;
@@ -116,7 +126,7 @@ maratonas.addEventListener('click', async function (event) {
         //então é atribuído a ele o tamanho do vetor para a comparação funcionar corretamente.
         countInsertMaratona = countInsertMaratona === 0 ? maratonasSalvas.length : countInsertMaratona;
     }
-    maratonasSalvas.forEach(element => {
+    maratonasSalvas.forEach((element, index) => {
         const containerItem = document.createElement('li');
         const linhaDivisoria = document.createElement('hr');
         linhaDivisoria.classList.add("horizontal-bar");
@@ -125,14 +135,51 @@ maratonas.addEventListener('click', async function (event) {
         linhaDivisoria.style.width = "100%";
         linhaDivisoria.style.height = "2px";
         containerItem.innerHTML = `
-            // <h3>${element.nome}</h3>
-            // <p>Descrição: ${element.descricao}</p>
-            // <p>Quantidade de Times: ${element.qtdTimes}</p>
-            // <p>Premiação: ${element.premiacao}</p>
-            // `;
+            <h3 style="font-size: 1.5em; margin: 10px 0;">${element.nome}</h3>
+            <p style="font-size: 1em; color: #ccc; margin: 5px 0;">Descrição: ${element.descricao}</p>
+            <p style="font-size: 1em; color: #ccc; margin: 5px 0;">Quantidade de Times: ${element.qtdTimes}</p>
+            <p style="font-size: 1em; color: #ccc; margin: 5px 0;">Premiação: ${element.premiacao}</p>
+        `;
+        containerItem.dataset.index = index;
         exibirCategorias.appendChild(containerItem);
         exibirCategorias.appendChild(linhaDivisoria);
-    });
+        const totalChildWidth = Array.from(containerItem.children).reduce((total, child) => {
+            return total + child.clientWidth;
+        }, 0);
+
+        if (totalChildWidth > containerItem.clientWidth) {
+            containerItem.style.flexDirection = 'column';
+        }
+        containerItem.addEventListener('click', function () {
+            const inputNomeMaratona = document.getElementById("novoNomeMaratona");
+            const inputDescricaoMaratona = document.getElementById("novaDescricaoMaratona");
+            const inputQtdTimesMaratona = document.getElementById("novaQtdTimesMaratona");
+            const inputPremioMaratona = document.getElementById("novoPremioMaratona");
+            const botaoEditar = document.getElementById("ConfirmarEdicaoMaratona");
+            const botaoExcluir = document.getElementById("ExcluirMaratona");
+
+            editarMaratona.style.display = "flex";
+            container.classList.add("no-scroll");
+
+            inputNomeMaratona.value = element.nome;
+            inputDescricaoMaratona.value = element.descricao;
+            inputQtdTimesMaratona.value = element.qtdTimes;
+            inputPremioMaratona.value = element.premiacao;
+
+            botaoEditar.addEventListener('click', function (event) {
+                event.preventDefault(); // Evita o recarregamento da página
+
+                //O set no banco de dados deve ser feito aqui jorge
+            })
+
+            botaoExcluir.addEventListener('click',function(event){
+                event.preventDefault();
+
+                //o delete no banco deve ser feito aqui
+            })
+
+        })
+    })
 });
 
 
@@ -224,13 +271,34 @@ filter.addEventListener("input", function (event) {
                 linhaDivisoria.style.width = "100%";
                 linhaDivisoria.style.height = "2px";
                 containerItem.innerHTML = `
-                    // <h3>${element.nome}</h3>
-                    // <p>Descrição: ${element.descricao}</p>
-                    // <p>Quantidade de Times: ${element.qtdTimes}</p>
-                    // <p>Premiação: ${element.premiacao}</p>
-                    // `;
+                    <h3 style="font-size: 1.5em; margin: 10px 0;">${element.nome}</h3>
+                    <p style="font-size: 1em; color: #ccc; margin: 5px 0;">Descrição: ${element.descricao}</p>
+                    <p style="font-size: 1em; color: #ccc; margin: 5px 0;">Quantidade de Times: ${element.qtdTimes}</p>
+                    <p style="font-size: 1em; color: #ccc; margin: 5px 0;">Premiação: ${element.premiacao}</p>
+                `;
                 exibirCategorias.appendChild(containerItem);
                 exibirCategorias.appendChild(linhaDivisoria);
+                const totalChildWidth = Array.from(containerItem.children).reduce((total, child) => {
+                    return total + child.clientWidth;
+                }, 0);
+
+                if (totalChildWidth > containerItem.clientWidth) {
+                    containerItem.style.flexDirection = 'column';
+                }
+                containerItem.addEventListener('click', function () {
+                    const inputNomeMaratona = document.getElementById("novoNomeMaratona");
+                    const inputDescricaoMaratona = document.getElementById("novaDescricaoMaratona");
+                    const inputQtdTimesMaratona = document.getElementById("novaQtdTimesMaratona");
+                    const inputPremioMaratona = document.getElementById("novoPremioMaratona");
+
+                    editarMaratona.style.display = "flex";
+                    container.classList.add("no-scroll");
+
+                    inputNomeMaratona.value = element.nome;
+                    inputDescricaoMaratona.value = element.descricao;
+                    inputQtdTimesMaratona.value = element.qtdTimes;
+                    inputPremioMaratona.value = element.qtdTimes;
+                })
             }
         });
     }
@@ -241,4 +309,15 @@ filter.addEventListener("input", function (event) {
 
     }
 })
+
+const handleMaratonaClick = (index) => {
+    const inputNomeMaratona = document.getElementById("novoNomeMaratona");
+    const inputDescricaoMaratona = document.getElementById("novaDescricaoMaratona");
+    const inputQtdTimesMaratona = document.getElementById("novaQtdTimesMaratona");
+    const premioMaratona = document.getElementById("novoPremioMaratona");
+
+    editarMaratona.style.display = "flex";
+    container.classList.add("no-scroll");
+
+}
 

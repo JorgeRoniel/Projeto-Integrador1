@@ -9,7 +9,7 @@
 </head>
 
 <body>
-    <div class="container">
+    <div id="mainContainer" class="container">
         <header class="headerHome" style="background-image: url('static\\img\\OIG2.png');"></header>
         <nav class="navbar">
             <div class="vertical-bar"></div>
@@ -37,7 +37,8 @@
             <div class="categorias menuCriar">
                 <div id="containerBotaoMaratonasCreation" class="containerBotao selecionarCriar">
                     <button id="maratonasCreation">Maratonas</button>
-                    <hr id="underlineCreation" style="margin-top: 0;margin-bottom: 0;width: 100%;" class="horizontal-bar selectCreation">
+                    <hr id="underlineCreation" style="margin-top: 0;margin-bottom: 0;width: 100%;"
+                        class="horizontal-bar selectCreation">
                 </div>
                 <div class="vertical-bar"></div>
                 <div id="containerBotaopartidasCreation" class="containerBotao selecionarCriar">
@@ -49,7 +50,8 @@
                 </div>
             </div>
             <div id="criarMaratona" class="criarMaratona">
-                <form id="criar-maratona-form" class="criacoesForm" action="{{ url_for('rotas.create_marathon') }}" method="post">
+                <form id="criar-maratona-form" class="criacoesForm" action="{{ url_for('rotas.create_marathon') }}"
+                    method="post">
                     <label for="nomeMaratona">Nome da Maratona</label>
                     <input name="nomeMaratona" type="text" placeholder="JavaCamp">
                     <label for="Descricao">Descrição</label>
@@ -62,8 +64,29 @@
                 </form>
             </div>
 
-            <div id="criarTime" class="criarTime"></div>
-            <div id="criarPartida" class="criarPartida"></div>
+            <div id="criarTime" class="criarTime">Ainda em branco</div>
+            <div id="criarPartida" class="criarPartida">Ainda em branco</div>
+        </div>
+
+
+
+
+        <div id="edicaoMaratona" class="criacao">
+            <button id="fecharEdicaoMaratona" class="fechar">X</button>
+            <div id="editarMaratona" class="criarMaratona">
+                <form id="editar-maratona-form" class="criacoesForm" action="">
+                    <label for="nomeMaratona">Nome da Maratona</label>
+                    <input id="novoNomeMaratona" name="nomeMaratona" type="text">
+                    <label for="Descricao">Descrição</label>
+                    <input id="novaDescricaoMaratona" name="Descricao" type="text">
+                    <label for="qtdTimes">Quantidade de Times</label>
+                    <input id="novaQtdTimesMaratona" name="qtdTimes" type="number">
+                    <label for="valor">Prêmio</label>
+                    <input id="novoPremioMaratona" type="text" name="valor">
+                    <button id="ConfirmarEdicaoMaratona" class="ConfirmarCriacao">Editar</button>
+                    <button id="ExcluirMaratona" class="ConfirmarCriacao" style="background-color: red;">Excluir</button>
+                </form>
+            </div>
         </div>
 
         <div class="textTitulo">
