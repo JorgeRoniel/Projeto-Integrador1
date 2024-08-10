@@ -172,7 +172,7 @@ body {
 
 .containerOpcoes {
     display: flex;
-    height: 10%;
+    height: 10vh;
     width: 100%;
 }
 
