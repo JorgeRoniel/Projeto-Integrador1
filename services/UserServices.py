@@ -1,13 +1,19 @@
-import re
+import re;
 from database import conexao as c
     
 def insertAccount(nome, email, passw):
     try:
         connection = c.openBD()
         cursor = connection.cursor()
+        with open('static/img/InitProfile.png', 'rb') as file:
+            imageProfile = file.read()
 
         if verifyPass(passw):
-            cursor.execute(f"INSERT INTO usuario(nome_user, email, senha) VALUES ('{nome}', '{email}', '{passw}');")
+            query = """
+            INSERT INTO usuario (nome_user, email, senha, avatar) 
+            VALUES (%s, %s, %s, %s);
+            """
+            cursor.execute(query, (nome, email, passw, imageProfile))
             connection.commit()
             connection.close()
             return True

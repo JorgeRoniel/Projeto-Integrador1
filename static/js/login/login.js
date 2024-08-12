@@ -46,7 +46,7 @@ mudarParaLogin.addEventListener("click",function(){
     side.classList.remove("sideMoveRight");
 });
 
-loginScreen.addEventListener('submit', (event) => {
+loginScreen.addEventListener('submit', async(event) => {
     event.preventDefault();
 
     const formData = new FormData(loginScreen);
@@ -63,7 +63,7 @@ loginScreen.addEventListener('submit', (event) => {
         body: JSON.stringify(data),
     }
 
-    fetch('/submit', options)
+    await fetch('/submit', options)
         .then(response => response.json())
         .then(data => {
             if (data.status === 'success') {
@@ -77,7 +77,7 @@ loginScreen.addEventListener('submit', (event) => {
         });
 })
 
-cadastroScreen.addEventListener('submit', (event) => {
+cadastroScreen.addEventListener('submit', async (event) => {
     event.preventDefault()
 
     const nome = document.getElementById("nomeCriar").value;
@@ -103,7 +103,7 @@ cadastroScreen.addEventListener('submit', (event) => {
         body: JSON.stringify(data),
     }
 
-    fetch('/create', options)
+    await fetch('/create', options)
         .then(response => response.json())
         .then(data => {
             if (data.status === 'success'){
