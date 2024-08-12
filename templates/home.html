@@ -27,9 +27,33 @@
         <div class="containerOpcoes">
             <div class="spacer"></div>
             <div id="OpcoesExpandidas" class="OpcoesExpandidas">
-                <button class="contaManipular">Editar Conta</button>
+                <button class="contaManipular" id="editarContaAbrir">Editar Conta</button>
                 <button class="contaManipular" id="logout">Sair</button>
             </div>
+        </div>
+
+        <div id="edicaoConta" class="edicaoConta">
+            <button id="fecharEdicaoConta" class="fechar">X</button>
+            <form>
+                <div class="containerPerfilContaManipular">
+                    <div class="containerArredondado" id="containerArredondadoEdicao">
+                        <img id="imagemAtualizar" src="static\img\InitProfile.png" alt="" width="100%">
+                        <input type="file" id="inputImagem" class="file-input" accept="image/*">
+                    </div>
+                </div>
+                <div class="camposManipularConta">
+                    <label for="Nome">Nome</label>
+                    <input name="Nome" type="text">
+                    <label for="Email">Email</label>
+                    <input name="Email" type="text">
+                    <label for="Senha">Senha</label>
+                    <input name="Senha" type="password">
+                    <div class="containerBotoes">
+                        <button id="" class="ConfirmarCriacao" type="">Atualizar</button>
+                        <button id="" class="ConfirmarCriacao" style="background-color: red;">Excluir</button>
+                    </div>
+                </div>
+            </form>
         </div>
 
         <div id="criacao" class="criacao">
@@ -84,7 +108,8 @@
                     <label for="valor">Prêmio</label>
                     <input id="novoPremioMaratona" type="text" name="valor">
                     <button id="ConfirmarEdicaoMaratona" class="ConfirmarCriacao">Editar</button>
-                    <button id="ExcluirMaratona" class="ConfirmarCriacao" style="background-color: red;">Excluir</button>
+                    <button id="ExcluirMaratona" class="ConfirmarCriacao"
+                        style="background-color: red;">Excluir</button>
                 </form>
             </div>
         </div>

@@ -58,6 +58,98 @@ body {
     justify-self: center;
 }
 
+.edicaoConta {
+    width: 70%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: 70vh;
+    background-color: rgb(44, 52, 103);
+    position: fixed;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+}
+
+.edicaoConta .fechar {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: red;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 3%;
+    height: 6%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    margin-top: 10px !important;
+    margin-right: 10px !important;
+}
+
+.edicaoConta form {
+    width: 90%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 80%;
+    background-color: rgb(20, 20, 59);
+    overflow: auto;
+    border-radius: 20px;
+}
+
+.containerArredondado {
+    width: 50%;
+    overflow: hidden;
+    border-radius: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(157, 155, 155);
+    cursor: pointer;
+}
+
+.file-input{
+    display: none;
+}
+
+.containerPerfilContaManipular {
+    height: 80%;
+    width: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.camposManipularConta {
+    height: 80%;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: center;
+    width: 50%;
+    margin-left: 20px;
+    justify-self: end;
+    gap: 15px;
+    color: white;
+}
+
+.camposManipularConta input {
+    width: 70%;
+    padding: 8px;
+}
+
+.containerBotoes {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    gap: 40px;
+}
+
 .vertical-bar {
     height: 50%;
     margin: 10px;
@@ -96,7 +188,7 @@ body {
 
 .ConfirmarCriacao {
     cursor: pointer;
-    padding: 10px;
+    padding: 2%;
     width: 30%;
     background-color: rgb(20, 20, 59);
     border-radius: 5px;

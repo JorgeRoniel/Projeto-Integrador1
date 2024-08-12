@@ -26,6 +26,9 @@ const formMaratona = document.getElementById("criar-maratona-form");
 const exibirCategorias = document.getElementById("ExibirCategorias");
 const filter = document.getElementById("filter");
 const editarMaratona = document.getElementById("edicaoMaratona");
+const screenEdicaoConta = document.getElementById("edicaoConta");
+const fecharEdicaoConta = document.getElementById("fecharEdicaoConta");
+const editarContaAbrir = document.getElementById("editarContaAbrir");
 
 const underline = document.createElement('hr');
 underline.classList.add("horizontal-bar");
@@ -52,6 +55,20 @@ var countInsertMaratona = 0;
 var countInsertTimes = 0;
 var countInsertSalvos = 0;
 
+document.getElementById('containerArredondadoEdicao').addEventListener('click', function() {
+    document.getElementById('inputImagem').click();
+});
+
+
+document.getElementById('inputImagem').addEventListener('change', function(event) {
+    const arquivo = event.target.files[0];
+    if (arquivo) {
+        const urlImagem = URL.createObjectURL(arquivo);
+        const imgElement = document.getElementById('imagemAtualizar');
+        imgElement.src = urlImagem;
+    }
+});
+
 contaOpcoes.addEventListener('click', function () {
     if (checkExpansive === false) {
         opcoes.style.display = "flex";
@@ -71,6 +88,16 @@ fecharCriacao.addEventListener('click', function () {
 fecharEdicaoMaratona.addEventListener('click', function () {
     editarMaratona.style.display = "none";
     container.classList.remove("no-scroll");
+})
+
+fecharEdicaoConta.addEventListener("click",function(){
+    screenEdicaoConta.style.display="none";
+    container.classList.remove("no-scroll");
+})
+
+editarContaAbrir.addEventListener("click",function(){
+    screenEdicaoConta.style.display = "flex";
+    container.classList.add("no-scroll");
 })
 
 criarMaisButton.addEventListener('click', function () {
