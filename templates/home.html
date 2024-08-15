@@ -98,7 +98,7 @@
         <div id="edicaoMaratona" class="criacao">
             <button id="fecharEdicaoMaratona" class="fechar">X</button>
             <div id="editarMaratona" class="criarMaratona">
-                <form id="editar-maratona-form" class="criacoesForm" action="">
+                <form id="editar-maratona-form" class="criacoesForm" action="{{ url_for('rotas.update_marathon') }}" method="post">
                     <label for="nomeMaratona">Nome da Maratona</label>
                     <input id="novoNomeMaratona" name="nomeMaratona" type="text">
                     <label for="Descricao">Descrição</label>
@@ -107,7 +107,7 @@
                     <input id="novaQtdTimesMaratona" name="qtdTimes" type="number">
                     <label for="valor">Prêmio</label>
                     <input id="novoPremioMaratona" type="text" name="valor">
-                    <button id="ConfirmarEdicaoMaratona" class="ConfirmarCriacao">Editar</button>
+                    <button id="ConfirmarEdicaoMaratona" class="ConfirmarCriacao" type="submit">Editar</button>
                     <button id="ExcluirMaratona" class="ConfirmarCriacao"
                         style="background-color: red;">Excluir</button>
                 </form>

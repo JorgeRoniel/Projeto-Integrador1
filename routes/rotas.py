@@ -101,6 +101,47 @@ def show_marathons():
 
     return jsonify(data)
 
+@rotas.route("/updateMaratona", methods=['PUT'])
+def update_marathon():
+    if request.content_type == 'application/json':
+        data = request.get_json()
+    else:
+        data = request.form.to_dict()
+
+    maratona = Models.Marathon(data['nome_maratona'], data['qtdTimes'], data['premiacao'], None)
+    if m.atualizarMaratona(data['id'], maratona.name, data['descricao'], maratona.numTeam, maratona.prize):
+        response = {
+            'status': 'success',
+            'message': 'updated!'
+        }
+    else:
+        response = {
+            'status': 'error',
+            'message': 'erro ao atualizar maratona!'
+        }
+
+    return jsonify(response)
+
+@rotas.route("/deleteMaratona", methods=['DELETE'])
+def delete_marathon():
+    if request.content_type == 'application/json':
+        data = request.get_json()
+    else:
+        data = request.form.to_dict()
+    
+    id = data['id']
+    if m.deletarMaratona(id):
+        response = {
+            "status": "success",
+            "message": "Maratona Deletada."
+        }
+    else:
+        response = {
+            "status": "error",
+            "message": "Erro ao deletar."
+        }
+    
+    return jsonify(response)
 
 @rotas.route('/logout')
 def logout():

@@ -20,22 +20,22 @@ def atualizarMaratona(id, nome, descricao, qtdTimes, premiacao):
         conn = c.openBD()
         cursor = conn.cursor()
 
-        cursor.execute(f"UPDATE maratonas SET nome_maratona='{nome}', descricao='{descricao}', qtdTimes='{qtdTimes}', premiacao='{premiacao}' WHERE id = {id}")
+        cursor.execute(f"UPDATE maratona SET nome_maratona='{nome}', descricao='{descricao}', qtdTimes='{qtdTimes}', premiacao='{premiacao}' WHERE id = {id}")
         conn.commit()
         conn.close()
 
-        print('up')
         return True
     except Exception as e:
         print(e)
         return False
+
 
 def listarMaratonas(user_id):
     try:
         conn = c.openBD()
         cursor = conn.cursor()
 
-        cursor.execute(f"SELECT m.nome_maratona, m.descricao, m.qtdTimes, m.premiacao FROM maratona m INNER JOIN usuario u ON m.userId = u.id WHERE u.id = {user_id};")
+        cursor.execute(f"SELECT m.id, m.nome_maratona, m.descricao, m.qtdTimes, m.premiacao FROM maratona m INNER JOIN usuario u ON m.userId = u.id WHERE u.id = {user_id};")
         data = cursor.fetchall()
 
         return data
@@ -52,8 +52,9 @@ def deletarMaratona(id):
         conn.commit()
         conn.close()
 
-        print('del')
+        return True
     except Exception as e:
         print(e)
+        return False
 
 #criarMaratona('maratona_Teste', 'muito legal', 8, '100', 7)

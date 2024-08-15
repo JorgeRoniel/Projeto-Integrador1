@@ -136,6 +136,7 @@ maratonas.addEventListener('click', async function ExibirMaratona(event) {
 
                 data.forEach(maratona => {
                     const maratonasObj = {
+                        id: maratona.id,
                         nome: maratona.nome_maratona,
                         descricao: maratona.descricao,
                         qtdTimes: maratona.qtdTimes,
@@ -196,13 +197,63 @@ maratonas.addEventListener('click', async function ExibirMaratona(event) {
             botaoEditar.addEventListener('click', function (event) {
                 event.preventDefault(); // Evita o recarregamento da página
 
-                //O set no banco de dados deve ser feito aqui jorge
+                data = {};
+                data['id'] = element.id
+                data['nome_maratona'] = inputNomeMaratona.value;
+                data['descricao'] = inputDescricaoMaratona.value;
+                data['qtdTimes'] = inputQtdTimesMaratona.value;
+                data['premiacao'] = inputPremioMaratona.value;
+
+                
+                const options = {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data),
+                }
+
+                fetch("/updateMaratona", options)
+                    .then(response => response.json())
+                    .then(data => {
+                        if(data.status === "success"){
+                            alert(data.message);
+                            location.reload();
+                        }else{
+                            alert(1);
+                        }
+                    })
+                    .catch((erro) => {
+                        console.error("ERROR: ", erro);
+                    });
             })
 
             botaoExcluir.addEventListener('click',function(event){
                 event.preventDefault();
+                data = {}
+                data['id'] = element.id
 
-                //o delete no banco deve ser feito aqui
+                const options = {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data),
+                }
+
+                fetch("/deleteMaratona", options)
+                    .then(response => response.json())
+                    .then(data => {
+                        if(data.status === "success"){
+                            alert(data.message);
+                            location.reload();
+                        }else{
+                            alert(data.message);
+                        }
+                    })
+                    .catch((erro) =>{
+                        console.error('ERROR: ', erro);
+                    })
             })
 
         })
@@ -257,7 +308,7 @@ formMaratona.addEventListener('submit', async function (event) {
     formData.forEach((value, key) => {
         data[key] = value;
     })
-
+    console.log(data);
     const options = {
         method: 'POST',
         headers: {
