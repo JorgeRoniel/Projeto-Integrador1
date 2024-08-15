@@ -68,6 +68,8 @@ loginScreen.addEventListener('submit', async(event) => {
         .then(data => {
             if (data.status === 'success') {
                 window.location.href = "/home"
+                //recebe os dados aqui
+                //EX: id = data.user_id;
             } else {
                 alert('error');
             }

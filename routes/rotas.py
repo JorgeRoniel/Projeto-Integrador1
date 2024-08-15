@@ -18,12 +18,20 @@ def submit():
         data = request.form.to_dict()
     
     user = Models.User(None, data['senha'], data['email'])
-    user_id = s.login(user.email, user.password)
-    if user_id is not None:
-        session['user_id'] = user_id
-        session['email'] = user.email
+    user_dados = s.login(user.email, user.password)
+    if user_dados is not None:
+        session['user_id'] = user_dados['id']
+        session['email'] = user_dados['email']
+        session['username'] = user_dados['username']
+        session['senha'] = user_dados['senha']
+        session['icon'] = user_dados['icon']
+
         response = {
-            'status': 'success'
+            'status': 'success',
+            'user_id': session.get('user_id'),
+            'username': session.get('username'),
+            'email': session.get('email'),
+            'icon': session.get('icon')
         }
     else:
         response = {
