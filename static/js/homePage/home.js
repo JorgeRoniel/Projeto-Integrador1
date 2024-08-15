@@ -29,6 +29,7 @@ const editarMaratona = document.getElementById("edicaoMaratona");
 const screenEdicaoConta = document.getElementById("edicaoConta");
 const fecharEdicaoConta = document.getElementById("fecharEdicaoConta");
 const editarContaAbrir = document.getElementById("editarContaAbrir");
+const maratonaTimePertence = document.getElementById("maratonaTimePertence");
 
 const underline = document.createElement('hr');
 underline.classList.add("horizontal-bar");
@@ -55,18 +56,31 @@ var countInsertMaratona = 0;
 var countInsertTimes = 0;
 var countInsertSalvos = 0;
 
-document.getElementById('containerArredondadoEdicao').addEventListener('click', function() {
-    document.getElementById('inputImagem').click();
-});
-
-
-document.getElementById('inputImagem').addEventListener('change', function(event) {
-    const arquivo = event.target.files[0];
-    if (arquivo) {
-        const urlImagem = URL.createObjectURL(arquivo);
-        const imgElement = document.getElementById('imagemAtualizar');
-        imgElement.src = urlImagem;
+document.addEventListener('DOMContentLoaded', async function () {
+    const options = {
+        method: 'GET'
     }
+    await fetch('/maratonas', options)
+        .then(response => response.json())
+        .then(data => {
+            console.log('Maratonas:', data);
+
+            data.forEach(maratona => {
+                const maratonasObj = {
+                    id: maratona.id,
+                    nome: maratona.nome_maratona,
+                    descricao: maratona.descricao,
+                    qtdTimes: maratona.qtdTimes,
+                    premiacao: maratona.premiacao,
+                }
+
+                maratonasSalvas.push(maratonasObj);
+            });
+        })
+        .catch((error) => {
+            console.error('ERRO: ', error);
+        });
+    countInsertMaratona = maratonasSalvas.length;
 });
 
 contaOpcoes.addEventListener('click', function () {
@@ -90,14 +104,28 @@ fecharEdicaoMaratona.addEventListener('click', function () {
     container.classList.remove("no-scroll");
 })
 
-fecharEdicaoConta.addEventListener("click",function(){
-    screenEdicaoConta.style.display="none";
+fecharEdicaoConta.addEventListener("click", function () {
+    screenEdicaoConta.style.display = "none";
     container.classList.remove("no-scroll");
 })
 
-editarContaAbrir.addEventListener("click",function(){
+editarContaAbrir.addEventListener("click", function () {
     screenEdicaoConta.style.display = "flex";
     container.classList.add("no-scroll");
+
+    document.getElementById('containerArredondadoEdicao').addEventListener('click', function () {
+        document.getElementById('inputImagem').click();
+    });
+
+    document.getElementById('inputImagem').addEventListener('change', function (event) {
+        const arquivo = event.target.files[0];
+        if (arquivo) {
+            const urlImagem = URL.createObjectURL(arquivo);
+            const imgElement = document.getElementById('imagemAtualizar');
+            imgElement.src = urlImagem;
+        }
+    });
+    
 })
 
 criarMaisButton.addEventListener('click', function () {
@@ -121,14 +149,12 @@ maratonas.addEventListener('click', async function ExibirMaratona(event) {
     exibirCategorias.innerHTML = '';
     containerBotaoMaratonas.appendChild(underline);
 
-    //Se a quantidade de inserts for maior que a quantidade de maratonas salvas, então ele deve realizar a consulta, pq há insert novo
-    //Se o vetor de maratoans salvas tiver tamanho 0, significa que nenhuma consulta foi feita ainda, então precisa consultar.
-    if (countInsertMaratona > maratonasSalvas.length || maratonasSalvas.length === 0) {
+    if (countInsertMaratona > maratonasSalvas.length) {
         const options = {
             method: 'GET'
         }
-        const maratonasSalvasBackup = maratonasSalvas; //Cria um vetor auxiliar para backup caso a consulta falhe
-        maratonasSalvas = []; //Esvazia o vetor original para evitar duplicidade de itens
+        const maratonasSalvasBackup = maratonasSalvas; 
+        maratonasSalvas = [];
         await fetch('/maratonas', options)
             .then(response => response.json())
             .then(data => {
@@ -150,9 +176,6 @@ maratonas.addEventListener('click', async function ExibirMaratona(event) {
                 maratonasSalvas = maratonasSalvasBackup;
                 console.error('ERRO: ', error);
             });
-        //Se o countInsertMaratona for = 0, na maioria dos casos, significará que é a primeira consulta,
-        //então é atribuído a ele o tamanho do vetor para a comparação funcionar corretamente.
-        countInsertMaratona = countInsertMaratona === 0 ? maratonasSalvas.length : countInsertMaratona;
     }
     maratonasSalvas.forEach((element, index) => {
         const containerItem = document.createElement('li');
@@ -195,7 +218,7 @@ maratonas.addEventListener('click', async function ExibirMaratona(event) {
             inputPremioMaratona.value = element.premiacao;
 
             botaoEditar.addEventListener('click', function (event) {
-                event.preventDefault(); // Evita o recarregamento da página
+                event.preventDefault();
 
                 data = {};
                 data['id'] = element.id
@@ -204,7 +227,7 @@ maratonas.addEventListener('click', async function ExibirMaratona(event) {
                 data['qtdTimes'] = inputQtdTimesMaratona.value;
                 data['premiacao'] = inputPremioMaratona.value;
 
-                
+
                 const options = {
                     method: 'PUT',
                     headers: {
@@ -216,10 +239,10 @@ maratonas.addEventListener('click', async function ExibirMaratona(event) {
                 fetch("/updateMaratona", options)
                     .then(response => response.json())
                     .then(data => {
-                        if(data.status === "success"){
+                        if (data.status === "success") {
                             alert(data.message);
                             location.reload();
-                        }else{
+                        } else {
                             alert(1);
                         }
                     })
@@ -228,7 +251,7 @@ maratonas.addEventListener('click', async function ExibirMaratona(event) {
                     });
             })
 
-            botaoExcluir.addEventListener('click',function(event){
+            botaoExcluir.addEventListener('click', function (event) {
                 event.preventDefault();
                 data = {}
                 data['id'] = element.id
@@ -244,14 +267,14 @@ maratonas.addEventListener('click', async function ExibirMaratona(event) {
                 fetch("/deleteMaratona", options)
                     .then(response => response.json())
                     .then(data => {
-                        if(data.status === "success"){
+                        if (data.status === "success") {
                             alert(data.message);
                             location.reload();
-                        }else{
+                        } else {
                             alert(data.message);
                         }
                     })
-                    .catch((erro) =>{
+                    .catch((erro) => {
                         console.error('ERROR: ', erro);
                     })
             })
@@ -297,6 +320,28 @@ timesCreation.addEventListener('click', function () {
     criarMaratona.style.display = "none";
     criarPartida.style.display = "none";
     criarTime.style.display = "flex";
+
+    maratonaTimePertence.innerHTML = '';
+    maratonasSalvas.forEach(element => {
+        option = document.createElement("option");
+        option.value = element.id;
+        option.textContent = element.nome;
+        maratonaTimePertence.appendChild(option);
+    });
+
+    document.getElementById('containerArredondadoCriaTime').addEventListener('click', function () {
+        document.getElementById('inputImagemTime').click();
+    });
+    
+    document.getElementById('inputImagemTime').addEventListener('change', function (event) {
+        const arquivo = event.target.files[0];
+        if (arquivo) {
+            const urlImagem = URL.createObjectURL(arquivo);
+            const imgElement = document.getElementById('imagemAtualizarTime');
+            imgElement.style.width = "100%"
+            imgElement.src = urlImagem;
+        }
+    });
 })
 
 formMaratona.addEventListener('submit', async function (event) {
@@ -398,4 +443,3 @@ const handleMaratonaClick = (index) => {
     container.classList.add("no-scroll");
 
 }
-
