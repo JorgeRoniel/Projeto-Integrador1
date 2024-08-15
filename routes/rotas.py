@@ -60,6 +60,50 @@ def create_user():
 
     return jsonify(response)
 
+@rotas.route("/updateUser", methods=['PUT'])
+def update_user():
+    if request.content_type == 'application/json':
+        data = request.get_json()
+    else:
+        data = request.form.to_dict()
+    
+    user_id = session.get('user_id')
+    user = Models.User(data['Nome'], data['Senha'], data['Email'])
+
+    if s.updateAccount(user_id, user.username, user.email, user.password) == 'sucess':
+        response = {
+            "status": "success",
+            "message": "updated!"
+        }
+    elif s.updateAccount(user_id, user.username, user.email, user.password) == 'N/A':
+        response = {
+            "status": "passInvalid",
+            "message": "Senha fora de Padrão!"
+        }
+    else:
+        response = {
+            "status": "error"
+        }
+    
+    return jsonify(response)
+
+@rotas.route("/deleteUser", methods=['DELETE'])
+def delete_user():
+    user_id = session.get('user_id')
+
+    if s.deleteAccount(user_id):
+        response = {
+            "status": "sucess",
+            "message": "Deleted!"
+        }
+    else:
+        response = {
+            "status": "error"
+        }
+    
+    session.clear()
+    return jsonify(response)
+
 @rotas.route('/home')
 def home():
     return render_template('home.html')

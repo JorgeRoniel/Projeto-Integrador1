@@ -34,7 +34,7 @@
 
         <div id="edicaoConta" class="edicaoConta">
             <button id="fecharEdicaoConta" class="fechar">X</button>
-            <form>
+            <form id="form-manipular-conta" method="post" action="{{ url_for('rotas.update_user') }}">
                 <div class="containerPerfilContaManipular">
                     <div class="containerArredondado" id="containerArredondadoEdicao">
                         <img id="imagemAtualizar" src="static\img\InitProfile.png" alt="" width="100%">
@@ -49,8 +49,8 @@
                     <label for="Senha">Senha</label>
                     <input name="Senha" type="password">
                     <div class="containerBotoes">
-                        <button id="" class="ConfirmarCriacao" type="">Atualizar</button>
-                        <button id="" class="ConfirmarCriacao" style="background-color: red;">Excluir</button>
+                        <button id="btn-edit-user" class="ConfirmarCriacao" type="submit">Atualizar</button>
+                        <button id="btn-del-user" class="ConfirmarCriacao" style="background-color: red;" type="submit">Excluir</button>
                     </div>
                 </div>
             </form>

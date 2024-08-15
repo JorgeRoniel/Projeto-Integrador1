@@ -41,6 +41,7 @@ def login(email, senha):
         print(e)
 
 def updateAccount(id, novoNome, novoEmail, novaSenha):
+    mensagem = ""
     try:
         connection = c.openBD()
         cursor = connection.cursor()
@@ -49,10 +50,15 @@ def updateAccount(id, novoNome, novoEmail, novaSenha):
             cursor.execute(f"UPDATE usuario SET nome_user='{novoNome}', email='{novoEmail}', senha='{novaSenha}' WHERE id = {id}")
             connection.commit()
             connection.close()
-            
-            print('yes')
+            mensagem = "sucess"
+            return mensagem
+        else:
+            mensagem = "passInvalid"
+            return mensagem
     except Exception as e:
         print(e)
+        mensagem = "error"
+        return mensagem
 
 def deleteAccount(id):
     try:
@@ -62,9 +68,11 @@ def deleteAccount(id):
         cursor.execute(f"DELETE FROM usuario WHERE id = {id}")
         connection.commit()
         connection.close()
-        print("yes")
+        
+        return True
     except Exception as e:
         print(e)
+        return False
     
 def verifyPass(passw):
     # Pelo menos uma letra maiúscula

@@ -30,6 +30,8 @@ const screenEdicaoConta = document.getElementById("edicaoConta");
 const fecharEdicaoConta = document.getElementById("fecharEdicaoConta");
 const editarContaAbrir = document.getElementById("editarContaAbrir");
 const maratonaTimePertence = document.getElementById("maratonaTimePertence");
+const formEditConta = document.getElementById("form-manipular-conta");
+const btnDelUser = document.getElementById("btn-del-user");
 
 const underline = document.createElement('hr');
 underline.classList.add("horizontal-bar");
@@ -138,6 +140,62 @@ btn_logout.addEventListener('click', (event) => {
 
     fetch('/logout', { method: 'GET' })
     window.location.href = '/'
+})
+
+formEditConta.addEventListener('submit', (event) => {
+    event.preventDefault();
+
+    const formData = new FormData(formEditConta);
+    data = {}
+
+    formData.forEach((value, key) => {
+        data[key] = value;
+    })
+
+
+    const options = {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+    }
+
+     fetch('/updateUser', options)
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === "success") {
+                alert(data.message);
+                location.reload();
+            } else {
+                if (data.status === "error") {
+                    alert("erro ao atulizar sua conta.");
+                } else if (data.status == "N/A") {
+                    alert(data.message);
+                }
+            }
+        })
+        .catch((error) => {
+            console.log("Erro: ", error);
+        });
+})
+
+btnDelUser.addEventListener('click', (event) => {
+    event.preventDefault();
+
+    fetch("/deleteUser", {method: 'DELETE'})
+        .then(response => response.json())
+        .then(data => {
+            if(data.status === "sucess"){
+                alert(data.message);
+                window.location.href = "/"
+            }else{
+                alert("erro ao deletar!");
+            }
+        })
+        .catch((error) => {
+            console.error("ERRO: ", error);
+        })
 })
 
 maratonas.addEventListener('click', async function ExibirMaratona(event) {
