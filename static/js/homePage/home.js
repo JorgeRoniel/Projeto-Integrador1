@@ -32,6 +32,7 @@ const editarContaAbrir = document.getElementById("editarContaAbrir");
 const maratonaTimePertence = document.getElementById("maratonaTimePertence");
 const formEditConta = document.getElementById("form-manipular-conta");
 const btnDelUser = document.getElementById("btn-del-user");
+const fotoPerfil = document.getElementById("user-icon");
 
 const underline = document.createElement('hr');
 underline.classList.add("horizontal-bar");
@@ -83,6 +84,15 @@ document.addEventListener('DOMContentLoaded', async function () {
             console.error('ERRO: ', error);
         });
     countInsertMaratona = maratonasSalvas.length;
+
+    await fetch("/user", options)
+        .then(response => response.json())
+        .then(data => {
+            fotoPerfil.src = `data:image/jpeg;base64,${data.icon}`;
+        })
+        .catch((error) => {
+            console.error('ERROR: ', error);
+        });
 });
 
 contaOpcoes.addEventListener('click', function () {
@@ -146,19 +156,11 @@ formEditConta.addEventListener('submit', (event) => {
     event.preventDefault();
 
     const formData = new FormData(formEditConta);
-    data = {}
-
-    formData.forEach((value, key) => {
-        data[key] = value;
-    })
 
 
     const options = {
         method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
+        body: formData
     }
 
      fetch('/updateUser', options)

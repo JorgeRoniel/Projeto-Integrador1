@@ -1,5 +1,6 @@
 import re;
 from database import conexao as c
+import base64
     
 def insertAccount(nome, email, passw):
     try:
@@ -35,11 +36,16 @@ def login(email, senha):
         dados = {}
         for acc in data:
             if acc['email'] == email and acc['senha'] == senha:
+                if acc['avatar']:
+                    icon = base64.b64encode(acc['avatar']).decode('utf-8')
+                else:
+                    icon = None
+
                 dados['id'] = acc['id']
                 dados['username'] = acc['nome_user']
                 dados['email'] = acc['email']
                 dados['senha'] = acc['senha']
-                dados['icon'] = acc['avatar']
+                dados['icon'] = icon
 
                 return dados
             else:
@@ -47,14 +53,15 @@ def login(email, senha):
     except Exception as e:
         print(e)
 
-def updateAccount(id, novoNome, novoEmail, novaSenha):
+def updateAccount(id, novoNome, novoEmail, novaSenha, icon):
     mensagem = ""
     try:
         connection = c.openBD()
         cursor = connection.cursor()
 
         if verifyPass(novaSenha):
-            cursor.execute(f"UPDATE usuario SET nome_user='{novoNome}', email='{novoEmail}', senha='{novaSenha}' WHERE id = {id}")
+            query = "UPDATE usuario SET nome_user=%s, email=%s, senha=%s, avatar=%s WHERE id = %s"
+            cursor.execute(query, (novoNome, novoEmail, novaSenha, icon, id))
             connection.commit()
             connection.close()
             mensagem = "sucess"

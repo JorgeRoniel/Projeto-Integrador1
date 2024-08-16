@@ -14,7 +14,7 @@
         <nav class="navbar">
             <div class="vertical-bar"></div>
             <div class="escudoTimePerfil">
-                <img src="static\img\Logo.png" width="100%">
+                <img id="user-icon" src="static\img\Logo.png" width="100%">
             </div>
             <img class="imagemLogoNav" src="static\img\LogoReduzida.png" width="2%" style="border-radius: 100%;">
             <div class="vertical-bar"></div>
@@ -34,11 +34,11 @@
 
         <div id="edicaoConta" class="edicaoConta">
             <button id="fecharEdicaoConta" class="fechar">X</button>
-            <form id="form-manipular-conta" method="post" action="{{ url_for('rotas.update_user') }}">
+            <form id="form-manipular-conta" method="post" action="{{ url_for('rotas.update_user') }}" enctype="multipart/form-data">
                 <div class="containerPerfilContaManipular">
                     <div class="containerArredondado" id="containerArredondadoEdicao">
                         <img id="imagemAtualizar" src="static\img\InitProfile.png" alt="" width="100%">
-                        <input type="file" id="inputImagem" class="file-input" accept="image/*">
+                        <input type="file" name="iconPerfil" id="inputImagem" class="file-input" accept="image/*">
                     </div>
                 </div>
                 <div class="camposManipularConta">

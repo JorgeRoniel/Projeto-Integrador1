@@ -3,6 +3,7 @@ from database import Models
 from services import UserServices as s
 from services.UserServices import verifyPass
 from services import MaratonaService as m
+import base64
 
 rotas = Blueprint('rotas', __name__)
 
@@ -10,6 +11,7 @@ rotas = Blueprint('rotas', __name__)
 def login_page():
     return render_template('login.html')
 
+icon = None
 @rotas.route('/submit', methods=['POST'])
 def submit():
     if request.content_type == 'application/json':
@@ -17,6 +19,7 @@ def submit():
     else:
         data = request.form.to_dict()
     
+    global icon
     user = Models.User(None, data['senha'], data['email'])
     user_dados = s.login(user.email, user.password)
     if user_dados is not None:
@@ -24,14 +27,9 @@ def submit():
         session['email'] = user_dados['email']
         session['username'] = user_dados['username']
         session['senha'] = user_dados['senha']
-        session['icon'] = user_dados['icon']
-
+        icon = user_dados['icon']
         response = {
-            'status': 'success',
-            'user_id': session.get('user_id'),
-            'username': session.get('username'),
-            'email': session.get('email'),
-            'icon': session.get('icon')
+            'status': 'success'
         }
     else:
         response = {
@@ -70,20 +68,27 @@ def create_user():
 
 @rotas.route("/updateUser", methods=['PUT'])
 def update_user():
-    if request.content_type == 'application/json':
-        data = request.get_json()
-    else:
-        data = request.form.to_dict()
+    nome = request.form.get('Nome')
+    email = request.form.get('Email')
+    senha = request.form.get('Senha')
+
+    if 'iconPerfil' in request.files:
+        image_file = request.files['iconPerfil']
+        if image_file.filename == '':
+            return jsonify({"status": "error", "message": "Nenhuma imagem selecionada"}), 400
+        image_blob = image_file.read()
     
     user_id = session.get('user_id')
-    user = Models.User(data['Nome'], data['Senha'], data['Email'])
+    user = Models.User(nome, senha, email)
+    global icon
+    icon = base64.b64encode(image_blob).decode('utf-8')
 
-    if s.updateAccount(user_id, user.username, user.email, user.password) == 'sucess':
+    if s.updateAccount(user_id, user.username, user.email, user.password, image_blob) == 'sucess':
         response = {
             "status": "success",
             "message": "updated!"
         }
-    elif s.updateAccount(user_id, user.username, user.email, user.password) == 'N/A':
+    elif s.updateAccount(user_id, user.username, user.email, user.password, image_blob) == 'N/A':
         response = {
             "status": "passInvalid",
             "message": "Senha fora de Padrão!"
@@ -110,6 +115,17 @@ def delete_user():
         }
     
     session.clear()
+    return jsonify(response)
+
+@rotas.route("/user", methods=['GET'])
+def return_userData():
+    response = {
+        'user_id': session.get('user_id'),
+        'username': session.get('username'),
+        'email': session.get('email'),
+        'icon': icon
+    }
+
     return jsonify(response)
 
 @rotas.route('/home')
