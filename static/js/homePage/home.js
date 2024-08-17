@@ -33,6 +33,9 @@ const maratonaTimePertence = document.getElementById("maratonaTimePertence");
 const formEditConta = document.getElementById("form-manipular-conta");
 const btnDelUser = document.getElementById("btn-del-user");
 const fotoPerfil = document.getElementById("user-icon");
+const usernameUpdate = document.getElementById('usernameUpdate');
+const emailUpdate = document.getElementById('emailUpdate');
+const imagemAtualizar = document.getElementById('imagemAtualizar');
 
 const underline = document.createElement('hr');
 underline.classList.add("horizontal-bar");
@@ -59,11 +62,13 @@ var countInsertMaratona = 0;
 var countInsertTimes = 0;
 var countInsertSalvos = 0;
 
-document.addEventListener('DOMContentLoaded', async function () {
+let userLogado = null;
+
+document.addEventListener('DOMContentLoaded', function () {
     const options = {
         method: 'GET'
     }
-    await fetch('/maratonas', options)
+    fetch('/maratonas', options)
         .then(response => response.json())
         .then(data => {
             console.log('Maratonas:', data);
@@ -85,10 +90,16 @@ document.addEventListener('DOMContentLoaded', async function () {
         });
     countInsertMaratona = maratonasSalvas.length;
 
-    await fetch("/user", options)
+    fetch("/user", options)
         .then(response => response.json())
         .then(data => {
             fotoPerfil.src = `data:image/jpeg;base64,${data.icon}`;
+            userLogado = {
+                nome : data.username,
+                id : data.user_id,
+                email : data.email,
+                icon : fotoPerfil.src
+            }
         })
         .catch((error) => {
             console.error('ERROR: ', error);
@@ -125,6 +136,10 @@ editarContaAbrir.addEventListener("click", function () {
     screenEdicaoConta.style.display = "flex";
     container.classList.add("no-scroll");
 
+     usernameUpdate.value = userLogado.nome;
+     emailUpdate.value = userLogado.email;
+     imagemAtualizar.src = userLogado.icon;
+
     document.getElementById('containerArredondadoEdicao').addEventListener('click', function () {
         document.getElementById('inputImagem').click();
     });
@@ -133,11 +148,11 @@ editarContaAbrir.addEventListener("click", function () {
         const arquivo = event.target.files[0];
         if (arquivo) {
             const urlImagem = URL.createObjectURL(arquivo);
-            const imgElement = document.getElementById('imagemAtualizar');
+            const imgElement = imagemAtualizar;
             imgElement.src = urlImagem;
         }
     });
-    
+
 })
 
 criarMaisButton.addEventListener('click', function () {
@@ -163,7 +178,7 @@ formEditConta.addEventListener('submit', (event) => {
         body: formData
     }
 
-     fetch('/updateUser', options)
+    fetch('/updateUser', options)
         .then(response => response.json())
         .then(data => {
             if (data.status === "success") {
@@ -185,13 +200,13 @@ formEditConta.addEventListener('submit', (event) => {
 btnDelUser.addEventListener('click', (event) => {
     event.preventDefault();
 
-    fetch("/deleteUser", {method: 'DELETE'})
+    fetch("/deleteUser", { method: 'DELETE' })
         .then(response => response.json())
         .then(data => {
-            if(data.status === "sucess"){
+            if (data.status === "sucess") {
                 alert(data.message);
                 window.location.href = "/"
-            }else{
+            } else {
                 alert("erro ao deletar!");
             }
         })
@@ -213,7 +228,7 @@ maratonas.addEventListener('click', async function ExibirMaratona(event) {
         const options = {
             method: 'GET'
         }
-        const maratonasSalvasBackup = maratonasSalvas; 
+        const maratonasSalvasBackup = maratonasSalvas;
         maratonasSalvas = [];
         await fetch('/maratonas', options)
             .then(response => response.json())
@@ -392,7 +407,7 @@ timesCreation.addEventListener('click', function () {
     document.getElementById('containerArredondadoCriaTime').addEventListener('click', function () {
         document.getElementById('inputImagemTime').click();
     });
-    
+
     document.getElementById('inputImagemTime').addEventListener('change', function (event) {
         const arquivo = event.target.files[0];
         if (arquivo) {
