@@ -353,12 +353,14 @@ body {
 
 .fechar{
     background-color: red;
+    color: white;
     margin-top: 30px;
     align-self: end;
     margin-right: 30px;
     border: none;
     padding: 5px;
     width: 5%;
+    height: 5%;
     border-radius: 20px;
     cursor: pointer;
 }
@@ -476,7 +478,8 @@ body {
         height: 15vh;
     }
     .escudoTimePerfil{
-        width: 30%;
+        width: 25%;
+        height: 15vh;
         margin-bottom: 30px;
     }
     .imagemLogoNav{
@@ -514,9 +517,6 @@ body {
     .criarMaratona form{
         width: 70%;
         height: 90%;
-    }
-    .fechar{
-        width: 10%;
     }
     .ExibirCategorias {
         align-items: start;
@@ -557,6 +557,58 @@ body {
         border: none;
         border-top: 1px solid rgba(255, 255, 255, 0.2);
         width: 100%;
+    }
+
+    .edicaoConta{
+        width: 100%;
+        height: 100%;
+        align-items: center;
+        justify-content: center;
+        margin: 0;
+    }
+
+    .edicaoConta .fechar {
+        height: 6%;
+        width: 10%;
+    }
+
+    .edicaoConta form{
+        flex-direction: column;
+        margin: 0;
+    }
+
+    .containerPerfilContaManipular{
+        width: 100%;
+        height: 30%;
+    }
+
+    .camposManipularConta{
+        width: 100%;
+        height: 70%;
+        margin: 0;
+        align-items: center;
+        justify-content: center;
+    }
+    .containerBotoes{
+        width: 100%;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .containerArredondado{
+        height: 80%;
+        width: 35%;
+        margin: 0;
+    }
+
+    .fechar{
+        height: 6%;
+        width: 9%;
+    }
+
+    .criarMaratona .containerArredondado{
+        width: 28% !important;
     }
     
 }
