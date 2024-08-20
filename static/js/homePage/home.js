@@ -266,7 +266,7 @@ maratonas.addEventListener('click', async function ExibirMaratona(event) {
             <p style="font-size: 1em; color: #ccc; margin: 5px 0;">Quantidade de Times: ${element.qtdTimes}</p>
             <p style="font-size: 1em; color: #ccc; margin: 5px 0;">Premiação: ${element.premiacao}</p>
         `;
-        containerItem.dataset.index = index;
+        containerItem.dataset.index = element.id;
         exibirCategorias.appendChild(containerItem);
         exibirCategorias.appendChild(linhaDivisoria);
         const totalChildWidth = Array.from(containerItem.children).reduce((total, child) => {

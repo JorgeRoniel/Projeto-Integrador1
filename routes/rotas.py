@@ -3,6 +3,7 @@ from database import Models
 from services import UserServices as s
 from services.UserServices import verifyPass
 from services import MaratonaService as m
+from services import TimesService as t
 import base64
 
 rotas = Blueprint('rotas', __name__)
@@ -210,6 +211,33 @@ def delete_marathon():
         }
     
     return jsonify(response)
+
+@rotas.route("/criarTime", methods=['POST'])
+def create_team():
+    nome_time = request.form.get('nomeTime')
+    abreviacao = request.form.get('Abreviacao')
+    id_maratona = request.form.get('maratonaPertence')
+
+    if 'escudoTime' in request.files:
+        image_file = request.files['escudoTime']
+        if image_file.filename == '':
+            return jsonify({"status": "error", "message": "Nenhuma imagem selecionada"}), 400
+        image_blob = image_file.read()
+    
+    time = Models.Team(nome_time, image_blob, abreviacao, None)
+
+    if t.criarTime(time.shield, time.name, time.nick, id_maratona):
+        response = {
+            'status': 'success',
+            'message': 'Time Criado!'
+        }
+    else:
+        response = {
+            'status': 'error',
+            'message': 'Erro ao criar time!'
+        }
+    
+    return response
 
 @rotas.route('/logout')
 def logout():

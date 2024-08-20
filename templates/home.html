@@ -89,7 +89,7 @@
             </div>
 
             <div id="criarTime" class="criarMaratona" style="display: none;">
-                <form id="criar-time-form" class="criacoesForm" action="" method="post" style="height: 90%;">
+                <form id="criar-time-form" class="criacoesForm" action="{{ url_for('rotas.create_team') }}" method="post" style="height: 90%;">
                     <label for="nomeTime">Nome do Time</label>
                     <input name="nomeTime" type="text" placeholder="ProgTodoDia">
                     <label for="Abreviacao">Abreviação</label>
@@ -99,9 +99,9 @@
 
                     </select>
                     <label for="escudoTime">Escudo do Time</label>
-                    <div name="escudoTime" class="containerArredondado" id="containerArredondadoCriaTime" style="height: 15%;width: 23%;">
+                    <div  class="containerArredondado" id="containerArredondadoCriaTime" style="height: 15%;width: 23%;">
                         <img id="imagemAtualizarTime" src="static\img\escudoTime.png" alt="" width="70%">
-                        <input type="file" id="inputImagemTime" class="file-input" accept="image/*">
+                        <input type="file" name="escudoTime" id="inputImagemTime" class="file-input" accept="image/*">
                     </div>
                     <button id="ConfirmarCriacaoTime" class="ConfirmarCriacao" type="submit">Criar</button>
                 </form>

@@ -1,24 +1,27 @@
 from database import conexao as c
 
-def criarTime(nome, abreviacao, maratona_id):
+def criarTime(escudo, nome, abreviacao, maratona_id):
     try:
         conn = c.openBD()
         cursor = conn.cursor()
+        query = "INSERT INTO times(nome_time, abreviacao, escudo, maratonaId) VALUES (%s, %s, %s, %s);"
 
-        cursor.execute(f"INSERT INTO times(nome_time, abreviacao, maratonaId) VALUES ('{nome}', '{abreviacao}', {maratona_id});")
+        cursor.execute(query, (nome, abreviacao, escudo, maratona_id))
         conn.commit()
         conn.close()
-        print('1')
+        return True
 
     except Exception as e:
         print(e)
+        return False
 
 def atualizarTime(id, nome, abreviacao):
     try:
         conn = c.openBD()
         cursor = conn.cursor()
+        query = "UPDATE times SET nome_time=%s, abreviacao=%s WHERE id = %s;"
 
-        cursor.execute(f"UPDATE times SET nome_time='{nome}', abreviacao='{abreviacao}' WHERE id = {id}")
+        cursor.execute(query, (nome, abreviacao, id))
         conn.commit()
         conn.close()
 
@@ -40,26 +43,18 @@ def inserirCompetidores(nome, timeId):
     except Exception as e:
         print(e)
 
-def listarTimes():
+def listarTimes(user_id):
     try:
         conn = c.openBD()
         cursor = conn.cursor()
 
-        cursor.execute(f"SELECT t.nome_time, t.abreviacao, c.nome_competidor FROM times t INNER JOIN competidores c ON t.id = c.timeId;")
+        cursor.execute(f"SELECT t.nome_time, t.abreviacao FROM times t INNER JOIN usuario u ON t.id = {user_id};")
         data = cursor.fetchall()
 
-        nomes = []
-        abreviacoes = []
-        competidores = []
-
-        for times in data:
-            nomes.append(times.get('nome_time'))
-            abreviacoes.append(times.get('abreviacao'))
-            competidores.append(times.get('nome_competidor'))
-        dados = [nomes, abreviacoes, competidores]
-        print(dados)
+        return data
     except Exception as e:
         print(e)
+        return []
 
 def deletarTime(id):
     try:
@@ -72,5 +67,3 @@ def deletarTime(id):
         print("yes")
     except Exception as e:
         print(Exception)
-
-listarTimes()
