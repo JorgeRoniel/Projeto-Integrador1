@@ -1,4 +1,5 @@
 from database import conexao as c
+import base64
 
 def criarTime(escudo, nome, abreviacao, maratona_id):
     try:
@@ -48,10 +49,21 @@ def listarTimes(user_id):
         conn = c.openBD()
         cursor = conn.cursor()
 
-        cursor.execute(f"SELECT t.nome_time, t.abreviacao FROM times t INNER JOIN usuario u ON t.id = {user_id};")
+        cursor.execute(f"SELECT t.nome_time, t.abreviacao, t.escudo FROM times t INNER JOIN usuario u ON t.id = {user_id};")
         data = cursor.fetchall()
 
-        return data
+        dados = {}
+        for acc in data:
+            if acc['escudo']:
+                icon = base64.b64encode(acc['escudo']).decode('utf-8')
+            else:
+                icon = None
+
+            dados['nome_time'] = acc['nome_time']
+            dados['abreviacao'] = acc['abreviacao']
+            dados['escudo'] = icon
+
+            return dados
     except Exception as e:
         print(e)
         return []

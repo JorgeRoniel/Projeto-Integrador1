@@ -36,6 +36,7 @@ const fotoPerfil = document.getElementById("user-icon");
 const usernameUpdate = document.getElementById('usernameUpdate');
 const emailUpdate = document.getElementById('emailUpdate');
 const imagemAtualizar = document.getElementById('imagemAtualizar');
+const formTime = document.getElementById('criar-time-form');
 
 const underline = document.createElement('hr');
 underline.classList.add("horizontal-bar");
@@ -419,6 +420,30 @@ timesCreation.addEventListener('click', function () {
     });
 })
 
+formTime.addEventListener('submit', async function (event) {
+    event.preventDefault();
+
+    const formData = new FormData(formTime);
+    
+    const options = {
+        method: 'POST',
+        body: formData
+    }
+
+    await fetch("/criarTime", options)
+        .then(response => response.json())
+        .then(data => {
+            if(data.status === 'success'){
+                alert(data.message);
+            }else{
+                alert(data.message);
+            }
+        })
+        .catch((error) => {
+            console.error("ERROR: ", error);
+        });
+});
+
 formMaratona.addEventListener('submit', async function (event) {
     event.preventDefault();
 
@@ -428,7 +453,7 @@ formMaratona.addEventListener('submit', async function (event) {
     formData.forEach((value, key) => {
         data[key] = value;
     })
-    console.log(data);
+    
     const options = {
         method: 'POST',
         headers: {

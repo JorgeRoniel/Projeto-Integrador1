@@ -217,14 +217,15 @@ def create_team():
     nome_time = request.form.get('nomeTime')
     abreviacao = request.form.get('Abreviacao')
     id_maratona = request.form.get('maratonaPertence')
+    icon_blob = None
 
     if 'escudoTime' in request.files:
         image_file = request.files['escudoTime']
         if image_file.filename == '':
             return jsonify({"status": "error", "message": "Nenhuma imagem selecionada"}), 400
-        image_blob = image_file.read()
+        icon_blob = image_file.read()
     
-    time = Models.Team(nome_time, image_blob, abreviacao, None)
+    time = Models.Team(nome_time, icon_blob, abreviacao, None)
 
     if t.criarTime(time.shield, time.name, time.nick, id_maratona):
         response = {
@@ -238,6 +239,8 @@ def create_team():
         }
     
     return response
+
+#TODO rota pra listar times, pelo id da maratona
 
 @rotas.route('/logout')
 def logout():
