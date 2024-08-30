@@ -350,7 +350,6 @@ formEditConta.addEventListener('submit', (event) => {
 
     const formData = new FormData(formEditConta);
 
-
     const options = {
         method: 'PUT',
         body: formData
