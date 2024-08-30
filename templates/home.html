@@ -64,14 +64,6 @@
                     <hr id="underlineCreation" style="margin-top: 0;margin-bottom: 0;width: 100%;"
                         class="horizontal-bar selectCreation">
                 </div>
-                <div class="vertical-bar"></div>
-                <div id="containerBotaoTimesCreation" class="containerBotao selecionarCriar">
-                    <button id="timesCreation">Times</button>
-                </div>
-                <div class="vertical-bar"></div>
-                <div id="containerBotaopartidasCreation" class="containerBotao selecionarCriar">
-                    <button id="partidasCreation">Partidas</button>
-                </div>
             </div>
             <div id="criarMaratona" class="criarMaratona">
                 <form id="criar-maratona-form" class="criacoesForm" action="{{ url_for('rotas.create_marathon') }}"
@@ -87,30 +79,46 @@
                     <button id="ConfirmarCriacao" class="ConfirmarCriacao" type="submit">Criar</button>
                 </form>
             </div>
-
-            <div id="criarTime" class="criarMaratona" style="display: none;">
-                <form id="criar-time-form" class="criacoesForm" action="{{ url_for('rotas.create_team') }}" method="post" style="height: 90%;">
-                    <label for="nomeTime">Nome do Time</label>
-                    <input name="nomeTime" type="text" placeholder="ProgTodoDia">
-                    <label for="Abreviacao">Abreviação</label>
-                    <input name="Abreviacao" type="text" placeholder="PTD (máximo 3 letras)">
-                    <label for="maratonaPertence">Maratona</label>
-                    <select class="custom-select" id="maratonaTimePertence" name="maratonaPertence">
-
-                    </select>
-                    <label for="escudoTime">Escudo do Time</label>
-                    <div  class="containerArredondado" id="containerArredondadoCriaTime" style="height: 15%;width: 23%;">
-                        <img id="imagemAtualizarTime" src="static\img\escudoTime.png" alt="" width="70%">
-                        <input type="file" name="escudoTime" id="inputImagemTime" class="file-input" accept="image/*">
-                    </div>
-                    <button id="ConfirmarCriacaoTime" class="ConfirmarCriacao" type="submit">Criar</button>
-                </form>
-            </div>
-            <div id="criarPartida" class="criarPartida">Ainda em branco</div>
         </div>
 
+        <div class="textTitulo">
+            <h1 style="margin-bottom: 0;">CRIE E GERENCIE SUAS</h1>
+            <h1 style="margin-top: 0;">MARATONAS DE PROGRAMAÇÃO!</h1>
+            <hr style="margin-top: 0;" class="horizontal-bar">
+        </div>
 
+        <div class="categorias">
+            <div id="containerBotaoMaratonas" class="containerBotao">
+                <button id="maratonas">Maratonas</button>
+                <hr class="horizontal-bar" style="margin-top:0;margin-bottom: 0;width: 100%;height: 2px;">
+                <div id="listarMaratonas"></div>
+            </div>
+        </div>
 
+        <div class="filtrar">
+            <p>Filtrar Itens:</p>
+            <input id="filter" type="text" placeholder="Digite o nome do item">
+        </div>
+        <ul id="ExibirCategorias" class="ExibirCategorias"></ul>
+    </div>
+
+    <div id="intoMaratona" class="IntoMaratona">
+        <div class="sidebar">
+            <button class="buttonBackToHome" id="BackToHome">
+                <img src="static\img\volte.png" width="30%">
+            </button>
+            <h4 id="editorMaratonaButton">Editar Maratona</h4>
+            <h2>Times</h2>
+            <button id="initCreationTeam" style="border: none;background: transparent;outline: none;cursor: pointer;">
+                <img src="static\img\adicionar.png" width="30%">
+            </button>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Sobre</a></li>
+                <li><a href="#">Serviços</a></li>
+                <li><a href="#">Contato</a></li>
+            </ul>
+        </div>
 
         <div id="edicaoMaratona" class="criacao">
             <button id="fecharEdicaoMaratona" class="fechar">X</button>
@@ -132,32 +140,31 @@
             </div>
         </div>
 
-        <div class="textTitulo">
-            <h1 style="margin-bottom: 0;">CRIE E GERENCIE SUAS</h1>
-            <h1 style="margin-top: 0;">MARATONAS DE PROGRAMAÇÃO!</h1>
-            <hr style="margin-top: 0;" class="horizontal-bar">
-        </div>
-
-        <div class="categorias">
-            <div id="containerBotaoMaratonas" class="containerBotao">
-                <button id="maratonas">Maratonas</button>
-                <div id="listarMaratonas"></div>
+        <div id="criacaoTime" class="criacao">
+            <button id="fecharCriacaoTime" class="fechar">X</button>
+            <div class="categorias menuCriar">
+                <div id="containerBotaoTimesCreation" class="containerBotao selecionarCriar">
+                    <button id="timesCreation">Criar Time</button>
+                    <hr id="underlineCreation" style="margin-top: 0;margin-bottom: 0;width: 100%;"
+                        class="horizontal-bar selectCreation">
+                </div>
             </div>
-            <div class="vertical-bar"></div>
-            <div id="containerBotaoTimes" class="containerBotao">
-                <button id="times">Times</button>
+            <div id="criarTime" class="criarMaratona" style="display: flex;">
+                <form id="criar-time-form" class="criacoesForm" action="{{ url_for('rotas.create_team') }}" method="post" style="height: 90%;">
+                    <label for="nomeTime">Nome do Time</label>
+                    <input name="nomeTime" type="text" placeholder="ProgTodoDia">
+                    <label for="Abreviacao">Abreviação</label>
+                    <input name="Abreviacao" type="text" placeholder="PTD (máximo 3 letras)">
+                    <label for="escudoTime">Escudo do Time</label>
+                    <div  class="containerArredondado" id="containerArredondadoCriaTime" style="height: 15%;width: 23%;">
+                        <img id="imagemAtualizarTime" src="static\img\escudoTime.png" alt="" width="70%">
+                        <input type="file" name="escudoTime" id="inputImagemTime" class="file-input" accept="image/*">
+                    </div>
+                    <button id="ConfirmarCriacaoTime" class="ConfirmarCriacao" type="submit">Criar</button>
+                </form>
             </div>
-            <div class="vertical-bar"></div>
-            <div id="containerBotaopartidas" class="containerBotao">
-                <button id="partidas">Partidas</button>
-            </div>
+            <div id="criarPartida" class="criarPartida">Ainda em branco</div>
         </div>
-
-        <div class="filtrar">
-            <p>Filtrar Itens:</p>
-            <input id="filter" type="text" placeholder="Digite o nome do item">
-        </div>
-        <ul id="ExibirCategorias" class="ExibirCategorias"></ul>
     </div>
     <script src="static\js\homePage\home.js"></script>
 </body>

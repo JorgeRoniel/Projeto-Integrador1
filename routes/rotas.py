@@ -216,7 +216,7 @@ def delete_marathon():
 def create_team():
     nome_time = request.form.get('nomeTime')
     abreviacao = request.form.get('Abreviacao')
-    id_maratona = request.form.get('maratonaPertence')
+    id_maratona = request.form.get('idMaratona')
     icon_blob = None
 
     if 'escudoTime' in request.files:
