@@ -44,12 +44,12 @@ def inserirCompetidores(nome, timeId):
     except Exception as e:
         print(e)
 
-def listarTimes(user_id):
+def listarTimes(maratona_id):
     try:
         conn = c.openBD()
         cursor = conn.cursor()
 
-        cursor.execute(f"SELECT t.nome_time, t.abreviacao, t.escudo FROM times t INNER JOIN usuario u ON t.id = {user_id};")
+        cursor.execute(f"SELECT t.nome_time, t.abreviacao, t.escudo FROM times t INNER JOIN maratonas m ON t.id = {maratona_id};")
         data = cursor.fetchall()
 
         dados = {}

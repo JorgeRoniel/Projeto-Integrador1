@@ -241,6 +241,13 @@ def create_team():
     return response
 
 #TODO rota pra listar times, pelo id da maratona
+rotas.route("/getTimes", methods=['GET'])
+def showTeams():
+    id = request.form.get('id')
+
+    data = t.listarTimes(id)
+
+    return jsonify(data)
 
 @rotas.route('/logout')
 def logout():

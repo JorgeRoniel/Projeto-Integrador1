@@ -144,13 +144,27 @@ const IntoMaratona = (element) => {
     })
     initCreationTeam.addEventListener('click',function(){
         CreateTeam(element);
-        ExibirTimes();
+        ExibirTimes(element.id);
     })
-    ExibirTimes();
+    ExibirTimes(element.id);
 }
 
-const ExibirTimes = () =>{
+const ExibirTimes = (maratona_id) =>{
 
+
+    const options = {
+        method: 'GET',
+        body: maratona_id
+    }
+
+    fetch('/getTimes', options)
+        .then(response => response.json())
+        .then(data => {
+            alert(777);
+        })
+        .catch((error) => {
+            console.error("ERRO: ", error);
+        });
 }
 
 const CreateTeam = (maratona) =>{
