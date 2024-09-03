@@ -73,16 +73,19 @@ def update_user():
     email = request.form.get('Email')
     senha = request.form.get('Senha')
 
+    image_blob = None
     if 'iconPerfil' in request.files:
         image_file = request.files['iconPerfil']
         if image_file.filename == '':
-            return jsonify({"status": "error", "message": "Nenhuma imagem selecionada"}), 400
-        image_blob = image_file.read()
+            image_file = None
+        else:
+            image_blob = image_file.read()
+            global icon
+            icon = base64.b64encode(image_blob).decode('utf-8')
     
     user_id = session.get('user_id')
     user = Models.User(nome, senha, email)
-    global icon
-    icon = base64.b64encode(image_blob).decode('utf-8')
+    
 
     if s.updateAccount(user_id, user.username, user.email, user.password, image_blob) == 'sucess':
         response = {
@@ -222,8 +225,9 @@ def create_team():
     if 'escudoTime' in request.files:
         image_file = request.files['escudoTime']
         if image_file.filename == '':
-            return jsonify({"status": "error", "message": "Nenhuma imagem selecionada"}), 400
-        icon_blob = image_file.read()
+            image_file = None
+        else:
+            icon_blob = image_file.read()
     
     time = Models.Team(nome_time, icon_blob, abreviacao, None)
 
@@ -240,7 +244,7 @@ def create_team():
     
     return response
 
-#TODO rota pra listar times, pelo id da maratona
+
 rotas.route("/getTimes", methods=['GET'])
 def showTeams():
     id = request.form.get('id')
@@ -248,6 +252,59 @@ def showTeams():
     data = t.listarTimes(id)
 
     return jsonify(data)
+
+@rotas.route("/updateTime", methods=['PUT'])
+def updateTeam():
+    nome_time = request.form.get('NovoNomeTime')
+    abreviacao = request.form.get('NovaAbreviacao')
+    id_time = request.form.get("id")
+
+    icon_blob = None
+
+    if 'NovoEscudoTime' in request.files:
+        image_file = request.files['NovoEscudoTime']
+        if image_file.filename == '':
+            image_file = None
+        else:
+            icon_blob = image_file.read()
+    
+    time = Models.Team(nome_time, icon_blob, abreviacao, None)
+
+    if t.atualizarTime(id_time, time.name, time.nick, time.shield):
+
+        response = {
+            "status": "success",
+            "message": "Time Atualizado!"
+        }
+    else:
+        response = {
+            "status": "erro",
+            "message": "Erro ao atualizar time!"
+        }
+    
+    return jsonify(response)
+
+
+@rotas.route("/deleteTime", methods=['DELETE'])
+def deleteTeam():
+    if request.content_type == 'application/json':
+        data = request.get_json()
+    else:
+        data = request.form.to_dict()
+    
+    id_time = data['id']
+    if t.deletarTime(id_time):
+        response = {
+            "status": "success",
+            "message": "Time deletado!"
+        }
+    else:
+        response = {
+            "status": "erro",
+            "message": "Erro ao deletar time."
+        }
+    
+    return jsonify(response)
 
 @rotas.route('/logout')
 def logout():

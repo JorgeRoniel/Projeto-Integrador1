@@ -16,13 +16,13 @@ def criarTime(escudo, nome, abreviacao, maratona_id):
         print(e)
         return False
 
-def atualizarTime(id, nome, abreviacao):
+def atualizarTime(id, nome, abreviacao, escudo):
     try:
         conn = c.openBD()
         cursor = conn.cursor()
-        query = "UPDATE times SET nome_time=%s, abreviacao=%s WHERE id = %s;"
+        query = "UPDATE times SET nome_time=%s, abreviacao=%s, escudo=%s WHERE id = %s;"
 
-        cursor.execute(query, (nome, abreviacao, id))
+        cursor.execute(query, (nome, abreviacao, escudo,  id))
         conn.commit()
         conn.close()
 
@@ -76,6 +76,8 @@ def deletarTime(id):
         cursor.execute(f"DELETE FROM times WHERE id = {id}")
         conn.commit()
         conn.close()
-        print("yes")
+        
+        return True
     except Exception as e:
-        print(Exception)
+        print(e)
+        return False
