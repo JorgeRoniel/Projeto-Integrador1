@@ -31,19 +31,6 @@ def atualizarTime(id, nome, abreviacao, escudo):
         print(e)
         return False
 
-def inserirCompetidores(nome, timeId):
-    try:
-        conn = c.openBD()
-        cursor = conn.cursor()
-
-        cursor.execute(f"INSERT INTO competidores (nome_competidor, timeId) VALUES ('{nome}', {timeId})")
-        conn.commit()
-        conn.close()
-
-        print('1')
-    except Exception as e:
-        print(e)
-
 def listarTimes(maratona_id):
     try:
         conn = c.openBD()
