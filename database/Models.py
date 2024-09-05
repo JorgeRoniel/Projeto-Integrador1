@@ -35,6 +35,11 @@ class Team:
         self.nick = nick
         self.teamMates = teamMates
 
+class Player:
+    def __init__(self, name, teamId):
+        self.name = name
+        self.teamId = teamId
+        
 #definição de arvore e da classe para arvore de chaveamento
 class NoArvore:
     def __init__(self, Match=None):

@@ -4,6 +4,7 @@ from services import UserServices as s
 from services.UserServices import verifyPass
 from services import MaratonaService as m
 from services import TimesService as t
+from services import CompetidoresService as cs
 import base64
 
 rotas = Blueprint('rotas', __name__)
@@ -310,3 +311,82 @@ def deleteTeam():
 def logout():
     session.clear()
     return redirect('/')
+
+@rotas.route('/createCompetidor', methods=['POST'])
+def create_Competidor():
+    if request.content_type == 'application/json':
+        data = request.get_json()
+    else:
+        data = request.form.to_dict()
+
+    competidor = Models.Player(data['nomeJogador'], data['timeId'])
+    time_id = session.get('time_id')
+
+    if time_id is not None:
+        if cs.inserirCompetidores(competidor.name, competidor.teamId):
+            response = {
+                "status": "success",
+                "message": "created!"
+            };
+        else:
+            response = {
+                "status": "error",
+                "message": "não foi criado."
+            };
+    else:
+        response = {
+            "status": "N/A",
+            "message": "not authenticate"
+        }
+
+    return jsonify(response)
+
+@rotas.route("/competidor", methods=['GET'])
+def show_Competidor():
+    time_id = session.get('time_id')
+
+    data = cs.listarCompetidores(time_id)
+
+    return jsonify(data)
+
+@rotas.route("/updateCompetidor", methods=['PUT'])
+def update_Competidor():
+    if request.content_type == 'application/json':
+        data = request.get_json()
+    else:
+        data = request.form.to_dict()
+
+    competidor = Models.Player(data['nomeJogador'], data['timeId'])
+    if cs.atualizarCompetidores(data['id'], competidor.name, competidor.teamId):
+        response = {
+            'status': 'success',
+            'message': 'updated!'
+        }
+    else:
+        response = {
+            'status': 'error',
+            'message': 'erro ao atualizar maratona!'
+        }
+
+    return jsonify(response)
+
+@rotas.route("/deleteCompetidor", methods=['DELETE'])
+def delete_Competidor():
+    if request.content_type == 'application/json':
+        data = request.get_json()
+    else:
+        data = request.form.to_dict()
+    
+    id = data['id']
+    if cs.deletarCompetidor(id):
+        response = {
+            "status": "success",
+            "message": "Maratona Deletada."
+        }
+    else:
+        response = {
+            "status": "error",
+            "message": "Erro ao deletar."
+        }
+    
+    return jsonify(response)
