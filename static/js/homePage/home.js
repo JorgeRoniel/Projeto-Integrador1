@@ -37,11 +37,10 @@ const intoMaratona = document.getElementById("intoMaratona");
 const backToHome = document.getElementById("BackToHome");
 const initCreationTeam = document.getElementById("initCreationTeam");
 const criacaoTimeScreen = document.getElementById("criacaoTime");
+const toggleIcon = document.getElementById("toggleIcon");
+const overlay = document.getElementById("overlay");
 
 //Variaveis que dirão qual está sendo exibido na tela na hora de filtrar
-
-//Checa se a caixa de logout está expandida ou não
-var checkExpansive = false;
 
 //Vetores que guardarão in memory os gets para tornar o programa performático
 var maratonasSalvas = [];
@@ -102,25 +101,29 @@ const exibirMaratonas = async () => {
         console.error('ERRO: ', error);
     }
 
-    maratonasSalvas.forEach((element) => {
+    maratonasSalvas.forEach((element, index) => {
         const containerItem = document.createElement('li');
-        const linhaDivisoria = document.createElement('hr');
-        linhaDivisoria.classList.add("horizontal-bar");
-        linhaDivisoria.style.marginTop = "0";
-        linhaDivisoria.style.marginBottom = "0";
-        linhaDivisoria.style.width = "100%";
-        linhaDivisoria.style.height = "2px";
-
+    
         containerItem.innerHTML = `
-                    <h3 style="font-size: 1.5em; margin: 10px 0;">${element.nome}</h3>
-                    <p style="font-size: 1em; color: #ccc; margin: 5px 0;">Descrição: ${element.descricao}</p>
-                    <p style="font-size: 1em; color: #ccc; margin: 5px 0;">Quantidade de Times: ${element.qtdTimes}</p>
-                    <p style="font-size: 1em; color: #ccc; margin: 5px 0;">Premiação: ${element.premiacao}</p>
-                `;
+            <h3 style="font-size: 1.5em; margin: 10px 0;">${element.nome}</h3>
+            <p style="font-size: 1em; color: #ccc; margin: 5px 0;">Descrição: ${element.descricao}</p>
+            <p style="font-size: 1em; color: #ccc; margin: 5px 0;">Quantidade de Times: ${element.qtdTimes}</p>
+            <p style="font-size: 1em; color: #ccc; margin: 5px 0;">Premiação: ${element.premiacao}</p>
+        `;
         containerItem.dataset.index = element.id;
         exibirCategorias.appendChild(containerItem);
-        exibirCategorias.appendChild(linhaDivisoria);
-
+        
+        // Adiciona a linha divisória apenas se não for o último item
+        if (index < maratonasSalvas.length - 1) {
+            const linhaDivisoria = document.createElement('hr');
+            linhaDivisoria.classList.add("horizontal-bar");
+            linhaDivisoria.style.marginTop = "0";
+            linhaDivisoria.style.marginBottom = "0";
+            linhaDivisoria.style.width = "100%";
+            linhaDivisoria.style.height = "3px";
+            exibirCategorias.appendChild(linhaDivisoria);
+        }
+    
         containerItem.addEventListener('click', async () => {
             const atual = {
                 id : element.id,
@@ -128,9 +131,8 @@ const exibirMaratonas = async () => {
                 descricao: element.descricao,
                 qtdTimes: element.qtdTimes,
                 premiacao: element.premiacao,
-            }
+            };
             IntoMaratona(atual);
-            return;
         });
     });
 };
@@ -298,19 +300,37 @@ backToHome.addEventListener('click', function () {
     intoMaratona.style.display = "none";
 })
 
-contaOpcoes.addEventListener('click', function () {
-    if (checkExpansive === false) {
-        opcoes.style.display = "flex";
-        checkExpansive = true;
-    }
-    else {
-        opcoes.style.display = "none";
-        checkExpansive = false;
-    }
+contaOpcoes.addEventListener('mouseenter', function () {
+    opcoes.style.display = "flex";
+    toggleIcon.classList.add("rotate");
+})
+
+opcoes.addEventListener('mouseenter', function () {
+    opcoes.style.display = "flex";
+    toggleIcon.classList.add("rotate");
+})
+
+contaOpcoes.addEventListener('mouseleave', function() {
+   
+        if (!opcoes.matches(':hover')) {
+            opcoes.style.display = "none";
+            toggleIcon.classList.remove("rotate");
+        }
+    
+})
+
+opcoes.addEventListener('mouseleave', function() {
+   
+        if (!contaOpcoes.matches(':hover')) {
+            opcoes.style.display = "none";
+            toggleIcon.classList.remove("rotate");
+        }
+    
 })
 
 fecharCriacao.addEventListener('click', function () {
-    criacao.style.display = "none";
+    criacao.classList.remove('show');
+    overlay.classList.remove('show');
     container.classList.remove("no-scroll");
 })
 
@@ -320,12 +340,14 @@ fecharEdicaoMaratona.addEventListener('click', function () {
 })
 
 fecharEdicaoConta.addEventListener("click", function () {
-    screenEdicaoConta.style.display = "none";
+    screenEdicaoConta.classList.remove('show');
+    overlay.classList.remove('show');
     container.classList.remove("no-scroll");
 })
 
 editarContaAbrir.addEventListener("click", function () {
-    screenEdicaoConta.style.display = "flex";
+    screenEdicaoConta.classList.add('show');
+    overlay.classList.add('show');
     container.classList.add("no-scroll");
 
     usernameUpdate.value = userLogado.nome;
@@ -348,7 +370,8 @@ editarContaAbrir.addEventListener("click", function () {
 })
 
 criarMaisButton.addEventListener('click', function () {
-    criacao.style.display = "flex";
+    criacao.classList.add('show');
+    overlay.classList.add('show');
     container.classList.add("no-scroll");
 })
 

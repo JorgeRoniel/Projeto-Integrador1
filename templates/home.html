@@ -10,21 +10,27 @@
 
 <body>
     <div id="mainContainer" class="container">
+        <div id="overlay" class="overlay"></div>
         <header class="headerHome" style="background-image: url('static\\img\\OIG2.png');"></header>
         <nav class="navbar">
             <div class="vertical-bar"></div>
-            <div class="escudoTimePerfil">
+            <div class="barra">
+              <div class="escudoTimePerfil">
                 <img id="user-icon" width="100%">
+             </div>
             </div>
-            <img class="imagemLogoNav" src="static\img\LogoReduzida.png" width="2%" style="border-radius: 100%;">
             <div class="vertical-bar"></div>
+                    <img class="imagemLogoNav" src="static\img\LogoReduzida.png" width="2%" style="border-radius: 100%;">
+                    <div id="verticalout"class="vertical-bar"></div>
             <button id="criarMaisButton" class="criarMais">+ Criar Mais</button>
             <div class="spacer"></div>
-            <div class="vertical-bar"></div>
-            <button id="contaOpcoes" class="contaManipular" style="margin-left: 3%;">Conta <i
-                    class="fas fa-chevron-down" style="color: rgb(65, 65, 131)"></i></button>
-        </nav>
-        <div class="containerOpcoes">
+            <div class="vertical-bar" style="margin-left: 10px;"></div>
+            <div class="limite">
+            <button id="contaOpcoes" class="contaManipular" style="margin-left: 3%;">Conta  <i
+                id="toggleIcon" class="fas fa-chevron-right" style="color: rgb(73, 73, 244)"></i></button>
+            </div>
+            </nav>
+                <div class="containerOpcoes">
             <div class="spacer"></div>
             <div id="OpcoesExpandidas" class="OpcoesExpandidas">
                 <button class="contaManipular" id="editarContaAbrir">Editar Conta</button>
@@ -37,8 +43,9 @@
             <form id="form-manipular-conta" method="post" action="{{ url_for('rotas.update_user') }}" enctype="multipart/form-data">
                 <div class="containerPerfilContaManipular">
                     <div class="containerArredondado" id="containerArredondadoEdicao">
-                        <img id="imagemAtualizar" src="static\img\InitProfile.png" alt="" width="100%">
+                        <img id="imagemAtualizar" class="imagemAtualizar" src="static\img\InitProfile.png" alt="" width="100%">
                         <input type="file" name="iconPerfil" id="inputImagem" class="file-input" accept="image/*">
+                        <img id="svgAtualizar" src="static/img/atualizarFoto.svg" alt="Atualizar" class="svg-icon">
                     </div>
                 </div>
                 <div class="camposManipularConta">
@@ -50,7 +57,7 @@
                     <input id="newPassword" name="Senha" type="password">
                     <div class="containerBotoes">
                         <button id="btn-edit-user" class="ConfirmarCriacao" type="submit">Atualizar</button>
-                        <button id="btn-del-user" class="ConfirmarCriacao" style="background-color: red;" type="submit">Excluir</button>
+                        <button id="btn-del-user" class="ConfirmarCriacao" style="background-color: white;color:red;border-color:red;" type="submit">Excluir</button>
                     </div>
                 </div>
             </form>
@@ -61,8 +68,8 @@
             <div class="categorias menuCriar">
                 <div id="containerBotaoMaratonasCreation" class="containerBotao selecionarCriar">
                     <button id="maratonasCreation">Maratonas</button>
-                    <hr id="underlineCreation" style="margin-top: 0;margin-bottom: 0;width: 100%;"
-                        class="horizontal-bar selectCreation">
+                    <hr id="underlineCreation" style="position: relative;margin-top: 0;margin-bottom: 0px;width: 100%;border: none;height: 3px; bottom:3px;"
+                            class="horizontal-bar selectCreation">
                 </div>
             </div>
             <div id="criarMaratona" class="criarMaratona">
@@ -82,8 +89,8 @@
         </div>
 
         <div class="textTitulo">
-            <h1 style="margin-bottom: 0;">CRIE E GERENCIE SUAS</h1>
-            <h1 style="margin-top: 0;">MARATONAS DE PROGRAMAÇÃO!</h1>
+            <h1 style="margin-bottom: 0;">     CRIE E GERENCIE SUAS<br>
+             MARATONAS DE PROGRAMAÇÃO!</h1>
             <hr style="margin-top: 0;" class="horizontal-bar">
         </div>
 
@@ -119,7 +126,6 @@
                 <li><a href="#">Contato</a></li>
             </ul>
         </div>
-
         <div id="edicaoMaratona" class="criacao">
             <button id="fecharEdicaoMaratona" class="fechar">X</button>
             <div id="editarMaratona" class="criarMaratona">
@@ -135,7 +141,7 @@
                     <input id="novoPremioMaratona" type="text" name="valor">
                     <button id="ConfirmarEdicaoMaratona" class="ConfirmarCriacao" type="submit">Editar</button>
                     <button id="ExcluirMaratona" class="ConfirmarCriacao"
-                        style="background-color: red;">Excluir</button>
+                        style="background-color: white;color: red;border-color:red;">Excluir</button>
                 </form>
             </div>
         </div>
