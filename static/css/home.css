@@ -551,7 +551,7 @@ body {
 .animado span::before{
     content: "";
     color:rgb(73, 73, 244);
-    animation: palavras 20s infinite, pisca 1s infinite;
+    animation: palavras 17s infinite, pisca 1s infinite;
 }
 
 @keyframes pisca {
@@ -573,7 +573,7 @@ body {
     border-left: 2px solid rgb(73, 73, 244);
     top: -4px;
     background-color: rgb(192, 203, 246);;
-    animation: curs .8s infinite, digita 20s steps(10) infinite;
+    animation: curs .8s infinite, digita 17s steps(15) infinite;
     width: 100%;
     right: -2px;
 }
