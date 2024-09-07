@@ -39,6 +39,8 @@ const initCreationTeam = document.getElementById("initCreationTeam");
 const criacaoTimeScreen = document.getElementById("criacaoTime");
 const toggleIcon = document.getElementById("toggleIcon");
 const overlay = document.getElementById("overlay");
+const overlayIntoMaratona = document.getElementById("overlayIntoMaratona");
+const containerExibirTimes = document.getElementById("containerExibirTimes");
 
 //Variaveis que dirão qual está sendo exibido na tela na hora de filtrar
 
@@ -78,7 +80,7 @@ const exibirMaratonas = async () => {
     const options = {
         method: 'GET'
     };
-    const maratonasSalvasBackup = [...maratonasSalvas];
+    const maratonasSalvasBackup = maratonasSalvas;
     maratonasSalvas = [];
 
     try {
@@ -138,7 +140,7 @@ const exibirMaratonas = async () => {
 };
 
 const IntoMaratona = (element) => {
-    console.log("Entrei aqui");
+    ExibirTimes(element.id);
     container.style.display = "none";
     intoMaratona.style.display = "flex";
     document.getElementById("editorMaratonaButton").addEventListener('click',function(){
@@ -146,31 +148,66 @@ const IntoMaratona = (element) => {
     })
     initCreationTeam.addEventListener('click',function(){
         CreateTeam(element);
-        ExibirTimes(element.id);
     })
-    ExibirTimes(element.id);
 }
 
-const ExibirTimes = (maratona_id) =>{
+const ExibirTimes = async (maratona_id) => {
+    containerExibirTimes.innerHTML = '';
+    const timesSalvosBackup = timesSalvos;
+    timesSalvos = [];
+    const escudoTime = document.createElement("img");
 
+    const formData = new FormData();
+    formData.append("maratona_id", maratona_id);
 
     const options = {
-        method: 'GET',
-        body: maratona_id
+        method: 'POST',
+        body: formData
+    };
+
+    try {
+        const response = await fetch('/getTimes', options);
+        if (!response.ok) {
+            throw new Error('Erro de rede');
+        }
+        const data = await response.json();
+        console.log('Times:', data);
+
+        data.forEach(time => {
+            escudoTime.src = `data:image/jpeg;base64,${time.escudo}`;
+            const timesObj = {
+                id: time.id,
+                nome: time.nome_time,
+                abreviacao: time.abreviacao,
+                icon: escudoTime.src,
+            };
+            timesSalvos.push(timesObj);
+        });
+    } catch (error) {
+        timesSalvos = timesSalvosBackup;
+        console.error('ERRO: ', error);
     }
 
-    fetch('/getTimes', options)
-        .then(response => response.json())
-        .then(data => {
-            alert(777);
-        })
-        .catch((error) => {
-            console.error("ERRO: ", error);
-        });
-}
+    timesSalvos.forEach((element) => {
+        const containerItem = document.createElement('li');
+        containerItem.style.textAlign = "center";
+        containerItem.style.width = "50%";
+        containerItem.style.margin = "5px 0";
+        containerItem.style.overflow = "hidden";
+        containerItem.style.cursor = "pointer";
+        containerItem.innerHTML = `
+            <img src="${element.icon}" style="width: 100%;" alt="${element.abreviacao}">
+            <p>${element.abreviacao}</p>
+        `;
+        containerItem.dataset.index = element.id;
+        containerExibirTimes.appendChild(containerItem);
+    });
+};
 
 const CreateTeam = (maratona) =>{
-    criacaoTimeScreen.style.display = "flex";
+    criacaoTimeScreen.classList.add('show');
+    overlayIntoMaratona.classList.add('show');
+    intoMaratona.classList.add("no-scroll");
     const imgElement = document.getElementById('imagemAtualizarTime');
     const inputImagemTime = document.getElementById('inputImagemTime');
     document.getElementById('containerArredondadoCriaTime').addEventListener('click', function () {
@@ -204,6 +241,7 @@ const CreateTeam = (maratona) =>{
                     formTime.reset();
                     imgElement.src = 'static\\img\\escudoTime.png';
                     imgElement.style.width = "70%";
+                    ExibirTimes(maratona.id);
                 } else {
                     alert(data.message);
                 }
@@ -215,7 +253,9 @@ const CreateTeam = (maratona) =>{
 }
 
 document.getElementById("fecharCriacaoTime").addEventListener('click',function(){
-    criacaoTimeScreen.style.display = "none";
+    criacaoTimeScreen.classList.remove('show');
+    overlayIntoMaratona.classList.remove('show');
+    intoMaratona.classList.remove("no-scroll");
 })
 
 const EditarMaratona = (element) => {
@@ -226,7 +266,8 @@ const EditarMaratona = (element) => {
     const botaoEditar = document.getElementById("ConfirmarEdicaoMaratona");
     const botaoExcluir = document.getElementById("ExcluirMaratona");
 
-    editarMaratona.style.display = "flex";
+    editarMaratona.classList.add('show');
+    overlayIntoMaratona.classList.add('show');
     intoMaratona.classList.add("no-scroll");
 
     inputNomeMaratona.value = element.nome_maratona;
@@ -335,8 +376,9 @@ fecharCriacao.addEventListener('click', function () {
 })
 
 fecharEdicaoMaratona.addEventListener('click', function () {
-    editarMaratona.style.display = "none";
-    container.classList.remove("no-scroll");
+    editarMaratona.classList.remove('show');
+    overlayIntoMaratona.classList.remove('show');
+    intoMaratona.classList.remove("no-scroll");
 })
 
 fecharEdicaoConta.addEventListener("click", function () {

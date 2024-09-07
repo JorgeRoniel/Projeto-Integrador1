@@ -246,9 +246,9 @@ def create_team():
     return response
 
 
-rotas.route("/getTimes", methods=['GET'])
+@rotas.route("/getTimes", methods=['POST'])
 def showTeams():
-    id = request.form.get('id')
+    id = request.form.get('maratona_id')
 
     data = t.listarTimes(id)
 

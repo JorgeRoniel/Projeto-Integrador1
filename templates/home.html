@@ -15,22 +15,22 @@
         <nav class="navbar">
             <div class="vertical-bar"></div>
             <div class="barra">
-              <div class="escudoTimePerfil">
-                <img id="user-icon" width="100%">
-             </div>
+                <div class="escudoTimePerfil">
+                    <img id="user-icon" width="100%">
+                </div>
             </div>
             <div class="vertical-bar"></div>
-                    <img class="imagemLogoNav" src="static\img\LogoReduzida.png" width="2%" style="border-radius: 100%;">
-                    <div id="verticalout"class="vertical-bar"></div>
+            <img class="imagemLogoNav" src="static\img\LogoReduzida.png" width="2%" style="border-radius: 100%;">
+            <div id="verticalout" class="vertical-bar"></div>
             <button id="criarMaisButton" class="criarMais">+ Criar Mais</button>
             <div class="spacer"></div>
             <div class="vertical-bar" style="margin-left: 10px;"></div>
             <div class="limite">
-            <button id="contaOpcoes" class="contaManipular" style="margin-left: 3%;">Conta  <i
-                id="toggleIcon" class="fas fa-chevron-right" style="color: rgb(73, 73, 244)"></i></button>
+                <button id="contaOpcoes" class="contaManipular" style="margin-left: 3%;">Conta <i id="toggleIcon"
+                        class="fas fa-chevron-right" style="color: rgb(73, 73, 244)"></i></button>
             </div>
-            </nav>
-                <div class="containerOpcoes">
+        </nav>
+        <div class="containerOpcoes">
             <div class="spacer"></div>
             <div id="OpcoesExpandidas" class="OpcoesExpandidas">
                 <button class="contaManipular" id="editarContaAbrir">Editar Conta</button>
@@ -40,10 +40,12 @@
 
         <div id="edicaoConta" class="edicaoConta">
             <button id="fecharEdicaoConta" class="fechar">X</button>
-            <form id="form-manipular-conta" method="post" action="{{ url_for('rotas.update_user') }}" enctype="multipart/form-data">
+            <form id="form-manipular-conta" method="post" action="{{ url_for('rotas.update_user') }}"
+                enctype="multipart/form-data">
                 <div class="containerPerfilContaManipular">
                     <div class="containerArredondado" id="containerArredondadoEdicao">
-                        <img id="imagemAtualizar" class="imagemAtualizar" src="static\img\InitProfile.png" alt="" width="100%">
+                        <img id="imagemAtualizar" class="imagemAtualizar" src="static\img\InitProfile.png" alt=""
+                            width="100%">
                         <input type="file" name="iconPerfil" id="inputImagem" class="file-input" accept="image/*">
                         <img id="svgAtualizar" src="static/img/atualizarFoto.svg" alt="Atualizar" class="svg-icon">
                     </div>
@@ -57,7 +59,8 @@
                     <input id="newPassword" name="Senha" type="password">
                     <div class="containerBotoes">
                         <button id="btn-edit-user" class="ConfirmarCriacao" type="submit">Atualizar</button>
-                        <button id="btn-del-user" class="ConfirmarCriacao" style="background-color: white;color:red;border-color:red;" type="submit">Excluir</button>
+                        <button id="btn-del-user" class="ConfirmarCriacao"
+                            style="background-color: white;color:red;border-color:red;" type="submit">Excluir</button>
                     </div>
                 </div>
             </form>
@@ -68,8 +71,9 @@
             <div class="categorias menuCriar">
                 <div id="containerBotaoMaratonasCreation" class="containerBotao selecionarCriar">
                     <button id="maratonasCreation">Maratonas</button>
-                    <hr id="underlineCreation" style="position: relative;margin-top: 0;margin-bottom: 0px;width: 100%;border: none;height: 3px; bottom:3px;"
-                            class="horizontal-bar selectCreation">
+                    <hr id="underlineCreation"
+                        style="position: relative;margin-top: 0;margin-bottom: 0px;width: 100%;border: none;height: 3px; bottom:3px;"
+                        class="horizontal-bar selectCreation">
                 </div>
             </div>
             <div id="criarMaratona" class="criarMaratona">
@@ -88,7 +92,7 @@
             </div>
         </div>
 
-<div class="textTitulo">
+        <div class="textTitulo">
             <div class="animado">
                 CRIE E GERENCIE <span></span>
             </div>
@@ -110,6 +114,7 @@
     </div>
 
     <div id="intoMaratona" class="IntoMaratona">
+        <div id="overlayIntoMaratona" class="overlay"></div>
         <div class="sidebar">
             <button class="buttonBackToHome" id="BackToHome">
                 <img src="static\img\volte.png" width="30%">
@@ -119,11 +124,8 @@
             <button id="initCreationTeam" style="border: none;background: transparent;outline: none;cursor: pointer;">
                 <img class="imagemAddTime" src="static\img\adicionar.png" width="30%">
             </button>
-            <ul>
-                <li><a href="#">Home</a></li>
-                <li><a href="#">Sobre</a></li>
-                <li><a href="#">Serviços</a></li>
-                <li><a href="#">Contato</a></li>
+            <ul id="containerExibirTimes" style="width: 100%; display: flex; align-items: center; justify-content: 
+                center; flex-direction: column; padding: 0; margin: 0; list-style-type: none; margin-top: 20px;">
             </ul>
         </div>
         <div id="edicaoMaratona" class="criacao">
@@ -156,13 +158,14 @@
                 </div>
             </div>
             <div id="criarTime" class="criarMaratona" style="display: flex;">
-                <form id="criar-time-form" class="criacoesForm" action="{{ url_for('rotas.create_team') }}" method="post" style="height: 90%;">
+                <form id="criar-time-form" class="criacoesForm" action="{{ url_for('rotas.create_team') }}"
+                    method="post" style="height: 90%;">
                     <label for="nomeTime">Nome do Time</label>
                     <input name="nomeTime" type="text" placeholder="ProgTodoDia">
                     <label for="Abreviacao">Abreviação</label>
                     <input name="Abreviacao" type="text" placeholder="PTD (máximo 3 letras)">
                     <label for="escudoTime">Escudo do Time</label>
-                    <div  class="containerArredondado" id="containerArredondadoCriaTime" style="height: 15%;width: 23%;">
+                    <div class="containerArredondado" id="containerArredondadoCriaTime" style="height: 15%;width: 23%;">
                         <img id="imagemAtualizarTime" src="static\img\escudoTime.png" alt="" width="70%">
                         <input type="file" name="escudoTime" id="inputImagemTime" class="file-input" accept="image/*">
                     </div>
