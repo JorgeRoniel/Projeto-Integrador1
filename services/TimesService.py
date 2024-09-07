@@ -36,21 +36,26 @@ def listarTimes(maratona_id):
         conn = c.openBD()
         cursor = conn.cursor()
 
-        cursor.execute(f"SELECT t.nome_time, t.abreviacao, t.escudo FROM times t INNER JOIN maratonas m ON t.id = {maratona_id};")
+        query = "SELECT t.id, t.nome_time, t.abreviacao, t.escudo FROM times t WHERE t.maratonaId = %s;"
+        cursor.execute(query, (maratona_id,))
         data = cursor.fetchall()
 
-        dados = {}
+        dados = []
         for acc in data:
             if acc['escudo']:
                 icon = base64.b64encode(acc['escudo']).decode('utf-8')
             else:
                 icon = None
 
-            dados['nome_time'] = acc['nome_time']
-            dados['abreviacao'] = acc['abreviacao']
-            dados['escudo'] = icon
+            time_data = {
+                'id': acc['id'],
+                'nome_time': acc['nome_time'],
+                'abreviacao': acc['abreviacao'],
+                'escudo': icon
+            }
+            dados.append(time_data)
 
-            return dados
+        return dados
     except Exception as e:
         print(e)
         return []
