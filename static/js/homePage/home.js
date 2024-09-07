@@ -41,6 +41,7 @@ const toggleIcon = document.getElementById("toggleIcon");
 const overlay = document.getElementById("overlay");
 const overlayIntoMaratona = document.getElementById("overlayIntoMaratona");
 const containerExibirTimes = document.getElementById("containerExibirTimes");
+const sidebar = document.getElementById("sidebar");
 
 //Variaveis que dirão qual está sendo exibido na tela na hora de filtrar
 
@@ -141,8 +142,11 @@ const exibirMaratonas = async () => {
 
 const IntoMaratona = (element) => {
     ExibirTimes(element.id);
-    container.style.display = "none";
+    container.classList.add("no-scroll");
     intoMaratona.style.display = "flex";
+    sidebar.style.display = "flex";
+    sidebar.classList.remove('hide'); 
+    sidebar.classList.add('show');
     document.getElementById("editorMaratonaButton").addEventListener('click',function(){
         EditarMaratona(element);
     })
@@ -337,7 +341,9 @@ const EditarMaratona = (element) => {
 }
 
 backToHome.addEventListener('click', function () {
-    container.style.display = "flex";
+    container.classList.remove("no-scroll");
+    sidebar.classList.remove('show'); 
+    sidebar.classList.add('hide'); 
     intoMaratona.style.display = "none";
 })
 
