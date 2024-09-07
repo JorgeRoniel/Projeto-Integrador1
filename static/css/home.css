@@ -89,7 +89,7 @@ body {
     visibility: hidden;
     position: fixed;
     opacity: 0;
-    z-index: 2;
+    z-index: 39;
     transition: opacity 0.5s ease, visibility 0.5s ease;
     border-radius: 15px;
 }
@@ -141,7 +141,6 @@ body {
 }
 
 .containerArredondado {
-    position: relative;
     width: 32vh;
     height: 32vh;
     overflow: hidden;
@@ -152,7 +151,6 @@ body {
     border: 10px solid rgba(51, 83, 133, 0.9);
     box-sizing: border-box; 
     cursor: pointer;
-    margin-left: 15px;
     transition: filter 0.3s ease;
 }
 
@@ -169,10 +167,15 @@ body {
     z-index: 0; 
 }
 
+.containerArredondado:hover img.imagemAtualizarTime {
+    filter: blur(2px) brightness(0.7); 
+    z-index: 0; 
+}
+
 .svg-icon {
     position: absolute;
-    width: 30%;
-    height: 30%;
+    width: 20%;
+    height: 20%;
     z-index: 1;
     opacity: 0;
     transition: opacity 0.3s ease;
@@ -276,6 +279,13 @@ body {
     font-size: 16px;
 }
 
+.containerButtonsEditionMaratona{
+    justify-content: center;
+    display: flex;
+    width: 100%;
+    gap: 5%;
+}
+
 .ConfirmarCriacao {
     cursor: pointer;
     padding: 2%;
@@ -314,6 +324,9 @@ body {
     align-items: center;
     justify-content: center;
     overflow: hidden;
+    z-index:0;
+    flex-direction: column;
+
 }
 .criarMaratona form{
     display: flex;
@@ -328,6 +341,7 @@ body {
     background-color:rgb(20, 20, 59) ;
     border-radius: 10px;
     overflow: auto;
+    z-index:7;
 }
 
 .criarMaratona input{
@@ -443,7 +457,7 @@ body {
     opacity: 0;
     visibility: hidden;
     transition: opacity 0.5s ease, visibility 0.5s ease;
-    z-index: 1;
+    z-index: 39;
 }
 
 .criacao{
@@ -455,7 +469,7 @@ body {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    z-index: 2;
+    z-index: 40;
     border-radius: 15px;
     display: flex;
     flex-direction: column;
@@ -537,7 +551,19 @@ body {
 .animado span::before{
     content: "";
     color:rgb(73, 73, 244);
-    animation: palavras 20s infinite;
+    animation: palavras 20s infinite, pisca 1s infinite;
+}
+
+@keyframes pisca {
+    0% {
+        text-shadow: 0px 0px 2px rgb(73, 73, 244);
+    }
+    50% {
+        text-shadow: 0px 0px 4px rgb(73, 73, 244);
+    }
+    100% {
+        text-shadow: 0px 0px 2px rgb(73, 73, 244);
+    }
 }
 
 .animado span::after{
@@ -547,7 +573,7 @@ body {
     border-left: 2px solid rgb(73, 73, 244);
     top: -4px;
     background-color: rgb(192, 203, 246);;
-    animation: curs .8s infinite, digita 20s steps(20) infinite;
+    animation: curs .8s infinite, digita 20s steps(10) infinite;
     width: 100%;
     right: -2px;
 }
@@ -594,12 +620,13 @@ body {
 }
 .categorias button{
     padding: 5px;
-    font-size: 17px;
+    font-size: 23px;
     background: none;
     outline: none;
     border: none;
     cursor: pointer;
     color: rgb(22, 22, 108);
+    font-weight: bold;
 }
 .containerBotao{
     display: flex;
@@ -688,29 +715,64 @@ body {
 }
 
 .IntoMaratona{
-    width: 100%;
+    width: 85%;
+    position: absolute;
     display: none;
     align-items: center;
     flex-direction: column;
     background-color: rgb(192, 203, 246);
     min-height: 100vh;
     overflow-y: auto;
+    z-index: 3;
+    left: 15%;
 }
 
 .sidebar {
-    width: 10%;
+    width: 15%;
     height: 100vh;
     overflow: auto;
     position: fixed;
     top: 0;
     left: 0;
-    background-color: rgb(20, 20, 59);
+    padding-top: 20px;
+    backdrop-filter: blur(5px) brightness(0.7);
+    background-color: rgba(20, 20, 59, 0.9);
     color: white;
-    padding: 20px;
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-    display: flex;
+    display: none;
     align-items: center;
     flex-direction: column;
+    z-index: 4;
+    transform: translateX(-100%); /* Começa fora da tela */
+    animation: slideIn 0.5s forwards; /* Aplica a animação */
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(-100%); /* Começa fora da tela à esquerda */
+    }
+    to {
+        transform: translateX(0); /* Termina na posição original */
+    }
+}
+
+/* Animação para ocultar a sidebar */
+@keyframes slideOut {
+    from {
+        transform: translateX(0); /* Começa na posição inicial */
+    }
+    to {
+        transform: translateX(-100%); /* Move para fora da tela */
+    }
+}
+
+.sidebar.show {
+    transform: translateX(0); /* Move a sidebar para dentro da tela */
+}
+
+.sidebar.hide {
+    animation: slideOut 0.5s ease-out; /* Animação de saída */
+    display: none;
 }
 
 .sidebar ul {
@@ -731,7 +793,7 @@ body {
 }
 
 .buttonBackToHome{
-    width: 100%;
+    width: 85%;
     background: transparent;
     border: none;
     display: flex;
@@ -751,6 +813,15 @@ body {
     margin: 5px 0;
 }
 
+#containerBotaoTimesCreation{
+    margin-bottom: 20px;
+}
+
+@media only screen and (max-width: 1200px) {
+    .criacao{
+        width: 70%
+    }
+}
 
 @media only screen and (max-width: 965px) {
 
@@ -877,6 +948,7 @@ body {
     .containerPerfilContaManipular{
         width: 100%;
         height: 30%;
+        margin-top: 40px;
     }
 
     .camposManipularConta{
@@ -900,8 +972,9 @@ body {
         margin: 0;
     }
 
-    .criarMaratona .containerArredondado{
-        width: 28% !important;
+    .IntoMaratona{
+        width: 80%;
+        left: 20%;
     }
 
     .sidebar {
@@ -921,7 +994,7 @@ body {
     }
     
     .buttonBackToHome img{
-        width: 50%;
+        width: 40%;
     }
 
     .imagemAddTime{

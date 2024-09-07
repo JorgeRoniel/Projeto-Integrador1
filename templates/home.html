@@ -114,67 +114,78 @@
     </div>
 
     <div id="intoMaratona" class="IntoMaratona">
-        <div id="overlayIntoMaratona" class="overlay"></div>
-        <div class="sidebar">
-            <button class="buttonBackToHome" id="BackToHome">
-                <img src="static\img\volte.png" width="30%">
-            </button>
-            <h4 id="editorMaratonaButton">Editar Maratona</h4>
-            <h2>Times</h2>
-            <button id="initCreationTeam" style="border: none;background: transparent;outline: none;cursor: pointer;">
-                <img class="imagemAddTime" src="static\img\adicionar.png" width="30%">
-            </button>
-            <ul id="containerExibirTimes" style="width: 100%; display: flex; align-items: center; justify-content: 
-                center; flex-direction: column; padding: 0; margin: 0; list-style-type: none; margin-top: 20px;">
-            </ul>
+        
+    </div>
+    <div id="overlayIntoMaratona" class="overlay"></div>
+    <div id="edicaoMaratona" class="criacao">
+        <div class="categorias menuCriar">
+            <div id="containerBotaoTimesCreation" class="containerBotao selecionarCriar">
+                <button id="timesCreation">Editar Maratona</button>
+                <hr id="underlineCreation" style="margin-top: 0;margin-bottom: 0;width: 100%;"
+                class="horizontal-bar selectCreation">
+            </div>
         </div>
-        <div id="edicaoMaratona" class="criacao">
+        <div id="editarMaratona" class="criarMaratona">
             <button id="fecharEdicaoMaratona" class="fechar">X</button>
-            <div id="editarMaratona" class="criarMaratona">
-                <form id="editar-maratona-form" class="criacoesForm" action="{{ url_for('rotas.update_marathon') }}"
-                    method="post">
-                    <label for="nomeMaratona">Nome da Maratona</label>
-                    <input id="novoNomeMaratona" name="nomeMaratona" type="text">
-                    <label for="Descricao">Descrição</label>
-                    <input id="novaDescricaoMaratona" name="Descricao" type="text">
-                    <label for="qtdTimes">Quantidade de Times</label>
-                    <input id="novaQtdTimesMaratona" name="qtdTimes" type="number">
-                    <label for="valor">Prêmio</label>
-                    <input id="novoPremioMaratona" type="text" name="valor">
-                    <button id="ConfirmarEdicaoMaratona" class="ConfirmarCriacao" type="submit">Editar</button>
-                    <button id="ExcluirMaratona" class="ConfirmarCriacao"
-                        style="background-color: white;color: red;border-color:red;">Excluir</button>
-                </form>
-            </div>
-        </div>
-
-        <div id="criacaoTime" class="criacao">
-            <button id="fecharCriacaoTime" class="fechar">X</button>
-            <div class="categorias menuCriar">
-                <div id="containerBotaoTimesCreation" class="containerBotao selecionarCriar">
-                    <button id="timesCreation">Criar Time</button>
-                    <hr id="underlineCreation" style="margin-top: 0;margin-bottom: 0;width: 100%;"
-                        class="horizontal-bar selectCreation">
+            <form id="editar-maratona-form" class="criacoesForm" action="{{ url_for('rotas.update_marathon') }}"
+                method="post" style="height: 90%;">
+                <label for="nomeMaratona">Nome da Maratona</label>
+                <input id="novoNomeMaratona" name="nomeMaratona" type="text">
+                <label for="Descricao">Descrição</label>
+                <input id="novaDescricaoMaratona" name="Descricao" type="text">
+                <label for="qtdTimes">Quantidade de Times</label>
+                <input id="novaQtdTimesMaratona" name="qtdTimes" type="number">
+                <label for="valor">Prêmio</label>
+                <input id="novoPremioMaratona" type="text" name="valor">
+                <div class="containerButtonsEditionMaratona">
+                <button id="ConfirmarEdicaoMaratona" class="ConfirmarCriacao" type="submit">Editar</button>
+                <button id="ExcluirMaratona" class="ConfirmarCriacao"
+                style="background-color: white;color: red;border-color:red;">Excluir</button>
                 </div>
-            </div>
-            <div id="criarTime" class="criarMaratona" style="display: flex;">
-                <form id="criar-time-form" class="criacoesForm" action="{{ url_for('rotas.create_team') }}"
-                    method="post" style="height: 90%;">
-                    <label for="nomeTime">Nome do Time</label>
-                    <input name="nomeTime" type="text" placeholder="ProgTodoDia">
-                    <label for="Abreviacao">Abreviação</label>
-                    <input name="Abreviacao" type="text" placeholder="PTD (máximo 3 letras)">
-                    <label for="escudoTime">Escudo do Time</label>
-                    <div class="containerArredondado" id="containerArredondadoCriaTime" style="height: 15%;width: 23%;">
-                        <img id="imagemAtualizarTime" src="static\img\escudoTime.png" alt="" width="70%">
-                        <input type="file" name="escudoTime" id="inputImagemTime" class="file-input" accept="image/*">
-                    </div>
-                    <button id="ConfirmarCriacaoTime" class="ConfirmarCriacao" type="submit">Criar</button>
-                </form>
-            </div>
-            <div id="criarPartida" class="criarPartida">Ainda em branco</div>
+
+            </form>
         </div>
     </div>
+    <div id="criacaoTime" class="criacao">
+        <button id="fecharCriacaoTime" class="fechar">X</button>
+        <div class="categorias menuCriar">
+            <div id="containerBotaoTimesCreation" class="containerBotao selecionarCriar">
+                <button id="timesCreation">Criar Time</button>
+                <hr id="underlineCreation" style="margin-top: 0;margin-bottom: 0;width: 100%;"
+                class="horizontal-bar selectCreation">
+            </div>
+        </div>
+        <div id="criarTime" class="criarMaratona" style="display: flex;">
+            <form id="criar-time-form" class="criacoesForm" action="{{ url_for('rotas.create_team') }}"
+            method="post" style="height: 90%;">
+            <label for="nomeTime">Nome do Time</label>
+            <input name="nomeTime" type="text" placeholder="ProgTodoDia">
+            <label for="Abreviacao">Abreviação</label>
+            <input name="Abreviacao" type="text" placeholder="PTD (máximo 3 letras)">
+            <label for="escudoTime">Escudo do Time</label>
+            <div class="containerArredondado" id="containerArredondadoCriaTime" style="height: 16vh;width: 16vh; border: 5px solid rgba(51, 83, 133, 0.9);">
+                <img id="imagemAtualizarTime" src="static\img\escudoTime.png" alt="" width="70%" class="imagemAtualizarTime" style="transition: filter 0.3s ease;">
+                <input type="file" name="escudoTime" id="inputImagemTime" class="file-input" accept="image/*">
+                <img id="svgAtualizar" src="static/img/atualizarFoto.svg" alt="Atualizar" class="svg-icon" style="height: 8%; width: 8%;">
+            </div>
+            <button id="ConfirmarCriacaoTime" class="ConfirmarCriacao" type="submit">Criar</button>
+        </form>
+    </div>
+    <div id="criarPartida" class="criarPartida">Ainda em branco</div>
+</div>
+<div id="sidebar" class="sidebar">
+    <button class="buttonBackToHome" id="BackToHome">
+        <img src="static\img\volte.png" width="30%">
+    </button>
+    <h4 id="editorMaratonaButton">Editar Maratona</h4>
+    <h2>Times</h2>
+    <button id="initCreationTeam" style="border: none;background: transparent;outline: none;cursor: pointer;">
+        <img class="imagemAddTime" src="static\img\adicionar.png" width="30%">
+    </button>
+    <ul id="containerExibirTimes" style="width: 100%; display: flex; align-items: center; justify-content: 
+        center; flex-direction: column; padding: 0; margin: 0; list-style-type: none; margin-top: 20px;">
+    </ul>
+</div>
     <script src="static\js\homePage\home.js"></script>
 </body>
 
