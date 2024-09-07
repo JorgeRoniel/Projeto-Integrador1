@@ -261,10 +261,10 @@ const EditarTime = (time) =>{
     botaoEditar.addEventListener('click', async function(event){
         event.preventDefault();
         const data = new FormData();
-        data.append("NovoNomeTime", time.nome);
-        data.append("NovaAbreviacao",time.abreviacao);
+        data.append("NovoNomeTime", nomeTime.value);
+        data.append("NovaAbreviacao",abreviacaoTime.value);
         data.append("id",time.id);
-        data.append("NovoEscudoTime",time.icon);
+        data.append("NovoEscudoTime",imgElement);
         const options = {
             method: 'PUT',
             headers: {
