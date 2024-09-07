@@ -40,8 +40,11 @@ const criacaoTimeScreen = document.getElementById("criacaoTime");
 const toggleIcon = document.getElementById("toggleIcon");
 const overlay = document.getElementById("overlay");
 const overlayIntoMaratona = document.getElementById("overlayIntoMaratona");
+const overlayIntoTime = document.getElementById("overlayIntoTime");
 const containerExibirTimes = document.getElementById("containerExibirTimes");
 const sidebar = document.getElementById("sidebar");
+const intoTime = document.getElementById("IntoTime");
+const EditarTimeContainer = document.getElementById("EditarTime");
 
 //Variaveis que dirão qual está sendo exibido na tela na hora de filtrar
 
@@ -208,8 +211,114 @@ const ExibirTimes = async (maratona_id, getCacheTimes) => {
         `;
         containerItem.dataset.index = element.id;
         containerExibirTimes.appendChild(containerItem);
+
+        containerItem.addEventListener('click',function(){
+            IntoTeam(element);
+        })
     });
 };
+
+const IntoTeam = (time) =>{
+    intoMaratona.style.display = "none";
+    intoTime.style.display = "flex";
+    
+    document.getElementById("BackToMaratona").addEventListener('click',function(){
+        intoTime.style.display = "none";
+        intoMaratona.style.display = "flex";
+    })
+
+    document.getElementById("editorTimeButton").addEventListener('click',function(){
+        EditarTime(time);
+    })
+}
+
+const EditarTime = (time) =>{
+    EditarTimeContainer.classList.add('show');
+    overlayIntoTime.classList.add('show');
+    intoTime.classList.add("no-scroll");
+
+    const botaoEditar = document.getElementById("ConfirmarEdicaoTime");
+    const botaoExcluir = document.getElementById("ExcluirTime");
+
+    const nomeTime = document.getElementById("nomeTimeEditar");
+    const abreviacaoTime = document.getElementById("AbreviacaoEditar");
+    nomeTime.value = time.nome;
+    abreviacaoTime.value = time.abreviacao;
+
+    const imgElement = document.getElementById('imagemAtualizarTimeEdicao');
+    imgElement.src = time.icon;
+    const inputImagemTime = document.getElementById('inputImagemTimeEditar');
+
+    document.getElementById('containerArredondadoEditaTime').addEventListener('click', function () {
+        inputImagemTime.click();
+    });
+
+    document.getElementById('inputImagemTimeEditar').addEventListener('change', function (event) {
+        const arquivo = event.target.files[0];
+        if (arquivo) {
+            const urlImagem = URL.createObjectURL(arquivo);
+            imgElement.style.width = "100%";
+            imgElement.src = urlImagem;
+        }
+    });
+
+    botaoEditar.addEventListener('click', async function(event){
+        event.preventDefault();
+        const data = new FormData();
+        data.append("NovoNomeTime", nomeTime.value);
+        data.append("NovaAbreviacao",abreviacaoTime.value);
+        data.append("id",time.id);
+        data.append("NovoEscudoTime",imgElement);
+        const options = {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        };
+
+        try {
+            const response = await fetch("/updateTime", options);
+            const result = await response.json();
+            if (result.status === "success") {
+                alert(result.message);
+                location.reload();
+            } else {
+                alert(result.message);
+            }
+        } catch (error) {
+            console.error("ERROR: ", error);
+        }
+    })
+
+    botaoExcluir.addEventListener('click', async function(event){
+        event.preventDefault();
+
+        const data = { id: time.id };
+
+        const options = {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        };
+
+        try {
+            const response = await fetch("/deleteTime", options);
+            const result = await response.json();
+            if (result.status === "success") {
+                alert(result.message);
+                location.reload();
+            } else {
+                alert(result.message);
+            }
+        } catch (error) {
+            console.error('ERROR: ', error);
+        }
+    })
+
+}
 
 const CreateTeam = (maratona) => {
     criacaoTimeScreen.classList.add('show');
@@ -267,6 +376,12 @@ const CreateTeam = (maratona) => {
         intoMaratona.classList.remove("no-scroll");
     });
 };
+
+document.getElementById("fecharEdicaoTime").addEventListener('click', function () {
+    EditarTimeContainer.classList.remove('show');
+    overlayIntoTime.classList.remove('show');
+    intoTime.classList.remove("no-scroll");
+})
 
 document.getElementById("fecharCriacaoTime").addEventListener('click', function () {
     criacaoTimeScreen.classList.remove('show');
