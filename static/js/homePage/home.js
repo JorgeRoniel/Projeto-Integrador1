@@ -106,7 +106,7 @@ const exibirMaratonas = async () => {
 
     maratonasSalvas.forEach((element, index) => {
         const containerItem = document.createElement('li');
-    
+
         containerItem.innerHTML = `
             <h3 style="font-size: 1.5em; margin: 10px 0;">${element.nome}</h3>
             <p style="font-size: 1em; color: #ccc; margin: 5px 0;">Descrição: ${element.descricao}</p>
@@ -115,7 +115,7 @@ const exibirMaratonas = async () => {
         `;
         containerItem.dataset.index = element.id;
         exibirCategorias.appendChild(containerItem);
-        
+
         // Adiciona a linha divisória apenas se não for o último item
         if (index < maratonasSalvas.length - 1) {
             const linhaDivisoria = document.createElement('hr');
@@ -126,10 +126,10 @@ const exibirMaratonas = async () => {
             linhaDivisoria.style.height = "3px";
             exibirCategorias.appendChild(linhaDivisoria);
         }
-    
+
         containerItem.addEventListener('click', async () => {
             const atual = {
-                id : element.id,
+                id: element.id,
                 nome_maratona: element.nome,
                 descricao: element.descricao,
                 qtdTimes: element.qtdTimes,
@@ -141,7 +141,8 @@ const exibirMaratonas = async () => {
 };
 
 const IntoMaratona = (element) => {
-    ExibirTimes(element.id);
+    let getCacheTimes = timesSalvos.length > 0 && element.id == timesSalvos[0].maratonaId ? true : false
+    ExibirTimes(element.id, getCacheTimes);
     container.classList.add("no-scroll");
     intoMaratona.style.display = "flex";
     sidebar.style.display = "flex";
@@ -150,46 +151,48 @@ const IntoMaratona = (element) => {
     document.getElementById("editorMaratonaButton").addEventListener('click',function(){
         EditarMaratona(element);
     })
-    initCreationTeam.addEventListener('click',function(){
+    initCreationTeam.addEventListener('click', function () {
         CreateTeam(element);
     })
 }
 
-const ExibirTimes = async (maratona_id) => {
+const ExibirTimes = async (maratona_id, getCacheTimes) => {
     containerExibirTimes.innerHTML = '';
-    const timesSalvosBackup = timesSalvos;
-    timesSalvos = [];
-    const escudoTime = document.createElement("img");
 
-    const formData = new FormData();
-    formData.append("maratona_id", maratona_id);
+    if (!getCacheTimes) {
+        const timesSalvosBackup = timesSalvos;
+        timesSalvos = [];
+        const escudoTime = document.createElement("img");
+        const formData = new FormData();
+        formData.append("maratona_id", maratona_id);
 
-    const options = {
-        method: 'POST',
-        body: formData
-    };
+        const options = {
+            method: 'POST',
+            body: formData
+        };
 
-    try {
-        const response = await fetch('/getTimes', options);
-        if (!response.ok) {
-            throw new Error('Erro de rede');
+        try {
+            const response = await fetch('/getTimes', options);
+            if (!response.ok) {
+                throw new Error('Erro de rede');
+            }
+            const data = await response.json();
+
+            data.forEach(time => {
+                escudoTime.src = `data:image/jpeg;base64,${time.escudo}`;
+                const timesObj = {
+                    id: time.id,
+                    nome: time.nome_time,
+                    abreviacao: time.abreviacao,
+                    maratonaId: time.maratonaId,
+                    icon: escudoTime.src,
+                };
+                timesSalvos.push(timesObj);
+            });
+        } catch (error) {
+            timesSalvos = timesSalvosBackup;
+            console.error('ERRO: ', error);
         }
-        const data = await response.json();
-        console.log('Times:', data);
-
-        data.forEach(time => {
-            escudoTime.src = `data:image/jpeg;base64,${time.escudo}`;
-            const timesObj = {
-                id: time.id,
-                nome: time.nome_time,
-                abreviacao: time.abreviacao,
-                icon: escudoTime.src,
-            };
-            timesSalvos.push(timesObj);
-        });
-    } catch (error) {
-        timesSalvos = timesSalvosBackup;
-        console.error('ERRO: ', error);
     }
 
     timesSalvos.forEach((element) => {
@@ -208,12 +211,14 @@ const ExibirTimes = async (maratona_id) => {
     });
 };
 
-const CreateTeam = (maratona) =>{
+const CreateTeam = (maratona) => {
     criacaoTimeScreen.classList.add('show');
     overlayIntoMaratona.classList.add('show');
     intoMaratona.classList.add("no-scroll");
+
     const imgElement = document.getElementById('imagemAtualizarTime');
     const inputImagemTime = document.getElementById('inputImagemTime');
+
     document.getElementById('containerArredondadoCriaTime').addEventListener('click', function () {
         inputImagemTime.click();
     });
@@ -222,41 +227,48 @@ const CreateTeam = (maratona) =>{
         const arquivo = event.target.files[0];
         if (arquivo) {
             const urlImagem = URL.createObjectURL(arquivo);
-            imgElement.style.width = "100%"
+            imgElement.style.width = "100%";
             imgElement.src = urlImagem;
         }
     });
+
     formTime.addEventListener('submit', async function (event) {
         event.preventDefault();
-    
+
         const formData = new FormData(formTime);
-        formData.append("idMaratona",maratona.id)
-    
+        formData.append("idMaratona", maratona.id);
+
         const options = {
             method: 'POST',
             body: formData
-        }
-    
-        await fetch("/criarTime", options)
-            .then(response => response.json())
-            .then(data => {
-                if (data.status === 'success') {
-                    alert(data.message);
-                    formTime.reset();
-                    imgElement.src = 'static\\img\\escudoTime.png';
-                    imgElement.style.width = "70%";
-                    ExibirTimes(maratona.id);
-                } else {
-                    alert(data.message);
-                }
-            })
-            .catch((error) => {
-                console.error("ERROR: ", error);
-            });
-    });
-}
+        };
 
-document.getElementById("fecharCriacaoTime").addEventListener('click',function(){
+        try {
+            const response = await fetch("/criarTime", options);
+            const data = await response.json();
+
+            if (data.status === 'success') {
+                alert(data.message);
+                ExibirTimes(maratona.id, false);
+                formTime.reset();
+                imgElement.src = 'static/img/escudoTime.png';
+                imgElement.style.width = "70%";
+            } else {
+                alert(data.message);
+            }
+        } catch (error) {
+            console.error("ERROR: ", error);
+        }
+    });
+
+    document.getElementById("fecharCriacaoTime").addEventListener('click', function () {
+        criacaoTimeScreen.classList.remove('show');
+        overlayIntoMaratona.classList.remove('show');
+        intoMaratona.classList.remove("no-scroll");
+    });
+};
+
+document.getElementById("fecharCriacaoTime").addEventListener('click', function () {
     criacaoTimeScreen.classList.remove('show');
     overlayIntoMaratona.classList.remove('show');
     intoMaratona.classList.remove("no-scroll");
@@ -357,22 +369,22 @@ opcoes.addEventListener('mouseenter', function () {
     toggleIcon.classList.add("rotate");
 })
 
-contaOpcoes.addEventListener('mouseleave', function() {
-   
-        if (!opcoes.matches(':hover')) {
-            opcoes.style.display = "none";
-            toggleIcon.classList.remove("rotate");
-        }
-    
+contaOpcoes.addEventListener('mouseleave', function () {
+
+    if (!opcoes.matches(':hover')) {
+        opcoes.style.display = "none";
+        toggleIcon.classList.remove("rotate");
+    }
+
 })
 
-opcoes.addEventListener('mouseleave', function() {
-   
-        if (!contaOpcoes.matches(':hover')) {
-            opcoes.style.display = "none";
-            toggleIcon.classList.remove("rotate");
-        }
-    
+opcoes.addEventListener('mouseleave', function () {
+
+    if (!contaOpcoes.matches(':hover')) {
+        opcoes.style.display = "none";
+        toggleIcon.classList.remove("rotate");
+    }
+
 })
 
 fecharCriacao.addEventListener('click', function () {

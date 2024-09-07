@@ -36,7 +36,7 @@ def listarTimes(maratona_id):
         conn = c.openBD()
         cursor = conn.cursor()
 
-        query = "SELECT t.id, t.nome_time, t.abreviacao, t.escudo FROM times t WHERE t.maratonaId = %s;"
+        query = "SELECT t.id, t.nome_time, t.abreviacao, t.escudo, t.maratonaId FROM times t WHERE t.maratonaId = %s;"
         cursor.execute(query, (maratona_id,))
         data = cursor.fetchall()
 
@@ -51,6 +51,7 @@ def listarTimes(maratona_id):
                 'id': acc['id'],
                 'nome_time': acc['nome_time'],
                 'abreviacao': acc['abreviacao'],
+                'maratonaId': acc['maratonaId'],
                 'escudo': icon
             }
             dados.append(time_data)
