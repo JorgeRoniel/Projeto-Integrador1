@@ -81,7 +81,7 @@ body {
     left: 50%;
     transform: translate(-50%, -50%);
     height: 70vh;
-    background-color: rgb(20, 57, 111);
+    background-color: rgba(20, 57, 111, 0.8);
     position: fixed;
     display: flex;
     align-items: center;
@@ -148,9 +148,8 @@ body {
     border-radius: 50%;
     display: flex;
     align-items: center;
-    justify-content: center;
-    background-color: rgb(157, 155, 155); 
-    border: 10px solid rgb(20, 57, 111);
+    justify-content: center; 
+    border: 10px solid rgba(51, 83, 133, 0.9);
     box-sizing: border-box; 
     cursor: pointer;
     margin-left: 15px;
@@ -450,7 +449,7 @@ body {
 .criacao{
     width: 40%;
     height: 90vh;
-    background-color: rgb(20, 57, 111);
+    background-color: rgba(20, 57, 111, 0.8);
     position: fixed;
     justify-self: start;
     top: 50%;
@@ -483,7 +482,7 @@ body {
 
 .menuCriar{
    margin-top: 60px !important;
-   background-color:rgb(20, 57, 111);
+   
 }
 
 .selecionarCriar button{
@@ -516,17 +515,72 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: start;
+    justify-content: center;
     width: 100%;
     height: auto;
     color: rgb(38, 38, 101);
-    text-align: center;
+    transform: scaleX(1); /* Começa com scaleX 0 */
+    transition: transform 0.5s ease; 
 }
 
-.textTitulo h1{
+.animado{
     font-size: 250%;
     font-weight: 900;
-    color: rgb(38, 38, 101);
+    justify-content: center;
+}
+
+.animado span{
+    position: relative;
+    justify-self: center;
+}
+
+.animado span::before{
+    content: "";
+    color:rgb(73, 73, 244);
+    animation: palavras 20s infinite;
+}
+
+.animado span::after{
+    content: "";
+    position: absolute;
+    height: 100%;
+    border-left: 2px solid rgb(73, 73, 244);
+    top: -4px;
+    background-color: rgb(192, 203, 246);;
+    animation: curs .8s infinite, digita 20s steps(20) infinite;
+    width: 100%;
+    right: -2px;
+}
+
+@keyframes digita {
+    5%, 15%, 30%, 40%, 55%, 65%, 80%, 90% {
+        width: 0%;
+    }
+    
+    20%, 25%, 45%, 50%, 70%, 75%, 95%, 100% {
+        width: 100%;
+    }
+}
+
+@keyframes curs {
+    0%{
+        border-left: 2px solid rgb(192, 203, 246);;
+    }
+}
+
+@keyframes palavras {
+    0%,25%{
+        content: "MARATONAS";
+    }
+    25.1%, 50%{
+        content: "COMPETIÇÕES";
+    }
+    50.1%, 75%{
+        content: "TIMES";
+    }
+    75.1%, 100%{
+        content: "PARTIDAS";
+    }
 }
 
 .categorias{
@@ -734,7 +788,7 @@ body {
         align-items: center;
         justify-content: center;
         font-size: 10px;
-        margin-top: 30px;
+        margin-top: 10px;
     }
     .horizontal-bar{
         width: 85%;
@@ -873,6 +927,10 @@ body {
 
 .limite {
     width: 20%; 
+    }
+
+    .textTitulo{
+ font-size: 7px;
     }
 
 .OpcoesExpandidas {
