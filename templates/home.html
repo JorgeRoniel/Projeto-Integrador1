@@ -113,9 +113,7 @@
         <ul id="ExibirCategorias" class="ExibirCategorias"></ul>
     </div>
 
-    <div id="intoMaratona" class="IntoMaratona">
-        
-    </div>
+    <div id="intoMaratona" class="IntoMaratona"></div>
     <div id="overlayIntoMaratona" class="overlay"></div>
     <div id="edicaoMaratona" class="criacao">
         <div class="categorias menuCriar">
@@ -163,8 +161,8 @@
             <label for="Abreviacao">Abreviação</label>
             <input name="Abreviacao" type="text" placeholder="PTD (máximo 3 letras)">
             <label for="escudoTime">Escudo do Time</label>
-            <div class="containerArredondado" id="containerArredondadoCriaTime" style="height: 16vh;width: 16vh; border: 5px solid rgba(51, 83, 133, 1);background-color:rgba(51, 83, 133, 0.8)">
-                <img id="imagemAtualizarTime" src="static\img\escudoTime.png" alt="" width="70%" class="imagemAtualizarTime" style="transition: filter 0.3s ease;">
+            <div class="containerArredondado" id="containerArredondadoCriaTime" style="height: 16vh;width: 16vh; border: 3px solid rgba(51, 83, 133, 1);background-color:rgba(51, 83, 133, 0.8)">
+                <img id="imagemAtualizarTime" src="static\img\escudoTime.png" alt="" class="imagemAtualizarTime" style="transition: filter 0.3s ease;">
                 <input type="file" name="escudoTime" id="inputImagemTime" class="file-input" accept="image/*">
                 <img id="svgAtualizar" src="static/img/atualizarFoto.svg" alt="Atualizar" class="svg-icon" style="height: 8%; width: 8%;">
             </div>
@@ -174,71 +172,73 @@
     <div id="criarPartida" class="criarPartida">Ainda em branco</div>
 </div>
 <div id="sidebar" class="sidebar">
-    <button class="buttonBackToHome" id="BackToHome">
-        <img src="static\img\volte.png" width="30%">
-    </button>
+    <div id="sidebarMaratona" class="sidebarMaratona" style="padding-top: 20px; overflow-x: hidden;">
+        <button class="buttonBackToHome" id="BackToHome">
+            <img src="static\img\volte.png" width="30%">
+        </button>
     <h4 id="editorMaratonaButton">Editar Maratona</h4>
     <h2>Times</h2>
-    <button id="initCreationTeam" style="border: none;background: transparent;outline: none;cursor: pointer;">
+    <button id="initCreationTeam" class="initCreationTeam" style="border: none;background: transparent;outline: none;cursor: pointer;">
         <img class="imagemAddTime" src="static\img\adicionar.png" width="30%">
     </button>
+    <ul id="containerExibirTimes" class="ulTimes"style="width: 100%; display: flex; align-items: center; justify-content: 
+        center; flex-direction: column; padding: 0; margin: 0; list-style-type: none; margin-top: 20px;">
+    </ul>
+</div>
+<div id=sidebarTime class="sidebarTime" style="padding-top: 20px;">
+    <button class="buttonBackToHome" id="BackToMaratona">
+        <img src="static\img\volte.png" width="30%">
+    </button>
+    <h4 id="editorTimeButton">Editar Time</h4>
+    <h3 style=" word-break: break-word;">Desenvolvedores</h3>
     <ul id="containerExibirTimes" style="width: 100%; display: flex; align-items: center; justify-content: 
         center; flex-direction: column; padding: 0; margin: 0; list-style-type: none; margin-top: 20px;">
     </ul>
 </div>
 
-    <div class="IntoTime" id="IntoTime">
-        <div id="overlayIntoTime" class="overlay"></div>
-        <div class="sidebar">
-            <button class="buttonBackToHome" id="BackToMaratona">
-                <img src="static\img\volte.png" width="30%">
-            </button>
-            <h4 id="editorTimeButton">Editar Time</h4>
-            <h3>Desenvolvedores</h3>
-            <ul id="containerExibirTimes" style="width: 100%; display: flex; align-items: center; justify-content: 
-                center; flex-direction: column; padding: 0; margin: 0; list-style-type: none; margin-top: 20px;">
-            </ul>
-        </div>
+</div>
 
-        <div id="criacaoParticipante" class="criacao criarParticipante" style="background-color: transparent;">
-            <div id="criarParticipante" class="criarMaratona">
-                <form id="criar-particiamente-form" class="criacoesForm" action="" method="post">
-                    <h1 style="color: white;">Inscrever Desenvolvedor</h1>
-                    <label for="nomeParticipante">Nome do Dev</label>
-                    <input name="nomeParticipante" type="text" placeholder="João Alves">
-                    <button id="ConfirmarCriacaoParticipante" class="ConfirmarCriacao" type="submit">Criar</button>
-                </form>
-            </div>
-        </div>
-
-        <div id="EditarTime" class="criacao">
-            <button id="fecharEdicaoTime" class="fechar">X</button>
-            <div class="categorias menuCriar">
-                <div id="containerBotaoTimesUpdate" class="containerBotao selecionarCriar">
-                    <button id="timesEditar">Editar Time</button>
-                    <hr id="underlineCreation" style="margin-top: 0;margin-bottom: 0;width: 100%;"
-                        class="horizontal-bar selectCreation">
-                </div>
-            </div>
-            <div id="editarTime" class="criarMaratona" style="display: flex;">
-                <form id="editar-time-form" class="criacoesForm" action="" method="post" style="height: 90%;">
-                    <label for="nomeTimeEditar">Nome do Time</label>
-                    <input id="nomeTimeEditar" name="nomeTimeEditar" type="text">
-                    <label for="AbreviacaoEditar">Abreviação</label>
-                    <input id="AbreviacaoEditar" name="AbreviacaoEditar" type="text">
-                    <label for="escudoTimeEditar">Escudo do Time</label>
-                    <div class="containerArredondado" id="containerArredondadoEditaTime" style="height: 15%;width: 23%;">
-                        <img id="imagemAtualizarTimeEdicao" alt="" width="70%">
-                        <input type="file" name="escudoTimeEditar" id="inputImagemTimeEditar" class="file-input"
-                            accept="image/*">
-                    </div>
-                    <button id="ConfirmarEdicaoTime" class="ConfirmarCriacao" type="submit">Editar</button>
-                    <button id="ExcluirTime" class="ConfirmarCriacao"
-                        style="background-color: white;color: red;border-color:red;">Excluir</button>
-                </form>
-            </div>
+<div id="criacaoParticipante" class="criacao criarParticipante" style="background-color: transparent;z-index: 38;">
+    <div id="criarParticipante" class="criarMaratona">
+        <form id="criar-particiamente-form" class="criacoesForm" action="" method="post">
+            <h1 style="color: white;" class="tituloDesenvolvedor">Inscrever Desenvolvedor</h1>
+            <label for="nomeParticipante">Nome do Dev</label>
+            <input name="nomeParticipante" type="text" placeholder="João Alves">
+            <button id="ConfirmarCriacaoParticipante" class="ConfirmarCriacao" type="submit">Criar</button>
+        </form>
+    </div>
+</div>
+<div id="EditarTime" class="criacao">
+    <button id="fecharEdicaoTime" class="fechar">X</button>
+    <div class="categorias menuCriar" style="margin-bottom: 30px;">
+        <div id="containerBotaoTimesUpdate" class="containerBotao selecionarCriar">
+            <button id="timesEditar">Editar Time</button>
+            <hr id="underlineCreation" style="margin-top: 0;margin-bottom: 0;width: 100%;"
+                class="horizontal-bar selectCreation">
         </div>
     </div>
+    <div id="editarTime" class="criarMaratona" style="display: flex;">
+        <form id="editar-time-form" class="criacoesForm" action="" method="post" style="height: 90%;">
+            <label for="nomeTimeEditar">Nome do Time</label>
+            <input id="nomeTimeEditar" name="nomeTimeEditar" type="text">
+            <label for="AbreviacaoEditar">Abreviação</label>
+            <input id="AbreviacaoEditar" name="AbreviacaoEditar" type="text">
+            <label for="escudoTimeEditar">Escudo do Time</label>
+            <div class="containerArredondado" id="containerArredondadoEditaTime" style="height: 16vh;width: 16vh; border: 3px solid rgba(51, 83, 133, 1);background-color:rgba(51, 83, 133, 0.8)">
+                <img id="imagemAtualizarTimeEdicao" class="imagemAtualizarTime" alt="">
+                <input type="file" name="escudoTimeEditar" id="inputImagemTimeEditar" class="file-input"
+                    accept="image/*">
+                    <img id="svgAtualizar" src="static/img/atualizarFoto.svg" alt="Atualizar" class="svg-icon" style="height: 8%; width: 8%;">
+            </div>
+            <div class="containerButtonsEditionMaratona">
+            <button id="ConfirmarEdicaoTime" class="ConfirmarCriacao" type="submit">Editar</button>
+            <button id="ExcluirTime" class="ConfirmarCriacao"
+                style="background-color: white;color: red;border-color:red;">Excluir</button>
+            </div>
+        </form>
+    </div>
+</div>
+    
     <script src="static\js\homePage\home.js"></script>
 </body>
 

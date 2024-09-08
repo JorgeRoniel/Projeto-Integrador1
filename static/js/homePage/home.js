@@ -45,6 +45,9 @@ const containerExibirTimes = document.getElementById("containerExibirTimes");
 const sidebar = document.getElementById("sidebar");
 const intoTime = document.getElementById("IntoTime");
 const EditarTimeContainer = document.getElementById("EditarTime");
+const sidebarMaratona = document.getElementById("sidebarMaratona");
+const sidebarTime = document.getElementById("sidebarTime");
+const criacaoParticipante = document.getElementById("criacaoParticipante");
 
 //Variaveis que dirão qual está sendo exibido na tela na hora de filtrar
 
@@ -147,7 +150,8 @@ const IntoMaratona = (element) => {
     let getCacheTimes = timesSalvos.length > 0 && element.id == timesSalvos[0].maratonaId ? true : false
     ExibirTimes(element.id, getCacheTimes);
     container.classList.add("no-scroll");
-    intoMaratona.style.display = "flex";
+    intoMaratona.classList.remove('hide'); 
+    intoMaratona.classList.add('show');
     sidebar.style.display = "flex";
     sidebar.classList.remove('hide'); 
     sidebar.classList.add('show');
@@ -200,13 +204,9 @@ const ExibirTimes = async (maratona_id, getCacheTimes) => {
 
     timesSalvos.forEach((element) => {
         const containerItem = document.createElement('li');
-        containerItem.style.textAlign = "center";
-        containerItem.style.width = "50%";
-        containerItem.style.margin = "5px 0";
-        containerItem.style.overflow = "hidden";
-        containerItem.style.cursor = "pointer";
+        containerItem.classList.add('time-item');
         containerItem.innerHTML = `
-            <img src="${element.icon}" style="width: 100%;" alt="${element.abreviacao}">
+            <img src="${element.icon}" alt="${element.abreviacao}">
             <p>${element.abreviacao}</p>
         `;
         containerItem.dataset.index = element.id;
@@ -219,12 +219,21 @@ const ExibirTimes = async (maratona_id, getCacheTimes) => {
 };
 
 const IntoTeam = (time) =>{
-    intoMaratona.style.display = "none";
-    intoTime.style.display = "flex";
-    
+    sidebarMaratona.classList.remove('show'); 
+    sidebarMaratona.classList.add('hide'); 
+    sidebarTime.classList.remove('hide');
+    sidebarTime.classList.add('show');
+
+    criacaoParticipante.classList.add('show');
+
     document.getElementById("BackToMaratona").addEventListener('click',function(){
-        intoTime.style.display = "none";
-        intoMaratona.style.display = "flex";
+        sidebarTime.classList.remove('show');
+        sidebarTime.classList.add('hide');
+        sidebarMaratona.classList.remove('hide');
+        sidebarMaratona.classList.add('show');
+
+        criacaoParticipante.classList.remove('show');
+
     })
 
     document.getElementById("editorTimeButton").addEventListener('click',function(){
@@ -234,8 +243,9 @@ const IntoTeam = (time) =>{
 
 const EditarTime = (time) =>{
     EditarTimeContainer.classList.add('show');
-    overlayIntoTime.classList.add('show');
-    intoTime.classList.add("no-scroll");
+    overlayIntoMaratona.classList.add('show');
+    intoMaratona.classList.add("no-scroll");
+    
 
     const botaoEditar = document.getElementById("ConfirmarEdicaoTime");
     const botaoExcluir = document.getElementById("ExcluirTime");
@@ -379,8 +389,8 @@ const CreateTeam = (maratona) => {
 
 document.getElementById("fecharEdicaoTime").addEventListener('click', function () {
     EditarTimeContainer.classList.remove('show');
-    overlayIntoTime.classList.remove('show');
-    intoTime.classList.remove("no-scroll");
+    overlayIntoMaratona.classList.remove('show');
+    intoMaratona.classList.remove("no-scroll");
 })
 
 document.getElementById("fecharCriacaoTime").addEventListener('click', function () {
@@ -468,10 +478,13 @@ const EditarMaratona = (element) => {
 }
 
 backToHome.addEventListener('click', function () {
-    container.classList.remove("no-scroll");
     sidebar.classList.remove('show'); 
     sidebar.classList.add('hide'); 
-    intoMaratona.style.display = "none";
+    intoMaratona.classList.remove('show');
+    intoMaratona.classList.add('hide'); 
+    setTimeout(function() { // 200ms pro remove do scroll não cortar a animação da IntoMaratona
+        container.classList.remove('no-scroll');
+    }, 200);
 })
 
 contaOpcoes.addEventListener('mouseenter', function () {
