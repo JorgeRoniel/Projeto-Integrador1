@@ -155,12 +155,22 @@ const IntoMaratona = (element) => {
     sidebar.style.display = "flex";
     sidebar.classList.remove('hide'); 
     sidebar.classList.add('show');
-    document.getElementById("editorMaratonaButton").addEventListener('click',function(){
+    const editorButton = document.getElementById("editorMaratonaButton");
+    const initCreationTeam = document.getElementById("initCreationTeam");
+
+    editorButton.removeEventListener('click', handleEditMaratona);
+    editorButton.addEventListener('click', handleEditMaratona);
+
+    initCreationTeam.removeEventListener('click', handleCreateTeam);
+    initCreationTeam.addEventListener('click', handleCreateTeam);
+
+    function handleEditMaratona() {
         EditarMaratona(element);
-    })
-    initCreationTeam.addEventListener('click', function () {
+    }
+
+    function handleCreateTeam() {
         CreateTeam(element);
-    })
+    }
 }
 
 const ExibirTimes = async (maratona_id, getCacheTimes) => {
@@ -212,9 +222,9 @@ const ExibirTimes = async (maratona_id, getCacheTimes) => {
         containerItem.dataset.index = element.id;
         containerExibirTimes.appendChild(containerItem);
 
-        containerItem.addEventListener('click',function(){
+        containerItem.onclick = function(){
             IntoTeam(element);
-        })
+        }
     });
 };
 
@@ -226,7 +236,7 @@ const IntoTeam = (time) =>{
 
     criacaoParticipante.classList.add('show');
 
-    document.getElementById("BackToMaratona").addEventListener('click',function(){
+    document.getElementById("BackToMaratona").onclick = function(){
         sidebarTime.classList.remove('show');
         sidebarTime.classList.add('hide');
         sidebarMaratona.classList.remove('hide');
@@ -234,11 +244,11 @@ const IntoTeam = (time) =>{
 
         criacaoParticipante.classList.remove('show');
 
-    })
+    }
 
-    document.getElementById("editorTimeButton").addEventListener('click',function(){
+    document.getElementById("editorTimeButton").onclick = function(){
         EditarTime(time);
-    })
+    }
 }
 
 const EditarTime = (time) =>{
@@ -259,20 +269,20 @@ const EditarTime = (time) =>{
     imgElement.src = time.icon;
     const inputImagemTime = document.getElementById('inputImagemTimeEditar');
 
-    document.getElementById('containerArredondadoEditaTime').addEventListener('click', function () {
+    document.getElementById('containerArredondadoEditaTime').onclick = function () {
         inputImagemTime.click();
-    });
+    };
 
-    document.getElementById('inputImagemTimeEditar').addEventListener('change', function (event) {
+    document.getElementById('inputImagemTimeEditar').onchange = function (event) {
         const arquivo = event.target.files[0];
         if (arquivo) {
             const urlImagem = URL.createObjectURL(arquivo);
             imgElement.style.width = "100%";
             imgElement.src = urlImagem;
         }
-    });
+    };
 
-    botaoEditar.addEventListener('click', async function(event){
+    botaoEditar.onclick = async function(event){
         event.preventDefault();
         const data = new FormData();
         data.append("NovoNomeTime", nomeTime.value);
@@ -299,9 +309,9 @@ const EditarTime = (time) =>{
         } catch (error) {
             console.error("ERROR: ", error);
         }
-    })
+    }
 
-    botaoExcluir.addEventListener('click', async function(event){
+    botaoExcluir.onclick = async function(event){
         event.preventDefault();
 
         const data = { id: time.id };
@@ -326,7 +336,7 @@ const EditarTime = (time) =>{
         } catch (error) {
             console.error('ERROR: ', error);
         }
-    })
+    }
 
 }
 
@@ -338,20 +348,20 @@ const CreateTeam = (maratona) => {
     const imgElement = document.getElementById('imagemAtualizarTime');
     const inputImagemTime = document.getElementById('inputImagemTime');
 
-    document.getElementById('containerArredondadoCriaTime').addEventListener('click', function () {
+    document.getElementById('containerArredondadoCriaTime').onclick = function () {
         inputImagemTime.click();
-    });
+    };
 
-    document.getElementById('inputImagemTime').addEventListener('change', function (event) {
+    document.getElementById('inputImagemTime').onchange = function (event) {
         const arquivo = event.target.files[0];
         if (arquivo) {
             const urlImagem = URL.createObjectURL(arquivo);
             imgElement.style.width = "100%";
             imgElement.src = urlImagem;
         }
-    });
+    };
 
-    formTime.addEventListener('submit', async function (event) {
+    formTime.onsubmit = async function (event) {
         event.preventDefault();
 
         const formData = new FormData(formTime);
@@ -378,26 +388,26 @@ const CreateTeam = (maratona) => {
         } catch (error) {
             console.error("ERROR: ", error);
         }
-    });
+    };
 
-    document.getElementById("fecharCriacaoTime").addEventListener('click', function () {
+    document.getElementById("fecharCriacaoTime").onclick = function () {
         criacaoTimeScreen.classList.remove('show');
         overlayIntoMaratona.classList.remove('show');
         intoMaratona.classList.remove("no-scroll");
-    });
+    };
 };
 
-document.getElementById("fecharEdicaoTime").addEventListener('click', function () {
+document.getElementById("fecharEdicaoTime").onclick = function () {
     EditarTimeContainer.classList.remove('show');
     overlayIntoMaratona.classList.remove('show');
     intoMaratona.classList.remove("no-scroll");
-})
+}
 
-document.getElementById("fecharCriacaoTime").addEventListener('click', function () {
+document.getElementById("fecharCriacaoTime").onclick = function () {
     criacaoTimeScreen.classList.remove('show');
     overlayIntoMaratona.classList.remove('show');
     intoMaratona.classList.remove("no-scroll");
-})
+}
 
 const EditarMaratona = (element) => {
     const inputNomeMaratona = document.getElementById("novoNomeMaratona");
@@ -416,7 +426,7 @@ const EditarMaratona = (element) => {
     inputQtdTimesMaratona.value = element.qtdTimes;
     inputPremioMaratona.value = element.premiacao;
 
-    botaoEditar.addEventListener('click', async (event) => {
+    botaoEditar.onclick = async (event) => {
         event.preventDefault();
 
         const data = {
@@ -447,9 +457,9 @@ const EditarMaratona = (element) => {
         } catch (error) {
             console.error("ERROR: ", error);
         }
-    });
+    };
 
-    botaoExcluir.addEventListener('click', async (event) => {
+    botaoExcluir.onclick = async (event) => {
         event.preventDefault();
 
         const data = { id: element.id };
@@ -474,10 +484,10 @@ const EditarMaratona = (element) => {
         } catch (error) {
             console.error('ERROR: ', error);
         }
-    });
+    };
 }
 
-backToHome.addEventListener('click', function () {
+backToHome.onclick = function () {
     sidebar.classList.remove('show'); 
     sidebar.classList.add('hide'); 
     intoMaratona.classList.remove('show');
@@ -485,7 +495,7 @@ backToHome.addEventListener('click', function () {
     setTimeout(function() { // 200ms pro remove do scroll não cortar a animação da IntoMaratona
         container.classList.remove('no-scroll');
     }, 200);
-})
+}
 
 contaOpcoes.addEventListener('mouseenter', function () {
     opcoes.style.display = "flex";
@@ -515,25 +525,25 @@ opcoes.addEventListener('mouseleave', function () {
 
 })
 
-fecharCriacao.addEventListener('click', function () {
+fecharCriacao.onclick = function () {
     criacao.classList.remove('show');
     overlay.classList.remove('show');
     container.classList.remove("no-scroll");
-})
+}
 
-fecharEdicaoMaratona.addEventListener('click', function () {
+fecharEdicaoMaratona.onclick = function () {
     editarMaratona.classList.remove('show');
     overlayIntoMaratona.classList.remove('show');
     intoMaratona.classList.remove("no-scroll");
-})
+}
 
-fecharEdicaoConta.addEventListener("click", function () {
+fecharEdicaoConta.onclick = function () {
     screenEdicaoConta.classList.remove('show');
     overlay.classList.remove('show');
     container.classList.remove("no-scroll");
-})
+}
 
-editarContaAbrir.addEventListener("click", function () {
+editarContaAbrir.onclick = function () {
     screenEdicaoConta.classList.add('show');
     overlay.classList.add('show');
     container.classList.add("no-scroll");
@@ -542,35 +552,47 @@ editarContaAbrir.addEventListener("click", function () {
     emailUpdate.value = userLogado.email;
     imagemAtualizar.src = userLogado.icon;
 
-    document.getElementById('containerArredondadoEdicao').addEventListener('click', function () {
-        document.getElementById('inputImagem').click();
-    });
+    let currentImageUrl = '';
 
-    document.getElementById('inputImagem').addEventListener('change', function (event) {
+    const inputImagem = document.getElementById('inputImagem');
+    const containerArredondadoEdicao = document.getElementById('containerArredondadoEdicao');
+
+    containerArredondadoEdicao.onclick = function () {
+        inputImagem.click();
+    };
+
+    inputImagem.onchange = function (event) {
         const arquivo = event.target.files[0];
         if (arquivo) {
-            const urlImagem = URL.createObjectURL(arquivo);
-            const imgElement = imagemAtualizar;
-            imgElement.src = urlImagem;
+            
+            // Revoga a antiga pra não sobreescrever
+            if (currentImageUrl) {
+                URL.revokeObjectURL(currentImageUrl);
+            }
+
+            // Nova URL pra atualizar
+            currentImageUrl = URL.createObjectURL(arquivo);
+            imagemAtualizar.src = currentImageUrl;
+
         }
-    });
+    };
+};
 
-})
 
-criarMaisButton.addEventListener('click', function () {
+criarMaisButton.onclick = function () {
     criacao.classList.add('show');
     overlay.classList.add('show');
     container.classList.add("no-scroll");
-})
+}
 
-btn_logout.addEventListener('click', (event) => {
+btn_logout.onclick = function (event) {
     event.preventDefault();
 
     fetch('/logout', { method: 'GET' })
     window.location.href = '/'
-})
+}
 
-formEditConta.addEventListener('submit', (event) => {
+formEditConta.onsubmit = (event) => {
     event.preventDefault();
 
     const formData = new FormData(formEditConta);
@@ -597,9 +619,9 @@ formEditConta.addEventListener('submit', (event) => {
         .catch((error) => {
             console.log("Erro: ", error);
         });
-})
+}
 
-btnDelUser.addEventListener('click', (event) => {
+btnDelUser.onclick = (event) => {
     event.preventDefault();
 
     fetch("/deleteUser", { method: 'DELETE' })
@@ -615,9 +637,9 @@ btnDelUser.addEventListener('click', (event) => {
         .catch((error) => {
             console.error("ERRO: ", error);
         })
-})
+}
 
-formMaratona.addEventListener('submit', async function (event) {
+formMaratona.onsubmit = async function (event) {
     event.preventDefault();
 
     const formData = new FormData(formMaratona);
@@ -652,9 +674,9 @@ formMaratona.addEventListener('submit', async function (event) {
         .catch((error) => {
             console.log("Erro: ", error);
         });
-});
+};
 
-filter.addEventListener("input", function (event) {
+filter.oninput = function (event) {
     exibirCategorias.innerHTML = '';
     maratonasSalvas.forEach(element => {
         if (element.nome.toLowerCase().includes(event.target.value.toLowerCase())) {
@@ -696,7 +718,7 @@ filter.addEventListener("input", function (event) {
             })
         }
     });
-})
+}
 
 const handleMaratonaClick = (index) => {
     const inputNomeMaratona = document.getElementById("novoNomeMaratona");

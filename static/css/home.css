@@ -589,9 +589,9 @@ body::-webkit-scrollbar-thumb {
 .animado span::after{
     content: "";
     position: absolute;
-    height: 100%;
+    height: 90%;
     border-left: 2px solid rgb(73, 73, 244);
-    top: -4px;
+    top: 0;
     background-color: rgb(192, 203, 246);;
     animation: curs .8s infinite, digita 17s steps(12) infinite;
     width: 100%;
@@ -804,7 +804,7 @@ body::-webkit-scrollbar-thumb {
     bottom: 20px; 
     left: 50%;
     transform: translateX(-50%);
-    border: 3px solid rgb(73, 73, 244); 
+    border: 4px solid rgb(73, 73, 244); 
    z-index: 0;
 }
 
@@ -940,7 +940,7 @@ body::-webkit-scrollbar-thumb {
     border-radius: 50%;
     top: 50%;
     left: 50%;
-    border: 5px solid rgb(73, 73, 244); 
+    border: 6px solid rgb(73, 73, 244); 
     transform: translate(-50%, -50%);
     z-index: 0;
 }
@@ -961,12 +961,26 @@ body::-webkit-scrollbar-thumb {
 }
 
 .sidebar h4{
-    color: gray;
+    color: rgba(255, 255, 255, 0.6);
     cursor: pointer;
+    position: relative;
+    font-size: 18px;
+    text-align: center;
 }
 
-.sidebar h4:hover{
-    text-decoration: underline;
+.sidebar h4::after{
+    content:"";
+    height: 3px;
+    width: 0%;
+    background-color:rgba(255, 255, 255, 0.6);
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    transition: 0.5s ease-in-out;
+}
+
+.sidebar h4:hover::after{
+    width: 100%;
 }
 
 .buttonBackToHome{
@@ -1224,13 +1238,17 @@ text-align: center;
     }
 
     .time-item img{
-        height: 70px;
-         width: 70px;
+        height: 60px;
+         width: 60px;
     }
 
     .time-item::before{
-        width: 70px;
-        height: 70px;
+        width: 60px;
+        height: 60px;
+    }
+
+    .time-item p{
+        font-size: 16px;
     }
 
     .tituloDesenvolvedor{
@@ -1261,10 +1279,6 @@ text-align: center;
 @media only screen and (max-width: 355px) {
     .time-item img{
         display: none;
-    }
-
-    .time-item p{
-        font-size: 16px;
     }
 
     .time-item {
