@@ -133,7 +133,7 @@ const exibirMaratonas = async () => {
             exibirCategorias.appendChild(linhaDivisoria);
         }
 
-        containerItem.addEventListener('click', async () => {
+        containerItem.onclick = async () => {
             const atual = {
                 id: element.id,
                 nome_maratona: element.nome,
@@ -142,7 +142,7 @@ const exibirMaratonas = async () => {
                 premiacao: element.premiacao,
             };
             IntoMaratona(atual);
-        });
+        };
     });
 };
 
@@ -678,47 +678,47 @@ formMaratona.onsubmit = async function (event) {
 
 filter.oninput = function (event) {
     exibirCategorias.innerHTML = '';
-    maratonasSalvas.forEach(element => {
-        if (element.nome.toLowerCase().includes(event.target.value.toLowerCase())) {
-            const containerItem = document.createElement('li');
+
+    // Filtrar as maratonas com base no texto do filtro
+    const maratonasFiltradas = maratonasSalvas.filter(element =>
+        element.nome.toLowerCase().includes(event.target.value.toLowerCase())
+    );
+
+    // Iterar sobre as maratonas filtradas
+    maratonasFiltradas.forEach((element, index) => {
+        const containerItem = document.createElement('li');
+        containerItem.innerHTML = `
+            <h3 style="font-size: 1.5em; margin: 10px 0;">${element.nome}</h3>
+            <p style="font-size: 1em; color: #ccc; margin: 5px 0;">Descrição: ${element.descricao}</p>
+            <p style="font-size: 1em; color: #ccc; margin: 5px 0;">Quantidade de Times: ${element.qtdTimes}</p>
+            <p style="font-size: 1em; color: #ccc; margin: 5px 0;">Premiação: ${element.premiacao}</p>
+        `;
+        exibirCategorias.appendChild(containerItem);
+
+        // Adiciona a linha divisória apenas se não for o último item filtrado
+        if (index < maratonasFiltradas.length - 1) {
             const linhaDivisoria = document.createElement('hr');
             linhaDivisoria.classList.add("horizontal-bar");
             linhaDivisoria.style.marginTop = "0";
             linhaDivisoria.style.marginBottom = "0";
             linhaDivisoria.style.width = "100%";
             linhaDivisoria.style.height = "2px";
-            containerItem.innerHTML = `
-                    <h3 style="font-size: 1.5em; margin: 10px 0;">${element.nome}</h3>
-                    <p style="font-size: 1em; color: #ccc; margin: 5px 0;">Descrição: ${element.descricao}</p>
-                    <p style="font-size: 1em; color: #ccc; margin: 5px 0;">Quantidade de Times: ${element.qtdTimes}</p>
-                    <p style="font-size: 1em; color: #ccc; margin: 5px 0;">Premiação: ${element.premiacao}</p>
-                `;
-            exibirCategorias.appendChild(containerItem);
             exibirCategorias.appendChild(linhaDivisoria);
-            const totalChildWidth = Array.from(containerItem.children).reduce((total, child) => {
-                return total + child.clientWidth;
-            }, 0);
-
-            if (totalChildWidth > containerItem.clientWidth) {
-                containerItem.style.flexDirection = 'column';
-            }
-            containerItem.addEventListener('click', function () {
-                const inputNomeMaratona = document.getElementById("novoNomeMaratona");
-                const inputDescricaoMaratona = document.getElementById("novaDescricaoMaratona");
-                const inputQtdTimesMaratona = document.getElementById("novaQtdTimesMaratona");
-                const inputPremioMaratona = document.getElementById("novoPremioMaratona");
-
-                editarMaratona.style.display = "flex";
-                container.classList.add("no-scroll");
-
-                inputNomeMaratona.value = element.nome;
-                inputDescricaoMaratona.value = element.descricao;
-                inputQtdTimesMaratona.value = element.qtdTimes;
-                inputPremioMaratona.value = element.qtdTimes;
-            })
         }
+
+        // Adiciona o evento de clique para abrir a tela de edição da maratona
+        containerItem.addEventListener('click', function () {
+            const atual = {
+                id: element.id,
+                nome_maratona: element.nome,
+                descricao: element.descricao,
+                qtdTimes: element.qtdTimes,
+                premiacao: element.premiacao,
+            };
+            IntoMaratona(atual);
+        });
     });
-}
+};
 
 const handleMaratonaClick = (index) => {
     const inputNomeMaratona = document.getElementById("novoNomeMaratona");
