@@ -86,9 +86,12 @@ def update_user():
     
     user_id = session.get('user_id')
     user = Models.User(nome, senha, email)
-    
 
+    
     if s.updateAccount(user_id, user.username, user.email, user.password, image_blob) == 'sucess':
+        session['email'] = user.email
+        session['username'] = user.username
+        session['senha'] = user.password
         response = {
             "status": "success",
             "message": "updated!"
@@ -226,7 +229,7 @@ def create_team():
     if 'escudoTime' in request.files:
         image_file = request.files['escudoTime']
         if image_file.filename == '':
-            image_file = None
+            return jsonify(response = {"status": "error", "message":"Selecione uma imagem para Escudo do time!"}), 400
         else:
             icon_blob = image_file.read()
     
