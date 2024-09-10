@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="static\css\login.css">
     <title>Login</title>
 </head>
@@ -23,7 +24,10 @@
                 <label for="usuario">Email</label>
                 <input id="usuario" type="email" name="email" placeholder="mail@abc.com"><br>
                 <label for="senha">Senha</label>
+                <div style=" display: flex; position: relative;" class="divsenha">
                 <input id="senha" type="password" name="senha" placeholder="**********"><br>
+                <i class="bi bi-eye-fill" id="btn-senha" onclick="mostrarSenha()"></i>
+            </div>
                 <div class="mensagens">
                     <a class="recuperaSenha" href="">Esqueceu sua senha?</a>
                     <a class="textLogin" id="textLogin"></a>
@@ -46,7 +50,10 @@
                 <label for="usuarioCriar">Email</label>
                 <input id="usuarioCriar" type="email" name="novoEmail" placeholder="mail@abc.com"><br>
                 <label for="senhaCriar">Senha</label>
+                <div style=" display: flex; position: relative;" class="divsenha">
                 <input id="senhaCriar" type="password" name="novaSenha" placeholder="**********"><br>
+                <i class="bi bi-eye-fill" id="btn-senha" onclick="mostrarSenhaCriar()"></i>
+            </div>
                 <p style="margin-top: 0;" id="textSigin" class="textLogin"></p>
                 <button id="botaoCadastrar" type="submit">Cadastrar</button>
             </form>

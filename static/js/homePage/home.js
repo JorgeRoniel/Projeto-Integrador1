@@ -48,6 +48,7 @@ const EditarTimeContainer = document.getElementById("EditarTime");
 const sidebarMaratona = document.getElementById("sidebarMaratona");
 const sidebarTime = document.getElementById("sidebarTime");
 const criacaoParticipante = document.getElementById("criacaoParticipante");
+const filterTime = document.getElementById("filterTime");
 
 //Variaveis que dirão qual está sendo exibido na tela na hora de filtrar
 
@@ -149,12 +150,12 @@ const exibirMaratonas = async () => {
 const IntoMaratona = (element) => {
     let getCacheTimes = timesSalvos.length > 0 && element.id == timesSalvos[0].maratonaId ? true : false
     ExibirTimes(element.id, getCacheTimes);
-    container.classList.add("no-scroll");
     intoMaratona.classList.remove('hide'); 
     intoMaratona.classList.add('show');
     sidebar.style.display = "flex";
     sidebar.classList.remove('hide'); 
     sidebar.classList.add('show');
+    container.classList.add("no-scroll");
     const editorButton = document.getElementById("editorMaratonaButton");
     const initCreationTeam = document.getElementById("initCreationTeam");
 
@@ -173,7 +174,13 @@ const IntoMaratona = (element) => {
     }
 }
 
+
 const ExibirTimes = async (maratona_id, getCacheTimes) => {
+
+     const loadingIndicator = document.getElementById('loadingTimes');
+    loadingIndicator.style.display = 'flex';
+
+    filterTime.value = '';
     containerExibirTimes.innerHTML = '';
 
     if (!getCacheTimes) {
@@ -187,14 +194,12 @@ const ExibirTimes = async (maratona_id, getCacheTimes) => {
             method: 'POST',
             body: formData
         };
-
         try {
             const response = await fetch('/getTimes', options);
             if (!response.ok) {
                 throw new Error('Erro de rede');
             }
             const data = await response.json();
-
             data.forEach(time => {
                 escudoTime.src = `data:image/jpeg;base64,${time.escudo}`;
                 const timesObj = {
@@ -211,7 +216,8 @@ const ExibirTimes = async (maratona_id, getCacheTimes) => {
             console.error('ERRO: ', error);
         }
     }
-
+    const fragment = document.createDocumentFragment(); 
+    loadingIndicator.style.display = 'none';
     timesSalvos.forEach((element) => {
         const containerItem = document.createElement('li');
         containerItem.classList.add('time-item');
@@ -220,12 +226,14 @@ const ExibirTimes = async (maratona_id, getCacheTimes) => {
             <p>${element.abreviacao}</p>
         `;
         containerItem.dataset.index = element.id;
-        containerExibirTimes.appendChild(containerItem);
+        fragment.appendChild(containerItem);
 
         containerItem.onclick = function(){
             IntoTeam(element);
         }
     });
+
+    containerExibirTimes.appendChild(fragment); 
 };
 
 const IntoTeam = (time) =>{
@@ -235,6 +243,9 @@ const IntoTeam = (time) =>{
     sidebarTime.classList.add('show');
 
     criacaoParticipante.classList.add('show');
+
+    const imagemTime = document.getElementById('imagemTime');
+    imagemTime.src = time.icon;
 
     document.getElementById("BackToMaratona").onclick = function(){
         sidebarTime.classList.remove('show');
@@ -578,6 +589,18 @@ editarContaAbrir.onclick = function () {
     };
 };
 
+function mostrarSenha(){
+    var inputPass = document.getElementById('newPassword');
+    var btnShowPass = document.getElementById('btn-senha');
+
+    if(inputPass.type === 'password'){
+        inputPass.setAttribute('type', 'text')
+        btnShowPass.classList.replace('bi-eye-fill', 'bi-eye-slash-fill')
+        }else{
+            inputPass.setAttribute('type', 'password')
+                btnShowPass.classList.replace('bi-eye-slash-fill', 'bi-eye-fill')
+        }
+    }
 
 criarMaisButton.onclick = function () {
     criacao.classList.add('show');
@@ -676,15 +699,36 @@ formMaratona.onsubmit = async function (event) {
         });
 };
 
+filterTime.oninput = function (event) {
+    containerExibirTimes.innerHTML = '';
+
+    const timesFiltrados = timesSalvos.filter(element =>
+        element.abreviacao.toLowerCase().includes(event.target.value.toLowerCase())
+    );
+
+     timesFiltrados.forEach((element) => {
+        const containerItem = document.createElement('li');
+        containerItem.classList.add('time-item');
+        containerItem.innerHTML = `
+            <img src="${element.icon}" alt="${element.abreviacao}">
+            <p>${element.abreviacao}</p>
+        `;
+        containerItem.dataset.index = element.id;
+        containerExibirTimes.appendChild(containerItem);
+
+        containerItem.onclick = function(){
+            IntoTeam(element);
+        }
+    });
+}
+
 filter.oninput = function (event) {
     exibirCategorias.innerHTML = '';
 
-    // Filtrar as maratonas com base no texto do filtro
     const maratonasFiltradas = maratonasSalvas.filter(element =>
         element.nome.toLowerCase().includes(event.target.value.toLowerCase())
     );
 
-    // Iterar sobre as maratonas filtradas
     maratonasFiltradas.forEach((element, index) => {
         const containerItem = document.createElement('li');
         containerItem.innerHTML = `
@@ -695,14 +739,13 @@ filter.oninput = function (event) {
         `;
         exibirCategorias.appendChild(containerItem);
 
-        // Adiciona a linha divisória apenas se não for o último item filtrado
         if (index < maratonasFiltradas.length - 1) {
             const linhaDivisoria = document.createElement('hr');
             linhaDivisoria.classList.add("horizontal-bar");
             linhaDivisoria.style.marginTop = "0";
             linhaDivisoria.style.marginBottom = "0";
             linhaDivisoria.style.width = "100%";
-            linhaDivisoria.style.height = "2px";
+            linhaDivisoria.style.height = "3px";
             exibirCategorias.appendChild(linhaDivisoria);
         }
 
