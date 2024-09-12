@@ -166,7 +166,7 @@ const IntoMaratona = (element) => {
     initCreationTeam.removeEventListener('click', handleCreateTeam);
     initCreationTeam.addEventListener('click', handleCreateTeam);
 
-    let numPartidas = CalculaNumPartidas(element.qtdTimes);
+    let numPartidas = CalculaNumPartidas(element.qtdTimes/2);
     let rodadas = [[]];
     for(let i=0; i<numPartidas;i++){
         rodadas = adicionarPartida(rodadas);
