@@ -150,10 +150,10 @@ const exibirMaratonas = async () => {
 const IntoMaratona = (element) => {
     let getCacheTimes = timesSalvos.length > 0 && element.id == timesSalvos[0].maratonaId ? true : false
     ExibirTimes(element.id, getCacheTimes);
-    intoMaratona.classList.remove('hide'); 
+    intoMaratona.classList.remove('hide');
     intoMaratona.classList.add('show');
     sidebar.style.display = "flex";
-    sidebar.classList.remove('hide'); 
+    sidebar.classList.remove('hide');
     sidebar.classList.add('show');
     container.classList.add("no-scroll");
     body.classList.add("no-scrollbody");
@@ -166,6 +166,12 @@ const IntoMaratona = (element) => {
     initCreationTeam.removeEventListener('click', handleCreateTeam);
     initCreationTeam.addEventListener('click', handleCreateTeam);
 
+    let numPartidas = CalculaNumPartidas(element.qtdTimes);
+    let rodadas = [[]];
+    for(let i=0; i<numPartidas;i++){
+        rodadas = adicionarPartida(rodadas);
+    }
+
     function handleEditMaratona() {
         EditarMaratona(element);
     }
@@ -175,10 +181,19 @@ const IntoMaratona = (element) => {
     }
 }
 
+const CalculaNumPartidas = (qtdTimes) =>{
+    let soma = qtdTimes;
+    while(qtdTimes!=1){
+        qtdTimes = qtdTimes / 2;
+        soma += qtdTimes;
+    }
+    return soma;
+}
+
 
 const ExibirTimes = async (maratona_id, getCacheTimes) => {
 
-     const loadingIndicator = document.getElementById('loadingTimes');
+    const loadingIndicator = document.getElementById('loadingTimes');
     loadingIndicator.style.display = 'flex';
 
     filterTime.value = '';
@@ -217,7 +232,7 @@ const ExibirTimes = async (maratona_id, getCacheTimes) => {
             console.error('ERRO: ', error);
         }
     }
-    const fragment = document.createDocumentFragment(); 
+    const fragment = document.createDocumentFragment();
     loadingIndicator.style.display = 'none';
     timesSalvos.forEach((element) => {
         const containerItem = document.createElement('li');
@@ -229,17 +244,17 @@ const ExibirTimes = async (maratona_id, getCacheTimes) => {
         containerItem.dataset.index = element.id;
         fragment.appendChild(containerItem);
 
-        containerItem.onclick = function(){
+        containerItem.onclick = function () {
             IntoTeam(element);
         }
     });
 
-    containerExibirTimes.appendChild(fragment); 
+    containerExibirTimes.appendChild(fragment);
 };
 
-const IntoTeam = (time) =>{
-    sidebarMaratona.classList.remove('show'); 
-    sidebarMaratona.classList.add('hide'); 
+const IntoTeam = (time) => {
+    sidebarMaratona.classList.remove('show');
+    sidebarMaratona.classList.add('hide');
     sidebarTime.classList.remove('hide');
     sidebarTime.classList.add('show');
 
@@ -248,7 +263,7 @@ const IntoTeam = (time) =>{
     const imagemTime = document.getElementById('imagemTime');
     imagemTime.src = time.icon;
 
-    document.getElementById("BackToMaratona").onclick = function(){
+    document.getElementById("BackToMaratona").onclick = function () {
         sidebarTime.classList.remove('show');
         sidebarTime.classList.add('hide');
         sidebarMaratona.classList.remove('hide');
@@ -258,16 +273,16 @@ const IntoTeam = (time) =>{
 
     }
 
-    document.getElementById("editorTimeButton").onclick = function(){
+    document.getElementById("editorTimeButton").onclick = function () {
         EditarTime(time);
     }
 }
 
-const EditarTime = (time) =>{
+const EditarTime = (time) => {
     EditarTimeContainer.classList.add('show');
     overlayIntoMaratona.classList.add('show');
     intoMaratona.classList.add("no-scroll");
-    
+
 
     const botaoEditar = document.getElementById("ConfirmarEdicaoTime");
     const botaoExcluir = document.getElementById("ExcluirTime");
@@ -294,13 +309,13 @@ const EditarTime = (time) =>{
         }
     };
 
-    botaoEditar.onclick = async function(event){
+    botaoEditar.onclick = async function (event) {
         event.preventDefault();
         const data = new FormData();
         data.append("NovoNomeTime", nomeTime.value);
-        data.append("NovaAbreviacao",abreviacaoTime.value);
-        data.append("id",time.id);
-        data.append("NovoEscudoTime",imgElement);
+        data.append("NovaAbreviacao", abreviacaoTime.value);
+        data.append("id", time.id);
+        data.append("NovoEscudoTime", imgElement);
         const options = {
             method: 'PUT',
             headers: {
@@ -323,7 +338,7 @@ const EditarTime = (time) =>{
         }
     }
 
-    botaoExcluir.onclick = async function(event){
+    botaoExcluir.onclick = async function (event) {
         event.preventDefault();
 
         const data = { id: time.id };
@@ -353,6 +368,12 @@ const EditarTime = (time) =>{
 }
 
 const CreateTeam = (maratona) => {
+
+    if (timesSalvos.length === maratona.qtdTimes) {
+        alert("Número máximo de times atingido para essa maratona");
+        return;
+    }
+
     criacaoTimeScreen.classList.add('show');
     overlayIntoMaratona.classList.add('show');
     intoMaratona.classList.add("no-scroll");
@@ -390,6 +411,13 @@ const CreateTeam = (maratona) => {
 
             if (data.status === 'success') {
                 alert(data.message);
+                if (timesSalvos.length + 1 === maratona.qtdTimes) {
+                    criacaoTimeScreen.classList.remove('show');
+                    overlayIntoMaratona.classList.remove('show');
+                    intoMaratona.classList.remove("no-scroll");
+                    ExibirTimes(maratona.id, false);
+                    return;
+                }
                 ExibirTimes(maratona.id, false);
                 formTime.reset();
                 imgElement.src = 'static/img/escudoTime.png';
@@ -500,11 +528,11 @@ const EditarMaratona = (element) => {
 }
 
 backToHome.onclick = function () {
-    sidebar.classList.remove('show'); 
-    sidebar.classList.add('hide'); 
+    sidebar.classList.remove('show');
+    sidebar.classList.add('hide');
     intoMaratona.classList.remove('show');
-    intoMaratona.classList.add('hide'); 
-    setTimeout(function() { // 200ms pro remove do scroll não cortar a animação da IntoMaratona
+    intoMaratona.classList.add('hide');
+    setTimeout(function () { // 200ms pro remove do scroll não cortar a animação da IntoMaratona
         container.classList.remove('no-scroll');
     }, 200);
     body.classList.remove("no-scrollbody");
@@ -577,7 +605,7 @@ editarContaAbrir.onclick = function () {
     inputImagem.onchange = function (event) {
         const arquivo = event.target.files[0];
         if (arquivo) {
-            
+
             // Revoga a antiga pra não sobreescrever
             if (currentImageUrl) {
                 URL.revokeObjectURL(currentImageUrl);
@@ -591,18 +619,18 @@ editarContaAbrir.onclick = function () {
     };
 };
 
-function mostrarSenha(){
+function mostrarSenha() {
     var inputPass = document.getElementById('newPassword');
     var btnShowPass = document.getElementById('btn-senha');
 
-    if(inputPass.type === 'password'){
+    if (inputPass.type === 'password') {
         inputPass.setAttribute('type', 'text')
         btnShowPass.classList.replace('bi-eye-fill', 'bi-eye-slash-fill')
-        }else{
-            inputPass.setAttribute('type', 'password')
-                btnShowPass.classList.replace('bi-eye-slash-fill', 'bi-eye-fill')
-        }
+    } else {
+        inputPass.setAttribute('type', 'password')
+        btnShowPass.classList.replace('bi-eye-slash-fill', 'bi-eye-fill')
     }
+}
 
 criarMaisButton.onclick = function () {
     criacao.classList.add('show');
@@ -708,7 +736,7 @@ filterTime.oninput = function (event) {
         element.abreviacao.toLowerCase().includes(event.target.value.toLowerCase())
     );
 
-     timesFiltrados.forEach((element) => {
+    timesFiltrados.forEach((element) => {
         const containerItem = document.createElement('li');
         containerItem.classList.add('time-item');
         containerItem.innerHTML = `
@@ -718,7 +746,7 @@ filterTime.oninput = function (event) {
         containerItem.dataset.index = element.id;
         containerExibirTimes.appendChild(containerItem);
 
-        containerItem.onclick = function(){
+        containerItem.onclick = function () {
             IntoTeam(element);
         }
     });
@@ -765,183 +793,168 @@ filter.oninput = function (event) {
     });
 };
 
-const handleMaratonaClick = (index) => {
-    const inputNomeMaratona = document.getElementById("novoNomeMaratona");
-    const inputDescricaoMaratona = document.getElementById("novaDescricaoMaratona");
-    const inputQtdTimesMaratona = document.getElementById("novaQtdTimesMaratona");
-    const premioMaratona = document.getElementById("novoPremioMaratona");
-
-    editarMaratona.style.display = "flex";
-    container.classList.add("no-scroll");
-
-}
-
-
-let rodadas = [[]];
 let idPartida = 0; // Só pra poder ter o controle
 
-function adicionarPartida() {
 
-    if (rodadas.length >= 5) {
-        alert("Número máximo de rodadas atingido.");
-        return;
-      }
+//Vai mexer aqui nelson
+function adicionarPartida(rodadas) {
 
-  const rodadaAtual = rodadas[rodadas.length - 1];
+    const rodadaAtual = rodadas[rodadas.length - 1];
 
-  // Cria uma nova partida
-  const partida = {
-    id: idPartida++,
-    times: ['Time 1', 'Time 2'], // Pode ser modificado para adicionar times reais.
-    vencedor: null
-  };
-
-  rodadaAtual.push(partida);
-
-  // Se a rodada atual atingir 2^n partidas, adiciona nova rodada
-  if (rodadaAtual.length === Math.pow(2, rodadas.length - 1)) {
-    rodadas.push([]); // Adiciona uma nova rodada vazia (rodada nesse contexto significa: final, semifinal, quartas e oitavas)
-  }
-
-  // Atualiza o layout
-  atualizarLayout();
-}
-
-function atualizarLayout() {
-  const rodadasContainer = document.getElementById('rodadas');
-  rodadasContainer.innerHTML = ''; // Limpa as rodadas existentes
-
-  rodadas.forEach((rodada, indexRodada) => {
-    const rodadaDiv = document.createElement('div');
-    rodadaDiv.classList.add('rodada');
-
-    let gap = 107;
-    
- if (rodadas.length === 3) {
-    if(indexRodada === 1){
-        rodadaDiv.style.gap = `${110}px`;
-        gap = 110 + 107;
-    }
-}
-if(rodadas.length > 3){
-    if(indexRodada === 1){
-        rodadaDiv.style.gap = `${330}px`;
-        gap = 330 + 107;
-    }
-    if(indexRodada === 2){
-        rodadaDiv.style.gap = `${110}px`;
-        gap = 110 + 107;
-    }
-}
-
-
-    rodada.forEach((partida, indexPartida) => {
-      const partidaDiv = document.createElement('div');
-      partidaDiv.classList.add('partida');
-
-      // Adiciona os times
-      const time1 = document.createElement('div');
-      time1.classList.add('time');
-      time1.innerText = partida.times[0];
-      time1.onclick = () => selecionarTime(partida.id, 0);
-
-      const time2 = document.createElement('div');
-      time2.classList.add('time');
-      time2.innerText = partida.times[1];
-      time2.onclick = () => selecionarTime(partida.id, 1);
-
-      // Adiciona o botão de escolha de vencedor
-      const trof = document.createElement('div');
-      trof.classList.add('seta');
-      trof.innerHTML = '<i class="bi bi-trophy-fill"></i>';
-      trof.onclick = () => definirVencedor(partida.id);
-
-      // Monta a estrutura da partida
-      partidaDiv.appendChild(time1);
-      partidaDiv.appendChild(trof);
-      partidaDiv.appendChild(time2);
-
-      // Se for uma partida par, adicionar a linha vertical que conecta à partida ímpar
-        // Adiciona a linha vertical se a rodada estiver cheia
-        if (rodada.length >= Math.pow(2, indexRodada)) {
-            if (indexPartida % 2 === 0 && rodada[indexPartida + 1]) {
-              const linhaVertical = document.createElement('div');
-              linhaVertical.classList.add('linha-vertical');
-              linhaVertical.style.height = `${gap}px`;
-              partidaDiv.appendChild(linhaVertical);
-            }
-          } else {
-            // Adiciona a linha vertical alternativa se a rodada não estiver cheia
-            if (indexPartida % 2 === 0 && rodada[indexPartida + 1]) {
-              const linhaVertical2 = document.createElement('div');
-              linhaVertical2.classList.add('vertical2');
-              linhaVertical2.style.height = `${gap}px`;
-              partidaDiv.appendChild(linhaVertical2);
-            }
-          }
-      
-      // Se não for a última rodada, adiciona linha horizontal para a próxima rodada
-      if (indexRodada > 0 && rodadas[indexRodada - 1].length === Math.floor(rodada.length / 2)){
-        const linhaHorizontal = document.createElement('div');
-        linhaHorizontal.classList.add('linha-horizontal');
-        partidaDiv.appendChild(linhaHorizontal);
-        
-      }
-      if(indexRodada === 0){ // pra ter na final
-        const linhaHorizontal = document.createElement('div');
-        linhaHorizontal.classList.add('linha-horizontal');
-        partidaDiv.appendChild(linhaHorizontal);
-      }
-
-      rodadaDiv.appendChild(partidaDiv);
-    });
-
-    rodadasContainer.appendChild(rodadaDiv);
-  });
-}
-
-function definirVencedor(partidaId) {
-  const partida = rodadas.flat().find(p => p.id === partidaId);
-  if (partida && !partida.vencedor) {
-    partida.vencedor = prompt("Escolha o vencedor: Time 1 ou Time 2");
-    // Envia o vencedor para a próxima rodada
-    enviarVencedorProximaRodada(partida);
-  }
-}
-
-function enviarVencedorProximaRodada(partida) {
-  const rodadaAtual = rodadas.find(rodada => rodada.includes(partida));
-  const rodadaIndex = rodadas.indexOf(rodadaAtual);
-  const proximaRodada = rodadas[rodadaIndex + 1];
-
-  if (proximaRodada) {
-    const posicaoNaProximaRodada = Math.floor(rodadaAtual.indexOf(partida) / 2);
-    let proximaPartida = proximaRodada[posicaoNaProximaRodada];
-
-    if (!proximaPartida) {
-      // Cria uma nova partida na próxima rodada se ela ainda não existir
-      proximaPartida = {
+    // Cria uma nova partida
+    const partida = {
         id: idPartida++,
-        times: ['', ''],
+        times: ['Time 1', 'Time 2'], // Pode ser modificado para adicionar times reais.
         vencedor: null
-      };
-      proximaRodada[posicaoNaProximaRodada] = proximaPartida;
+    };
+
+    rodadaAtual.push(partida);
+
+    // Se a rodada atual atingir 2^n partidas, adiciona nova rodada
+    if (rodadaAtual.length === Math.pow(2, rodadas.length - 1)) {
+        rodadas.push([]); // Adiciona uma nova rodada vazia (rodada nesse contexto significa: final, semifinal, quartas e oitavas)
     }
 
-    if (!proximaPartida.times[0]) {
-      proximaPartida.times[0] = partida.vencedor;
-    } else {
-      proximaPartida.times[1] = partida.vencedor;
-    }
-  }
-
-  atualizarLayout();
+    // Atualiza o layout
+    atualizarLayout(rodadas);
+    return rodadas;
 }
 
-function selecionarTime(partidaId, timeIndex) {
-  const partida = rodadas.flat().find(p => p.id === partidaId);
-  if (!partida.vencedor) {
-    partida.times[timeIndex] = prompt("Escolha o novo time:");
-    atualizarLayout();
-  }
+function atualizarLayout(rodadas) {
+    const rodadasContainer = document.getElementById('rodadas');
+    rodadasContainer.innerHTML = ''; // Limpa as rodadas existentes
+
+    rodadas.forEach((rodada, indexRodada) => {
+        const rodadaDiv = document.createElement('div');
+        rodadaDiv.classList.add('rodada');
+
+        let gap = 107;
+
+        if (rodadas.length === 3) {
+            if (indexRodada === 1) {
+                rodadaDiv.style.gap = `${110}px`;
+                gap = 110 + 107;
+            }
+        }
+        if (rodadas.length > 3) {
+            if (indexRodada === 1) {
+                rodadaDiv.style.gap = `${330}px`;
+                gap = 330 + 107;
+            }
+            if (indexRodada === 2) {
+                rodadaDiv.style.gap = `${110}px`;
+                gap = 110 + 107;
+            }
+        }
+
+
+        rodada.forEach((partida, indexPartida) => {
+            const partidaDiv = document.createElement('div');
+            partidaDiv.classList.add('partida');
+
+            // Adiciona os times
+            const time1 = document.createElement('div');
+            time1.classList.add('time');
+            time1.innerText = partida.times[0];
+            time1.onclick = () => selecionarTime(partida.id, 0, rodadas);
+
+            const time2 = document.createElement('div');
+            time2.classList.add('time');
+            time2.innerText = partida.times[1];
+            time2.onclick = () => selecionarTime(partida.id, 1, rodadas);
+
+            // Adiciona o botão de escolha de vencedor
+            const trof = document.createElement('div');
+            trof.classList.add('seta');
+            trof.innerHTML = '<i class="bi bi-trophy-fill"></i>';
+            trof.onclick = () => definirVencedor(partida.id, rodadas);
+
+            // Monta a estrutura da partida
+            partidaDiv.appendChild(time1);
+            partidaDiv.appendChild(trof);
+            partidaDiv.appendChild(time2);
+
+            // Se for uma partida par, adicionar a linha vertical que conecta à partida ímpar
+            // Adiciona a linha vertical se a rodada estiver cheia
+            if (rodada.length >= Math.pow(2, indexRodada)) {
+                if (indexPartida % 2 === 0 && rodada[indexPartida + 1]) {
+                    const linhaVertical = document.createElement('div');
+                    linhaVertical.classList.add('linha-vertical');
+                    linhaVertical.style.height = `${gap}px`;
+                    partidaDiv.appendChild(linhaVertical);
+                }
+            } else {
+                // Adiciona a linha vertical alternativa se a rodada não estiver cheia
+                if (indexPartida % 2 === 0 && rodada[indexPartida + 1]) {
+                    const linhaVertical2 = document.createElement('div');
+                    linhaVertical2.classList.add('vertical2');
+                    linhaVertical2.style.height = `${gap}px`;
+                    partidaDiv.appendChild(linhaVertical2);
+                }
+            }
+
+            // Se não for a última rodada, adiciona linha horizontal para a próxima rodada
+            if (indexRodada > 0 && rodadas[indexRodada - 1].length === Math.floor(rodada.length / 2)) {
+                const linhaHorizontal = document.createElement('div');
+                linhaHorizontal.classList.add('linha-horizontal');
+                partidaDiv.appendChild(linhaHorizontal);
+
+            }
+            if (indexRodada === 0) { // pra ter na final
+                const linhaHorizontal = document.createElement('div');
+                linhaHorizontal.classList.add('linha-horizontal');
+                partidaDiv.appendChild(linhaHorizontal);
+            }
+
+            rodadaDiv.appendChild(partidaDiv);
+        });
+
+        rodadasContainer.appendChild(rodadaDiv);
+    });
+}
+
+function definirVencedor(partidaId, rodadas) {
+    const partida = rodadas.flat().find(p => p.id === partidaId);
+    if (partida && !partida.vencedor) {
+        partida.vencedor = prompt("Escolha o vencedor: Time 1 ou Time 2");
+        // Envia o vencedor para a próxima rodada
+        enviarVencedorProximaRodada(partida, rodadas);
+    }
+}
+
+function enviarVencedorProximaRodada(partida, rodadas) {
+    const rodadaAtual = rodadas.find(rodada => rodada.includes(partida));
+    const rodadaIndex = rodadas.indexOf(rodadaAtual);
+    const proximaRodada = rodadas[rodadaIndex + 1];
+
+    if (proximaRodada) {
+        const posicaoNaProximaRodada = Math.floor(rodadaAtual.indexOf(partida) / 2);
+        let proximaPartida = proximaRodada[posicaoNaProximaRodada];
+
+        if (!proximaPartida) {
+            // Cria uma nova partida na próxima rodada se ela ainda não existir
+            proximaPartida = {
+                id: idPartida++,
+                times: ['', ''],
+                vencedor: null
+            };
+            proximaRodada[posicaoNaProximaRodada] = proximaPartida;
+        }
+
+        if (!proximaPartida.times[0]) {
+            proximaPartida.times[0] = partida.vencedor;
+        } else {
+            proximaPartida.times[1] = partida.vencedor;
+        }
+    }
+
+    atualizarLayout(rodadas);
+}
+
+function selecionarTime(partidaId, timeIndex, rodadas) {
+    const partida = rodadas.flat().find(p => p.id === partidaId);
+    if (!partida.vencedor) {
+        partida.times[timeIndex] = prompt("Escolha o novo time:");
+        atualizarLayout(rodadas);
+    }
 }
