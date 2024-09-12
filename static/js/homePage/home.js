@@ -452,7 +452,7 @@ document.getElementById("fecharCriacaoTime").onclick = function () {
 const EditarMaratona = (element) => {
     const inputNomeMaratona = document.getElementById("novoNomeMaratona");
     const inputDescricaoMaratona = document.getElementById("novaDescricaoMaratona");
-    const inputQtdTimesMaratona = document.getElementById("novaQtdTimesMaratona");
+    const inputQtdTimesMaratona = document.getElementById("novaqtdTimes");
     const inputPremioMaratona = document.getElementById("novoPremioMaratona");
     const botaoEditar = document.getElementById("ConfirmarEdicaoMaratona");
     const botaoExcluir = document.getElementById("ExcluirMaratona");
@@ -716,6 +716,7 @@ formMaratona.onsubmit = async function (event) {
             if (data.status === "success") {
                 exibirMaratonas();
                 alert(data.message);
+                formMaratona.reset();
             } else {
                 if (data.status === "error") {
                     alert("erro ao criar maratona");
