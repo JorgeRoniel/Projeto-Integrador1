@@ -1,4 +1,6 @@
 from database import conexao as c
+from database import Models as mod
+from Estruturas import ListaDEncadeada as le
 
 def criarMaratona(nome, descricao, qtdTimes, premiacao, userId):
     try:
@@ -38,11 +40,15 @@ def listarMaratonas(user_id):
         cursor.execute(f"SELECT m.id, m.nome_maratona, m.descricao, m.qtdTimes, m.premiacao FROM maratona m INNER JOIN usuario u ON m.userId = u.id WHERE u.id = {user_id};")
         data = cursor.fetchall()
 
-        return data
+        for i in data:
+            marat = mod.Marathon_le(i.m.id, i.m.nome_maratona, i.m.descricao, i.m.qtdTimes, i.m.premiacao, None)
+            lista = le.inserir_inicio(marat)
+
+        return lista
     except Exception as e:
         print(e)
         return []
-
+    
 def deletarMaratona(id):
     try:
         conn = c.openBD()

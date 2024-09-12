@@ -1,4 +1,6 @@
 from database import conexao as c
+from database import Models as mod
+from Estruturas import ListaDEncadeada as le
 
 def inserirCompetidores(nome, timeId):
     try:
@@ -24,8 +26,11 @@ def listarCompetidores(id_time):
         cursor.execute(sql, (id_time))
         data = cursor.fetchall()
 
-        conn.close()
-        return data
+        for i in data:
+            comp = mod.Player_le(None ,i.m.name, None)
+            lista = le.inserir_inicio(comp)
+
+        return lista
     except Exception as e:
         print(e)
         return []
