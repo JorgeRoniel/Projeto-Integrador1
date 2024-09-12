@@ -67,6 +67,6 @@ class ListaDuplamenteEncadeada:
         result = []
         current = self.cabeca
         while current:
-            result.append(current.valor)
+            result.append(current.valor.__dict__)
             current = current.proximo
         return result
