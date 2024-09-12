@@ -100,11 +100,11 @@ const exibirMaratonas = async () => {
 
         data.forEach(maratona => {
             const maratonasObj = {
-                id: maratona.id,
-                nome: maratona.nome_maratona,
-                descricao: maratona.descricao,
-                qtdTimes: maratona.qtdTimes,
-                premiacao: maratona.premiacao,
+                id: maratona.MId,
+                nome: maratona.name,
+                descricao: maratona.desc,
+                qtdTimes: maratona.numTeam,
+                premiacao: maratona.prize,
             };
             maratonasSalvas.push(maratonasObj);
         });
@@ -966,13 +966,6 @@ function selecionarTime(partidaId, timeIndex, rodadas, time) {
         timeOpcao.value = timesSalvos[i].nome;
         timeOpcao.textContent = timesSalvos[i].abreviacao;
         time.appendChild(timeOpcao);
-
-        timeOpcao.onchange = function() {
-            if (partida) {
-                partida.times[timeIndex] = time.value;
-                atualizarLayout(rodadas);
-            }
-        };
     }
 
     if (partida && partida.times[timeIndex]) {
@@ -980,6 +973,12 @@ function selecionarTime(partidaId, timeIndex, rodadas, time) {
     }
 
     // Atualiza a interface quando um time é selecionado
+    time.onchange = function() {
+        if (partida) {
+            partida.times[timeIndex] = time.value;
+            atualizarLayout(rodadas);
+        }
+    };
 
     if (!partida.vencedor) {
         //.times[timeIndex] = prompt("Escolha o novo time:");
