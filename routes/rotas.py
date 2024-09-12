@@ -175,8 +175,9 @@ def show_marathons():
     user_id = session.get('user_id')
 
     data = m.listarMaratonas(user_id)
+    lista_maratonas = data.to_list()
 
-    return jsonify(data)
+    return jsonify(lista_maratonas)
 
 @rotas.route("/updateMaratona", methods=['PUT'])
 def update_marathon():

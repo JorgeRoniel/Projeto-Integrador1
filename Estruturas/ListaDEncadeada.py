@@ -62,3 +62,11 @@ class ListaDuplamenteEncadeada:
             print(temp.valor, end=" <-> ")
             temp = temp.anterior
         print("None")
+    
+    def to_list(self):
+        result = []
+        current = self.cabeca
+        while current:
+            result.append(current.valor)
+            current = current.proximo
+        return result

@@ -40,9 +40,11 @@ def listarMaratonas(user_id):
         cursor.execute(f"SELECT m.id, m.nome_maratona, m.descricao, m.qtdTimes, m.premiacao FROM maratona m INNER JOIN usuario u ON m.userId = u.id WHERE u.id = {user_id};")
         data = cursor.fetchall()
 
+        lista = le.ListaDuplamenteEncadeada()
+
         for i in data:
-            marat = mod.Marathon_le(i.m.id, i.m.nome_maratona, i.m.descricao, i.m.qtdTimes, i.m.premiacao, None)
-            lista = le.inserir_inicio(marat)
+            marat = mod.Marathon_le(i['id'], i['nome_maratona'], i['descricao'], i['qtdTimes'], i['premiacao'], None)
+            lista.inserir_inicio(marat)
 
         return lista
     except Exception as e:
