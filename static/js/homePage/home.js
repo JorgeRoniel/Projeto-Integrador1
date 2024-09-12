@@ -49,8 +49,10 @@ const sidebarMaratona = document.getElementById("sidebarMaratona");
 const sidebarTime = document.getElementById("sidebarTime");
 const criacaoParticipante = document.getElementById("criacaoParticipante");
 const filterTime = document.getElementById("filterTime");
+const rodadasContainer = document.getElementById('rodadas');
+const torneioContainer = document.getElementById("torneio-container");
+const containerCampeao = document.getElementById("containerCampeao");
 const body = document.getElementById("body");
-//Variaveis que dirão qual está sendo exibido na tela na hora de filtrar
 
 //Vetores que guardarão in memory os gets para tornar o programa performático
 var maratonasSalvas = [];
@@ -149,7 +151,12 @@ const exibirMaratonas = async () => {
 
 const IntoMaratona = (element) => {
     let getCacheTimes = timesSalvos.length > 0 && element.id == timesSalvos[0].maratonaId ? true : false
-    ExibirTimes(element.id, getCacheTimes);
+    let rodadas = [[]];
+    let numPartidas = CalculaNumPartidas(element.qtdTimes/2);
+    for(let i=0; i<numPartidas;i++){
+        rodadas = adicionarPartida(rodadas);
+    }
+    ExibirTimes(element.id, getCacheTimes, rodadas);
     intoMaratona.classList.remove('hide');
     intoMaratona.classList.add('show');
     sidebar.style.display = "flex";
@@ -165,12 +172,6 @@ const IntoMaratona = (element) => {
 
     initCreationTeam.removeEventListener('click', handleCreateTeam);
     initCreationTeam.addEventListener('click', handleCreateTeam);
-
-    let numPartidas = CalculaNumPartidas(element.qtdTimes/2);
-    let rodadas = [[]];
-    for(let i=0; i<numPartidas;i++){
-        rodadas = adicionarPartida(rodadas);
-    }
 
     function handleEditMaratona() {
         EditarMaratona(element);
@@ -191,7 +192,7 @@ const CalculaNumPartidas = (qtdTimes) =>{
 }
 
 
-const ExibirTimes = async (maratona_id, getCacheTimes) => {
+const ExibirTimes = async (maratona_id, getCacheTimes, rodadas) => {
 
     const loadingIndicator = document.getElementById('loadingTimes');
     loadingIndicator.style.display = 'flex';
@@ -245,14 +246,15 @@ const ExibirTimes = async (maratona_id, getCacheTimes) => {
         fragment.appendChild(containerItem);
 
         containerItem.onclick = function () {
-            IntoTeam(element);
+            IntoTeam(element, rodadas);
         }
     });
 
     containerExibirTimes.appendChild(fragment);
 };
 
-const IntoTeam = (time) => {
+const IntoTeam = (time, rodadas) => {
+    torneioContainer.innerHTML = '';
     sidebarMaratona.classList.remove('show');
     sidebarMaratona.classList.add('hide');
     sidebarTime.classList.remove('hide');
@@ -268,9 +270,11 @@ const IntoTeam = (time) => {
         sidebarTime.classList.add('hide');
         sidebarMaratona.classList.remove('hide');
         sidebarMaratona.classList.add('show');
-
         criacaoParticipante.classList.remove('show');
 
+        torneioContainer.appendChild(containerCampeao);
+        torneioContainer.appendChild(rodadasContainer);
+        atualizarLayout(rodadas);
     }
 
     document.getElementById("editorTimeButton").onclick = function () {
@@ -796,8 +800,6 @@ filter.oninput = function (event) {
 
 let idPartida = 0; // Só pra poder ter o controle
 
-
-//Vai mexer aqui nelson
 function adicionarPartida(rodadas) {
 
     const rodadaAtual = rodadas[rodadas.length - 1];
@@ -822,8 +824,7 @@ function adicionarPartida(rodadas) {
 }
 
 function atualizarLayout(rodadas) {
-    const rodadasContainer = document.getElementById('rodadas');
-    rodadasContainer.innerHTML = ''; // Limpa as rodadas existentes
+    rodadasContainer.innerHTML = '';
 
     rodadas.forEach((rodada, indexRodada) => {
         const rodadaDiv = document.createElement('div');
@@ -853,16 +854,15 @@ function atualizarLayout(rodadas) {
             const partidaDiv = document.createElement('div');
             partidaDiv.classList.add('partida');
 
-            // Adiciona os times
-            const time1 = document.createElement('div');
+            const time1 = document.createElement('select');
             time1.classList.add('time');
-            time1.innerText = partida.times[0];
-            time1.onclick = () => selecionarTime(partida.id, 0, rodadas);
+           // time1.innerText = partida.times[0];
+            time1.onclick = () => selecionarTime(partida.id, 0, rodadas, time1);
 
-            const time2 = document.createElement('div');
+            const time2 = document.createElement('select');
             time2.classList.add('time');
-            time2.innerText = partida.times[1];
-            time2.onclick = () => selecionarTime(partida.id, 1, rodadas);
+          //  time2.innerText = partida.times[1];
+            time2.onclick = () => selecionarTime(partida.id, 1, rodadas, time2);
 
             // Adiciona o botão de escolha de vencedor
             const trof = document.createElement('div');
@@ -952,10 +952,37 @@ function enviarVencedorProximaRodada(partida, rodadas) {
     atualizarLayout(rodadas);
 }
 
-function selecionarTime(partidaId, timeIndex, rodadas) {
+function selecionarTime(partidaId, timeIndex, rodadas, time) {
     const partida = rodadas.flat().find(p => p.id === partidaId);
+    time.innerHTML = '';
+
+    if(timesSalvos.length === 0){
+        alert("Nenhum time criado!");
+        return;
+    }
+
+    for(let i =0;i<timesSalvos.length;i++){
+        const timeOpcao = document.createElement("option");
+        timeOpcao.value = timesSalvos[i].nome;
+        timeOpcao.textContent = timesSalvos[i].abreviacao;
+        time.appendChild(timeOpcao);
+
+        timeOpcao.onchange = function() {
+            if (partida) {
+                partida.times[timeIndex] = time.value;
+                atualizarLayout(rodadas);
+            }
+        };
+    }
+
+    if (partida && partida.times[timeIndex]) {
+        time.value = partida.times[timeIndex];
+    }
+
+    // Atualiza a interface quando um time é selecionado
+
     if (!partida.vencedor) {
-        partida.times[timeIndex] = prompt("Escolha o novo time:");
-        atualizarLayout(rodadas);
+        //.times[timeIndex] = prompt("Escolha o novo time:");
+       // atualizarLayout(rodadas);
     }
 }

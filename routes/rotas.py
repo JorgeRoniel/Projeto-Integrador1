@@ -5,7 +5,7 @@ from services.UserServices import verifyPass
 from services import MaratonaService as m
 from services import TimesService as t
 from services import CompetidoresService as cs
-from Estruturas import ListaDEEncadeada as le
+from Estruturas import ListaDEncadeada as le
 import base64
 
 rotas = Blueprint('rotas', __name__)
