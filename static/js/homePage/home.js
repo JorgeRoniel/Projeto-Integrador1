@@ -49,7 +49,7 @@ const sidebarMaratona = document.getElementById("sidebarMaratona");
 const sidebarTime = document.getElementById("sidebarTime");
 const criacaoParticipante = document.getElementById("criacaoParticipante");
 const filterTime = document.getElementById("filterTime");
-
+const body = document.getElementById("body");
 //Variaveis que dirão qual está sendo exibido na tela na hora de filtrar
 
 //Vetores que guardarão in memory os gets para tornar o programa performático
@@ -156,6 +156,7 @@ const IntoMaratona = (element) => {
     sidebar.classList.remove('hide'); 
     sidebar.classList.add('show');
     container.classList.add("no-scroll");
+    body.classList.add("no-scrollbody");
     const editorButton = document.getElementById("editorMaratonaButton");
     const initCreationTeam = document.getElementById("initCreationTeam");
 
@@ -506,6 +507,7 @@ backToHome.onclick = function () {
     setTimeout(function() { // 200ms pro remove do scroll não cortar a animação da IntoMaratona
         container.classList.remove('no-scroll');
     }, 200);
+    body.classList.remove("no-scrollbody");
 }
 
 contaOpcoes.addEventListener('mouseenter', function () {
@@ -772,4 +774,174 @@ const handleMaratonaClick = (index) => {
     editarMaratona.style.display = "flex";
     container.classList.add("no-scroll");
 
+}
+
+
+let rodadas = [[]];
+let idPartida = 0; // Só pra poder ter o controle
+
+function adicionarPartida() {
+
+    if (rodadas.length >= 5) {
+        alert("Número máximo de rodadas atingido.");
+        return;
+      }
+
+  const rodadaAtual = rodadas[rodadas.length - 1];
+
+  // Cria uma nova partida
+  const partida = {
+    id: idPartida++,
+    times: ['Time 1', 'Time 2'], // Pode ser modificado para adicionar times reais.
+    vencedor: null
+  };
+
+  rodadaAtual.push(partida);
+
+  // Se a rodada atual atingir 2^n partidas, adiciona nova rodada
+  if (rodadaAtual.length === Math.pow(2, rodadas.length - 1)) {
+    rodadas.push([]); // Adiciona uma nova rodada vazia (rodada nesse contexto significa: final, semifinal, quartas e oitavas)
+  }
+
+  // Atualiza o layout
+  atualizarLayout();
+}
+
+function atualizarLayout() {
+  const rodadasContainer = document.getElementById('rodadas');
+  rodadasContainer.innerHTML = ''; // Limpa as rodadas existentes
+
+  rodadas.forEach((rodada, indexRodada) => {
+    const rodadaDiv = document.createElement('div');
+    rodadaDiv.classList.add('rodada');
+
+    let gap = 107;
+    
+ if (rodadas.length === 3) {
+    if(indexRodada === 1){
+        rodadaDiv.style.gap = `${110}px`;
+        gap = 110 + 107;
+    }
+}
+if(rodadas.length > 3){
+    if(indexRodada === 1){
+        rodadaDiv.style.gap = `${330}px`;
+        gap = 330 + 107;
+    }
+    if(indexRodada === 2){
+        rodadaDiv.style.gap = `${110}px`;
+        gap = 110 + 107;
+    }
+}
+
+
+    rodada.forEach((partida, indexPartida) => {
+      const partidaDiv = document.createElement('div');
+      partidaDiv.classList.add('partida');
+
+      // Adiciona os times
+      const time1 = document.createElement('div');
+      time1.classList.add('time');
+      time1.innerText = partida.times[0];
+      time1.onclick = () => selecionarTime(partida.id, 0);
+
+      const time2 = document.createElement('div');
+      time2.classList.add('time');
+      time2.innerText = partida.times[1];
+      time2.onclick = () => selecionarTime(partida.id, 1);
+
+      // Adiciona o botão de escolha de vencedor
+      const trof = document.createElement('div');
+      trof.classList.add('seta');
+      trof.innerHTML = '<i class="bi bi-trophy-fill"></i>';
+      trof.onclick = () => definirVencedor(partida.id);
+
+      // Monta a estrutura da partida
+      partidaDiv.appendChild(time1);
+      partidaDiv.appendChild(trof);
+      partidaDiv.appendChild(time2);
+
+      // Se for uma partida par, adicionar a linha vertical que conecta à partida ímpar
+        // Adiciona a linha vertical se a rodada estiver cheia
+        if (rodada.length >= Math.pow(2, indexRodada)) {
+            if (indexPartida % 2 === 0 && rodada[indexPartida + 1]) {
+              const linhaVertical = document.createElement('div');
+              linhaVertical.classList.add('linha-vertical');
+              linhaVertical.style.height = `${gap}px`;
+              partidaDiv.appendChild(linhaVertical);
+            }
+          } else {
+            // Adiciona a linha vertical alternativa se a rodada não estiver cheia
+            if (indexPartida % 2 === 0 && rodada[indexPartida + 1]) {
+              const linhaVertical2 = document.createElement('div');
+              linhaVertical2.classList.add('vertical2');
+              linhaVertical2.style.height = `${gap}px`;
+              partidaDiv.appendChild(linhaVertical2);
+            }
+          }
+      
+      // Se não for a última rodada, adiciona linha horizontal para a próxima rodada
+      if (indexRodada > 0 && rodadas[indexRodada - 1].length === Math.floor(rodada.length / 2)){
+        const linhaHorizontal = document.createElement('div');
+        linhaHorizontal.classList.add('linha-horizontal');
+        partidaDiv.appendChild(linhaHorizontal);
+        
+      }
+      if(indexRodada === 0){ // pra ter na final
+        const linhaHorizontal = document.createElement('div');
+        linhaHorizontal.classList.add('linha-horizontal');
+        partidaDiv.appendChild(linhaHorizontal);
+      }
+
+      rodadaDiv.appendChild(partidaDiv);
+    });
+
+    rodadasContainer.appendChild(rodadaDiv);
+  });
+}
+
+function definirVencedor(partidaId) {
+  const partida = rodadas.flat().find(p => p.id === partidaId);
+  if (partida && !partida.vencedor) {
+    partida.vencedor = prompt("Escolha o vencedor: Time 1 ou Time 2");
+    // Envia o vencedor para a próxima rodada
+    enviarVencedorProximaRodada(partida);
+  }
+}
+
+function enviarVencedorProximaRodada(partida) {
+  const rodadaAtual = rodadas.find(rodada => rodada.includes(partida));
+  const rodadaIndex = rodadas.indexOf(rodadaAtual);
+  const proximaRodada = rodadas[rodadaIndex + 1];
+
+  if (proximaRodada) {
+    const posicaoNaProximaRodada = Math.floor(rodadaAtual.indexOf(partida) / 2);
+    let proximaPartida = proximaRodada[posicaoNaProximaRodada];
+
+    if (!proximaPartida) {
+      // Cria uma nova partida na próxima rodada se ela ainda não existir
+      proximaPartida = {
+        id: idPartida++,
+        times: ['', ''],
+        vencedor: null
+      };
+      proximaRodada[posicaoNaProximaRodada] = proximaPartida;
+    }
+
+    if (!proximaPartida.times[0]) {
+      proximaPartida.times[0] = partida.vencedor;
+    } else {
+      proximaPartida.times[1] = partida.vencedor;
+    }
+  }
+
+  atualizarLayout();
+}
+
+function selecionarTime(partidaId, timeIndex) {
+  const partida = rodadas.flat().find(p => p.id === partidaId);
+  if (!partida.vencedor) {
+    partida.times[timeIndex] = prompt("Escolha o novo time:");
+    atualizarLayout();
+  }
 }

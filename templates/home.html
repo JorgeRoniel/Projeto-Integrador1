@@ -9,7 +9,7 @@
     <title>Home</title>
 </head>
 
-<body>
+<body id="body">
     <div id="mainContainer" class="container">
         <div id="overlay" class="overlay"></div>
         <header class="headerHome" style="background-image: url('static\\img\\OIG2.png');"></header>
@@ -116,7 +116,21 @@
         </div>
         <ul id="ExibirCategorias" class="ExibirCategorias"></ul>
     </div>
-    <div id="intoMaratona" class="IntoMaratona"></div>
+    <div id="intoMaratona" class="IntoMaratona">
+        <div class="menuSuperior">
+            <button id="adicionar-partida" class="ConfirmarCriacao" onclick="adicionarPartida()">Adicionar Partida</button>
+        </div>
+        <div id="torneio-container" class="torneio-container" style="justify-content: center;">
+            <div class="containerVencedor">
+                <img src="" alt="vencedor">
+            </div>
+            
+            <div id="rodadas" class="rodadas">
+              <!-- Rodadas e Partidas serão inseridas dinamicamente aqui -->
+            </div>
+          </div>
+          
+    </div>
 
     <div id="overlayIntoMaratona" class="overlay"></div>
     <div id="edicaoMaratona" class="criacao">
@@ -221,7 +235,7 @@
             <h1 style="color: white;" class="tituloDesenvolvedor">Inscrever Desenvolvedor</h1>
             <label for="nomeParticipante">Nome do Dev</label>
             <input name="nomeParticipante" type="text" placeholder="João Alves">
-            <button id="ConfirmarCriacaoParticipante" class="ConfirmarCriacao" type="submit">Criar</button>
+            <button id="ConfirmarCriacaoParticipante" class="ConfirmarCriacao inscrito" type="submit" style="font-size: 21px;     word-break: break-word;">Inscrever</button>
         </form>
     </div>
 </div>

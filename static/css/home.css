@@ -10,6 +10,10 @@ body {
     overflow-x: hidden;
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
 .container {
     display: flex;
     flex-direction: column;
@@ -179,7 +183,7 @@ body::-webkit-scrollbar-thumb {
 }
 
 .containerArredondado:hover img.imagemAtualizar {
-    filter: blur(2px) brightness(0.9); 
+    filter: blur(4px) brightness(0.8); 
     z-index: 0; 
 }
 
@@ -242,6 +246,7 @@ input {
     border: 0;
     color: white;
     font-size: 17px;
+    outline: none;
 }
 
 .inputFiltro::placeholder{
@@ -525,9 +530,12 @@ input {
     visibility: visible;
 }
 
-.no-scroll {
+.no-scrollbody{
     overflow: hidden;
-    position: fixed;
+}
+
+.no-scroll {
+    position: absolute;
     width: 100%;
 }
 
@@ -702,13 +710,12 @@ input {
     gap: 30px;
     margin-bottom: 20px;
     border-radius: 10px;
-    font-size: 20px;
     background-color:rgb(20, 20, 59);
     margin-top: 0.5%;
 }
 .filtrar input{
     width: 40%;
-    padding: 10px;
+    padding: 5px;
     border: none;
     outline: none;
 }
@@ -728,7 +735,7 @@ height: 40px;
     display: flex;
     align-items: center;
     flex-direction: column;
-    background-color: rgb(20, 57, 111);
+    background-color: rgb(53, 53, 93);
     border-radius: 15px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
@@ -769,13 +776,15 @@ height: 40px;
 }
 
 .IntoMaratona{
-    display: flex;
+    display: grid;
     width: 85%;
     position: fixed;
     align-items: center;
+    justify-items: center;
     flex-direction: column;
-    background-color: rgb(192, 203, 246);
-    min-height: 100vh;
+    background-color: rgb(53, 53, 93);
+    height: 100vh;
+    overflow-x: auto;
     overflow-y: auto;
     z-index: 3;
     left: 15%;
@@ -783,6 +792,7 @@ height: 40px;
     visibility: hidden; 
     opacity: 0;
     transition: transform 0.5s ease, opacity 0.5s ease, visibility 0s 0.2s;
+    
 }
 
 .IntoMaratona.show {
@@ -797,6 +807,140 @@ height: 40px;
     visibility: hidden;
     transform: translateX(100%);
     transition: transform 0.5s ease-in-out, opacity 0.5s ease, visibility 0s 0.2s;
+}
+
+.torneio-container {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    margin-top: 60px;
+    justify-self: center;
+    flex-direction: column;
+    align-items: flex-start;
+    overflow-x: hidden;
+    overflow-x: auto; 
+  }
+
+  .IntoMaratona button {
+    align-self: center;
+    width: 50%;
+  }
+  
+  .rodadas {
+    display: flex;
+    flex: 1;
+    justify-content: space-around;
+    width: 100%;
+    position: relative;
+    flex-direction: row-reverse;
+    flex: 1;
+    overflow-x: auto;
+  }
+  
+  .rodada {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+     justify-content: center;
+     position: relative;
+  }
+
+  .menuSuperior{
+    position: absolute;
+    top: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30%;
+  }
+  
+  .partida {
+    display: flex;
+    background-color: white;
+    justify-content: space-between;
+    border-radius: 10px;
+    border: 4px solid rgb(73, 73, 244);
+    padding: 10px;
+    margin: 10px;
+    height: 60px;
+    position: relative;
+    align-items: center;
+  }
+
+  .containerVencedor {
+    display: grid;
+    grid-column: 2;
+    grid-row: 1;
+    z-index: 1;
+    align-self: center;
+    align-items: center;
+    justify-content: center;
+    width: 100px;
+    height: 100px;
+    border: 5px solid rgb(73, 73, 244);
+    border-radius: 50%;
+    margin-left: 20px;
+    background-color: white;
+  }
+  
+  .containerVencedor img {
+    width: 80px; 
+    height: 80px; 
+    border-radius: 50%; 
+    object-fit: cover;
+  }
+  
+  .time {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: 4px;
+    background-color: #ddd;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 5px;
+  }
+
+  .vertical2{
+    position: absolute;
+    width: 2px;
+    background-color: #000;
+    top: 105%; 
+    right: 48%;
+    transform: translateX(-50%);
+  }
+  
+  .linha-vertical {
+    position: absolute;
+    width: 2px;
+    background-color: #000;
+    top: 48%;
+    right: -66%;
+    transform: translateX(-50%);
+  }
+  
+  .linha-horizontal {
+    position: absolute;
+    width: 116px;
+    height: 2px;
+    background-color: #000;
+    top: 45%;
+    right: -120px;
+  }
+  
+  .seta {
+    margin-top: 5px;
+    font-size: 24px;
+    cursor: pointer;
+  }
+
+.sidebar.show {
+    transform: translateX(0);
+}
+
+.sidebar.hide {
+    animation: slideOut 0.5s ease-out;
+    display: none;
 }
 
 .sidebar {
@@ -835,6 +979,7 @@ height: 40px;
     animation: bounce 1.5s infinite ease-in-out;
     opacity: 0.3;
 }
+
 .OpcoesExpandidas button:first-child {
     position: relative;
 }
@@ -846,7 +991,7 @@ height: 40px;
     left: 0;
     width: 100%;
     height: 1px;
-    background-color: rgb(73, 73, 244); /* Corrigindo o uso da cor */
+    background-color: rgb(73, 73, 244);
 }
 
 .divsenha{
@@ -860,7 +1005,6 @@ position: relative;
     right: 15px;
     top: 3px;
     z-index: 3px;
-
 }
 
 .dot:nth-child(1) {
@@ -981,15 +1125,6 @@ position: relative;
 }
 
 
-
-.sidebar.show {
-    transform: translateX(0);
-}
-
-.sidebar.hide {
-    animation: slideOut 0.5s ease-out;
-    display: none;
-}
 
 .sidebar ul {
     list-style: none;
@@ -1185,6 +1320,10 @@ text-align: center;
 
    #verticalout{
     display:none;
+   }
+
+   .inscrito{
+    width: 50%;
    }
 
     .imagemLogoNav{
