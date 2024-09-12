@@ -810,13 +810,13 @@ height: 40px;
 }
 
 .torneio-container {
+    position: absolute;
     display: grid;
     grid-template-columns: auto 1fr;
     margin-top: 60px;
     justify-self: center;
     flex-direction: column;
     align-items: flex-start;
-    overflow-x: hidden;
     overflow-x: auto; 
   }
 
@@ -832,8 +832,6 @@ height: 40px;
     width: 100%;
     position: relative;
     flex-direction: row-reverse;
-    flex: 1;
-    overflow-x: auto;
   }
   
   .rodada {
@@ -850,7 +848,7 @@ height: 40px;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 30%;
+    width: 40%;
   }
   
   .partida {
@@ -1277,9 +1275,21 @@ text-align: center;
      background-color:rgba(51, 83, 133, 0.8);
 }
 
+@media only screen and (max-height: 870px) {
+    .torneio-container{
+        top: 0;
+    }
+}
+
 @media only screen and (max-width: 1200px) {
+
     .criacao{
         width: 70%
+    }
+
+    .torneio-container{
+        left:0; 
+        margin-top: 160px;
     }
     }
 
@@ -1306,6 +1316,11 @@ text-align: center;
 }
 
 @media only screen and (max-width: 768px) {
+
+    .menuSuperior{
+        width: 100%;
+    }
+
     .headerHome{
         height: 15vh;
     }
