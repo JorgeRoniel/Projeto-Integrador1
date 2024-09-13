@@ -7,6 +7,7 @@ body {
     width: 100vw;
     min-height: 100vh;
     overflow-y: auto;
+    overflow-x: hidden;
 }
 
 .container {
@@ -934,6 +935,7 @@ height: 40px;
     margin-top: 5px;
     font-size: 24px;
     cursor: pointer;
+    z-index: 2;
   }
 
 .sidebar.show {
@@ -943,6 +945,33 @@ height: 40px;
 .sidebar.hide {
     animation: slideOut 0.5s ease-out;
     display: none;
+}
+
+#chaveamento{
+    background-image: linear-gradient(to left,  rgb(73, 73, 244), rgb(126, 126, 248));
+    background-size: 150% 100%;
+    border: none;
+    cursor: pointer;
+}
+
+@keyframes pulse {
+    0%{
+        transform: scale(1);
+        background-position-x: 0%;
+    }
+    100%{
+        transform: scale(1.03);
+        background-position-x: 100%;
+    }
+
+}
+
+#chaveamento:hover{
+    animation-name: pulse;
+    animation-duration: 0.7s;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
 }
 
 .sidebar {
@@ -1076,6 +1105,7 @@ position: relative;
     flex-direction: column;
     overflow: auto;
      word-break: break-word;
+     position: relative;
 }
 
 .sidebarMaratona::-webkit-scrollbar {

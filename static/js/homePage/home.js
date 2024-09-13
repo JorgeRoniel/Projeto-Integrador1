@@ -180,6 +180,25 @@ const IntoMaratona = (element) => {
         }
         CreateTeam(element);
     };
+    const chaveamento = document.getElementById("chaveamento");
+
+    chaveamento.onclick = function() {
+        if (rodadas[rodadas.length - 2]) { // caso o torneio nao tenha começado (nao teve nenhum vencedor nas partidas) é permitido o chaveamento
+            const partidasRodada = rodadas[rodadas.length - 2];
+    
+            // Verifica se alguma partida tem um vencedor definido
+            const partidaComVencedor = partidasRodada.some(partida => partida.vencedor !== null);
+    
+            // Se houver uma partida com vencedor, interrompe a ação
+            if (partidaComVencedor) {
+                alert("Existe uma partida com vencedor definido, o chaveamento não pode ser realizado");
+                return;
+            }
+    
+            alert("Nenhum vencedor nas partidas então o chaveamento é permitido");
+            // Aqui é o código pra jogar os times nas partidas aleatoriamente, obivamente nas partidas mais à esquerda
+        }
+    };
 }
 
 const CalculaNumPartidas = (qtdTimes) =>{
