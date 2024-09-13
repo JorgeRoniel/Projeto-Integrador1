@@ -33,6 +33,7 @@ const usernameUpdate = document.getElementById('usernameUpdate');
 const emailUpdate = document.getElementById('emailUpdate');
 const imagemAtualizar = document.getElementById('imagemAtualizar');
 const formTime = document.getElementById('criar-time-form');
+const formEditTime = document.getElementById('editar-time-form');
 const intoMaratona = document.getElementById("intoMaratona");
 const backToHome = document.getElementById("BackToHome");
 const initCreationTeam = document.getElementById("initCreationTeam");
@@ -167,19 +168,18 @@ const IntoMaratona = (element) => {
     const editorButton = document.getElementById("editorMaratonaButton");
     const initCreationTeam = document.getElementById("initCreationTeam");
 
-    editorButton.removeEventListener('click', handleEditMaratona);
-    editorButton.addEventListener('click', handleEditMaratona);
-
-    initCreationTeam.removeEventListener('click', handleCreateTeam);
-    initCreationTeam.addEventListener('click', handleCreateTeam);
-
-    function handleEditMaratona() {
+     editorButton.onclick = function(event) {
         EditarMaratona(element);
-    }
+    };
 
-    function handleCreateTeam() {
+    initCreationTeam.onclick = function(event) {
+        if (timesSalvos.length === element.qtdTimes) {
+            alert("Número máximo de times atingido para essa maratona");
+            event.preventDefault(); // Previne a ação padrão se necessário
+            return;
+        }
         CreateTeam(element);
-    }
+    };
 }
 
 const CalculaNumPartidas = (qtdTimes) =>{
@@ -287,7 +287,6 @@ const EditarTime = (time) => {
     overlayIntoMaratona.classList.add('show');
     intoMaratona.classList.add("no-scroll");
 
-
     const botaoEditar = document.getElementById("ConfirmarEdicaoTime");
     const botaoExcluir = document.getElementById("ExcluirTime");
 
@@ -297,35 +296,47 @@ const EditarTime = (time) => {
     abreviacaoTime.value = time.abreviacao;
 
     const imgElement = document.getElementById('imagemAtualizarTimeEdicao');
-    imgElement.src = time.icon;
+    imgElement.src = time.icon; // Mostra a imagem atual
     const inputImagemTime = document.getElementById('inputImagemTimeEditar');
 
+    let currentImageFile = null; // Armazena o arquivo da imagem atual
+
+    // Caso o usuário clique para trocar a imagem
     document.getElementById('containerArredondadoEditaTime').onclick = function () {
         inputImagemTime.click();
     };
 
-    document.getElementById('inputImagemTimeEditar').onchange = function (event) {
+    // Se o usuário alterar a imagem, captura o novo arquivo
+    inputImagemTime.onchange = function (event) {
         const arquivo = event.target.files[0];
         if (arquivo) {
             const urlImagem = URL.createObjectURL(arquivo);
             imgElement.style.width = "100%";
             imgElement.src = urlImagem;
+            currentImageFile = arquivo; // Armazena o novo arquivo
         }
     };
 
     botaoEditar.onclick = async function (event) {
         event.preventDefault();
-        const data = new FormData();
-        data.append("NovoNomeTime", nomeTime.value);
-        data.append("NovaAbreviacao", abreviacaoTime.value);
-        data.append("id", time.id);
-        data.append("NovoEscudoTime", imgElement);
+
+        const formData = new FormData();
+        formData.append("NovoNomeTime", nomeTime.value);
+        formData.append("NovaAbreviacao", abreviacaoTime.value);
+        formData.append("id", time.id);
+
+        if (currentImageFile) {
+            formData.append("NovoEscudoTime", currentImageFile);
+        } else {
+            // o back sempre espera um arquivo
+            const response = await fetch(time.icon);
+            const blob = await response.blob();
+            formData.append("NovoEscudoTime", blob, "imagem_atual.png");
+        }
+
         const options = {
             method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data),
+            body: formData
         };
 
         try {
@@ -340,7 +351,7 @@ const EditarTime = (time) => {
         } catch (error) {
             console.error("ERROR: ", error);
         }
-    }
+    };
 
     botaoExcluir.onclick = async function (event) {
         event.preventDefault();
@@ -367,16 +378,10 @@ const EditarTime = (time) => {
         } catch (error) {
             console.error('ERROR: ', error);
         }
-    }
-
-}
+    };
+};
 
 const CreateTeam = (maratona) => {
-
-    if (timesSalvos.length === maratona.qtdTimes) {
-        alert("Número máximo de times atingido para essa maratona");
-        return;
-    }
 
     criacaoTimeScreen.classList.add('show');
     overlayIntoMaratona.classList.add('show');
@@ -463,7 +468,7 @@ const EditarMaratona = (element) => {
 
     editarMaratona.classList.add('show');
     overlayIntoMaratona.classList.add('show');
-    intoMaratona.classList.add("no-scroll");
+    body.classList.add("no-scrollbody");
 
     inputNomeMaratona.value = element.nome_maratona;
     inputDescricaoMaratona.value = element.descricao;
@@ -573,7 +578,7 @@ opcoes.addEventListener('mouseleave', function () {
 fecharCriacao.onclick = function () {
     criacao.classList.remove('show');
     overlay.classList.remove('show');
-    container.classList.remove("no-scroll");
+    body.classList.remove("no-scrollbody");
 }
 
 fecharEdicaoMaratona.onclick = function () {
@@ -585,13 +590,13 @@ fecharEdicaoMaratona.onclick = function () {
 fecharEdicaoConta.onclick = function () {
     screenEdicaoConta.classList.remove('show');
     overlay.classList.remove('show');
-    container.classList.remove("no-scroll");
+    body.classList.remove("no-scrollbody");
 }
 
 editarContaAbrir.onclick = function () {
     screenEdicaoConta.classList.add('show');
     overlay.classList.add('show');
-    container.classList.add("no-scroll");
+    body.classList.add("no-scrollbody");
 
     usernameUpdate.value = userLogado.nome;
     emailUpdate.value = userLogado.email;
@@ -639,7 +644,7 @@ function mostrarSenha() {
 criarMaisButton.onclick = function () {
     criacao.classList.add('show');
     overlay.classList.add('show');
-    container.classList.add("no-scroll");
+    body.classList.add("no-scrollbody");
 }
 
 btn_logout.onclick = function (event) {
@@ -807,7 +812,7 @@ function adicionarPartida(rodadas) {
     // Cria uma nova partida
     const partida = {
         id: idPartida++,
-        times: ['Time 1', 'Time 2'], // Pode ser modificado para adicionar times reais.
+        times: ['', ''], // Pode ser modificado para adicionar times reais.
         vencedor: null
     };
 
@@ -870,6 +875,21 @@ function atualizarLayout(rodadas) {
             trof.innerHTML = '<i class="bi bi-trophy-fill"></i>';
             trof.onclick = () => definirVencedor(partida.id, rodadas);
 
+              // Habilitar ou desabilitar baseando-se na rodada e no número de times
+              if (indexRodada === rodadas.length - 2) {
+                const temDoisTimes = partida.times[0] !== '' && partida.times[1] !== '';
+                const vence = partida.vencedor === null;
+                time1.disabled = !vence;
+                time2.disabled = !vence;
+                trof.style.pointerEvents = (temDoisTimes && partida.vencedor === null) ? 'auto' : 'none';
+            } else {
+                const temDoisTimes = (partida.times[0] !== '' && partida.times[1] !== '');
+                const vence = partida.vencedor === null;
+                time1.disabled = !temDoisTimes || !vence;
+                time2.disabled = !temDoisTimes || !vence;
+                trof.style.pointerEvents = temDoisTimes && partida.vencedor === null ? 'auto' : 'none';
+             }
+
             // Monta a estrutura da partida
             partidaDiv.appendChild(time1);
             partidaDiv.appendChild(trof);
@@ -917,31 +937,43 @@ function atualizarLayout(rodadas) {
 function definirVencedor(partidaId, rodadas) {
     const partida = rodadas.flat().find(p => p.id === partidaId);
     if (partida && !partida.vencedor) {
-        partida.vencedor = prompt("Escolha o vencedor: Time 1 ou Time 2");
-        // Envia o vencedor para a próxima rodada
-        enviarVencedorProximaRodada(partida, rodadas);
+        const time1 = partida.times[0];
+        const time2 = partida.times[1];
+
+        if (time1 && time2) {
+            const vencedor = prompt("Escolha o vencedor: ", `${time1} ou ${time2}`);
+            if (vencedor === time1 || vencedor === time2) {
+                partida.vencedor = vencedor;
+                if (rodadas[0].includes(partida)) {
+                    const imagemCampeao = document.getElementById('imagemCampeao');
+                    imagemCampeao.src = partida.vencedor.icon;
+                } else {
+                    enviarVencedorProximaRodada(partida, rodadas);
+                }
+            } else {
+                alert("Escolha inválida. Tente novamente.");
+            }
+        } else {
+            alert("Ambos os times devem ser selecionados antes de definir o vencedor.");
+        }
     }
+    atualizarLayout(rodadas);
 }
 
 function enviarVencedorProximaRodada(partida, rodadas) {
     const rodadaAtual = rodadas.find(rodada => rodada.includes(partida));
     const rodadaIndex = rodadas.indexOf(rodadaAtual);
-    const proximaRodada = rodadas[rodadaIndex + 1];
+    const proximaRodada = rodadas[rodadaIndex - 1];
 
     if (proximaRodada) {
-        const posicaoNaProximaRodada = Math.floor(rodadaAtual.indexOf(partida) / 2);
+        // Determina o índice da partida na próxima rodada
+        const posicaoNaRodadaAtual = rodadaAtual.indexOf(partida);
+        const posicaoNaProximaRodada = Math.floor(posicaoNaRodadaAtual / 2);
+        
+        // Encontra ou cria a próxima partida na próxima rodada
         let proximaPartida = proximaRodada[posicaoNaProximaRodada];
 
-        if (!proximaPartida) {
-            // Cria uma nova partida na próxima rodada se ela ainda não existir
-            proximaPartida = {
-                id: idPartida++,
-                times: ['', ''],
-                vencedor: null
-            };
-            proximaRodada[posicaoNaProximaRodada] = proximaPartida;
-        }
-
+        // Atribui o vencedor à próxima partida
         if (!proximaPartida.times[0]) {
             proximaPartida.times[0] = partida.vencedor;
         } else {

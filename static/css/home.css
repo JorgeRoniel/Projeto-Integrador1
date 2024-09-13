@@ -7,11 +7,6 @@ body {
     width: 100vw;
     min-height: 100vh;
     overflow-y: auto;
-    overflow-x: hidden;
-}
-
-html {
-    scroll-behavior: smooth;
 }
 
 .container {
@@ -892,10 +887,8 @@ height: 40px;
   }
   
   .containerVencedor img {
-    width: 80px; 
-    height: 80px; 
-    border-radius: 50%; 
-    object-fit: cover;
+    width: 70px; 
+    height: 70px; 
   }
   
   .time {
