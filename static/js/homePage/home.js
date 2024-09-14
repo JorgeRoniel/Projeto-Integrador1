@@ -916,7 +916,7 @@ function adicionarPartida(rodadas) {
     // Cria uma nova partida
     const partida = {
         id: idPartida++,
-        times: ['', ''], // Pode ser modificado para adicionar times reais.
+        times: [{ nome: '', abreviacao: '' }, { nome: '', abreviacao: '' }], // Agora armazena um objeto para cada time
         vencedor: null
     };
 
@@ -965,14 +965,23 @@ function atualizarLayout(rodadas) {
 
             const time1 = document.createElement('select');
             time1.classList.add('time');
-           // time1.innerText = partida.times[0];
             time1.onclick = () => selecionarTime(partida.id, 0, rodadas, time1);
+
+            // Adiciona as opções ao select
+            const time1Option = document.createElement('option');
+            time1Option.value = partida.times[0].nome; // O valor do time
+            time1Option.textContent = partida.times[0].abreviacao; // O texto que será exibido
+            time1.appendChild(time1Option);
 
             const time2 = document.createElement('select');
             time2.classList.add('time');
-          //  time2.innerText = partida.times[1];
             time2.onclick = () => selecionarTime(partida.id, 1, rodadas, time2);
 
+            // Adiciona as opções ao select
+            const time2Option = document.createElement('option');
+            time2Option.value = partida.times[1].nome; // O valor do time
+            time2Option.textContent = partida.times[1].abreviacao; // O texto que será exibido
+            time2.appendChild(time2Option);
             // Adiciona o botão de escolha de vencedor
             const trof = document.createElement('div');
             trof.classList.add('seta');
@@ -981,13 +990,13 @@ function atualizarLayout(rodadas) {
 
               // Habilitar ou desabilitar baseando-se na rodada e no número de times
               if (indexRodada === rodadas.length - 2) {
-                const temDoisTimes = partida.times[0] !== '' && partida.times[1] !== '';
+                const temDoisTimes = partida.times[0].nome !== '' && partida.times[1].nome !== '';
                 const vence = partida.vencedor === null;
                 time1.disabled = !vence;
                 time2.disabled = !vence;
                 trof.style.pointerEvents = (temDoisTimes && partida.vencedor === null) ? 'auto' : 'none';
             } else {
-                const temDoisTimes = (partida.times[0] !== '' && partida.times[1] !== '');
+                const temDoisTimes = (partida.times[0].nome !== '' && partida.times[1].nome !== '');
                 const vence = partida.vencedor === null;
                 time1.disabled = !temDoisTimes || !vence;
                 time2.disabled = !temDoisTimes || !vence;
@@ -1045,9 +1054,12 @@ function definirVencedor(partidaId, rodadas) {
         const time2 = partida.times[1];
 
         if (time1 && time2) {
-            const vencedor = prompt("Escolha o vencedor: ", `${time1} ou ${time2}`);
-            if (vencedor === time1 || vencedor === time2) {
-                partida.vencedor = vencedor;
+            const vencedor = prompt("Escolha o vencedor: ", `${time1.abreviacao} ou ${time2.abreviacao}`);
+            if (vencedor === time1.abreviacao || vencedor === time2.abreviacao) {
+                partida.vencedor = { 
+                    nome: vencedor === time1.abreviacao ? time1.nome : time2.nome, 
+                    abreviacao: vencedor 
+                };
                 if (rodadas[0].includes(partida)) {
                     const imagemCampeao = document.getElementById('imagemCampeao');
                     imagemCampeao.src = partida.vencedor.icon;
@@ -1070,15 +1082,12 @@ function enviarVencedorProximaRodada(partida, rodadas) {
     const proximaRodada = rodadas[rodadaIndex - 1];
 
     if (proximaRodada) {
-        // Determina o índice da partida na próxima rodada
         const posicaoNaRodadaAtual = rodadaAtual.indexOf(partida);
         const posicaoNaProximaRodada = Math.floor(posicaoNaRodadaAtual / 2);
-        
-        // Encontra ou cria a próxima partida na próxima rodada
+
         let proximaPartida = proximaRodada[posicaoNaProximaRodada];
 
-        // Atribui o vencedor à próxima partida
-        if (!proximaPartida.times[0]) {
+        if (!proximaPartida.times[0].nome) {
             proximaPartida.times[0] = partida.vencedor;
         } else {
             proximaPartida.times[1] = partida.vencedor;
@@ -1087,6 +1096,7 @@ function enviarVencedorProximaRodada(partida, rodadas) {
 
     atualizarLayout(rodadas);
 }
+
 
 function selecionarTime(partidaId, timeIndex, rodadas, time) {
     const partida = rodadas.flat().find(p => p.id === partidaId);
@@ -1105,14 +1115,20 @@ function selecionarTime(partidaId, timeIndex, rodadas, time) {
     }
 
     if (partida && partida.times[timeIndex]) {
-        time.value = partida.times[timeIndex];
+        time.value = partida.times[timeIndex].nome;
     }
 
     // Atualiza a interface quando um time é selecionado
     time.onchange = function() {
         if (partida) {
-            partida.times[timeIndex] = time.value;
-            atualizarLayout(rodadas);
+            const timeSelecionado = timesSalvos.find(t => t.nome === time.value);
+            if (timeSelecionado) {
+                partida.times[timeIndex] = { 
+                    nome: timeSelecionado.nome, 
+                    abreviacao: timeSelecionado.abreviacao 
+                };  // Atualiza o objeto com nome e abreviação do time
+                atualizarLayout(rodadas);  // Atualiza a interface do torneio
+            }
         }
     };
 
