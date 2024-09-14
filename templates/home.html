@@ -58,7 +58,7 @@
                     <input id="emailUpdate" name="Email" type="text" required>
                     <label for="Senha">Senha</label>
                     <div style="width: 70%; display: flex; justify-content:center;" class="divsenha">
-                    <input id="newPassword" name="Senha" type="password" class="inputsenha" style="width: 100%" required>
+                    <input id="newPassword" name="Senha" type="password" class="inputsenha" style="width: 100%;padding-right: 55px;" required>
                     <i class="bi bi-eye-fill" id="btn-senha" onclick="mostrarSenha()"></i>
                 </div>
                     <div class="containerBotoes">
@@ -118,7 +118,10 @@
 
         <div class="filtrar">
             <p>Filtrar Itens:</p>
-            <input id="filter" type="text" placeholder="Digite o nome do item">
+            <div class="divfiltro" style="position: relative;">
+                <input id="filter" type="text" placeholder="Buscar" style="width: 100%; padding-left: 35px;">
+                <i class="bi bi-search"></i>
+            </div>
         </div>
         <ul id="ExibirCategorias" class="ExibirCategorias"></ul>
     </div>
@@ -218,7 +221,7 @@
     </button>
     <div class="filtrar filtroTime" style="width: 90%; background-color:rgb(73, 73, 244); margin-top: 25px;font-size: 18px; gap: 4px; text-align: center;">
             <p style="margin-left:5px;  white-space: nowrap;">Filtrar:</p>
-            <input id="filterTime" type="text" placeholder="Digite aqui" class="inputFiltro" style="margin-right: 10px; margin-left: 10px; padding: 8px; font-size: 14px; background-color: rgb(126,126,248)" required>
+            <input id="filterTime" type="text" placeholder="Buscar" class="inputFiltro" style="margin-right: 10px; margin-left: 10px; padding: 8px; font-size: 14px; background-color: rgb(126,126,248)" required>
         </div>
         <div id="loadingTimes" class="loading" style="display: none;">
             <span class="dot"></span>

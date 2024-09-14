@@ -697,6 +697,19 @@ input {
     outline: none;
 }
 
+.divfiltro{
+    width: 40%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.divfiltro i{
+    font-size: 15px;
+    position: absolute;
+    left: 11px;
+}
+
 .filtroTime{
 height: 40px;
 }
@@ -1599,6 +1612,7 @@ text-align: center;
 
     .delete-btn{
         left: 40%;
+        bottom: 20px;
     }
 
 .limite {
@@ -1616,6 +1630,18 @@ text-align: center;
 .barra{
     width: 10vh;
     height: 10vh;
+   }
+   .text{
+    display: none;
+   }
+   #editorMaratonaButton{
+    font-size: 15px;
+   }
+   .sidebarMaratona h2{
+    font-size: 16px;
+   }
+   .filtroTime p{
+    font-size: 16px;
    }
 }
 
