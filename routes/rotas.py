@@ -325,30 +325,27 @@ def create_Competidor():
         data = request.form.to_dict()
 
     competidor = Models.Player(data['nomeJogador'], data['timeId'])
-    time_id = session.get('time_id')
-
-    if time_id is not None:
-        if cs.inserirCompetidores(competidor.name, competidor.teamId):
-            response = {
-                "status": "success",
-                "message": "created!"
-            };
-        else:
-            response = {
-                "status": "error",
-                "message": "não foi criado."
-            };
+    
+    if cs.inserirCompetidores(competidor.name, competidor.teamId):
+        response = {
+            "status": "success",
+            "message": "Competidor criado!"
+        }
     else:
         response = {
-            "status": "N/A",
-            "message": "not authenticate"
+            "status": "error",
+            "message": "Erro ao criar competidor."
         }
 
     return jsonify(response)
 
+
 @rotas.route("/competidor", methods=['GET'])
 def show_Competidor():
-    time_id = session.get('time_id')
+    time_id = request.args.get('time_id')
+
+    if time_id is None:
+        return jsonify({"error": "time_id não fornecido"}), 400
 
     data = cs.listarCompetidores(time_id)
 
@@ -386,7 +383,7 @@ def delete_Competidor():
     if cs.deletarCompetidor(id):
         response = {
             "status": "success",
-            "message": "Maratona Deletada."
+            "message": "Competidor Deletado"
         }
     else:
         response = {

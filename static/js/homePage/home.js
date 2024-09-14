@@ -175,7 +175,7 @@ const IntoMaratona = (element) => {
     initCreationTeam.onclick = function(event) {
         if (timesSalvos.length === element.qtdTimes) {
             alert("Número máximo de times atingido para essa maratona");
-            event.preventDefault(); // Previne a ação padrão se necessário
+            event.preventDefault();
             return;
         }
         CreateTeam(element);
@@ -273,6 +273,8 @@ const ExibirTimes = async (maratona_id, getCacheTimes, rodadas) => {
 };
 
 const IntoTeam = (time, rodadas) => {
+     const lista = document.getElementById("containerExibirCompetidores");
+    lista.innerHTML = '';
     torneioContainer.innerHTML = '';
     sidebarMaratona.classList.remove('show');
     sidebarMaratona.classList.add('hide');
@@ -284,21 +286,113 @@ const IntoTeam = (time, rodadas) => {
     const imagemTime = document.getElementById('imagemTime');
     imagemTime.src = time.icon;
 
+    const loadingIndic = document.getElementById('loadingDev');
+    loadingIndic.style.display = 'flex';
+    
     document.getElementById("BackToMaratona").onclick = function () {
         sidebarTime.classList.remove('show');
         sidebarTime.classList.add('hide');
         sidebarMaratona.classList.remove('hide');
         sidebarMaratona.classList.add('show');
         criacaoParticipante.classList.remove('show');
-
+        
         torneioContainer.appendChild(containerCampeao);
         torneioContainer.appendChild(rodadasContainer);
         atualizarLayout(rodadas);
     }
-
+    
     document.getElementById("editorTimeButton").onclick = function () {
         EditarTime(time);
     }
+    
+    document.getElementById("ConfirmarCriacaoParticipante").onclick = async function (event) {
+        event.preventDefault();
+        
+        const nomeParticipante = document.querySelector("input[name='nomeParticipante']").value;
+        const timeId = time.id;
+        
+    if (!nomeParticipante) {
+            alert("O nome do competidor é obrigatório!");
+            return;
+        }
+        
+        const data = {
+            nomeJogador: nomeParticipante,
+            timeId: timeId
+        };
+        
+        try {
+            const response = await fetch("/createCompetidor", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            });
+    
+            const result = await response.json();
+    
+            if (result.status === "success") {
+                alert("Competidor criado com sucesso!");
+                AtualizarListaCompetidores(timeId);
+            } else {
+                alert("Erro ao criar competidor: " + result.message);
+            }
+        } catch (error) {
+            console.error("Erro ao criar competidor:", error);
+        }
+    }
+    
+    const AtualizarListaCompetidores = async (timeId) => {
+        try {
+            const response = await fetch(`/competidor?time_id=${timeId}`, { method: 'GET' });
+            if (!response.ok) throw new Error(`Erro na requisição: ${response.status}`);
+    
+            const competidores = await response.json();
+            const lista = document.getElementById("containerExibirCompetidores");
+            lista.innerHTML = '';
+    
+            competidores.forEach(({ nome_competidor, id }) => {
+                const li = document.createElement("li");
+                li.textContent = nome_competidor;
+                li.dataset.id = id;
+    
+                const deleteButton = document.createElement("button");
+                deleteButton.className = "delete-btn";
+                deleteButton.textContent = 'X';
+                deleteButton.addEventListener("click", async (event) => {
+                    event.stopPropagation();
+                    const id = li.dataset.id;
+                    try {
+                        const deleteResponse = await fetch('/deleteCompetidor', {
+                            method: 'DELETE',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ id })
+                        });
+    
+                        const result = await deleteResponse.json();
+                        if (result.status === "success") {
+                            li.remove();
+                        } else {
+                            console.error("Erro ao excluir competidor:", result.message);
+                        }
+                    } catch (error) {
+                        console.error("Erro ao excluir competidor:", error);
+                    }
+                });
+    
+                li.appendChild(deleteButton);
+                lista.appendChild(li);
+            });
+            loadingIndic.style.display = 'none';
+        } catch (error) {
+            console.error("Erro ao carregar competidores:", error);
+        }
+    };
+    
+    AtualizarListaCompetidores(time.id);
 }
 
 const EditarTime = (time) => {
@@ -315,24 +409,22 @@ const EditarTime = (time) => {
     abreviacaoTime.value = time.abreviacao;
 
     const imgElement = document.getElementById('imagemAtualizarTimeEdicao');
-    imgElement.src = time.icon; // Mostra a imagem atual
+    imgElement.src = time.icon;
     const inputImagemTime = document.getElementById('inputImagemTimeEditar');
 
-    let currentImageFile = null; // Armazena o arquivo da imagem atual
+    let currentImageFile = null;
 
-    // Caso o usuário clique para trocar a imagem
     document.getElementById('containerArredondadoEditaTime').onclick = function () {
         inputImagemTime.click();
     };
 
-    // Se o usuário alterar a imagem, captura o novo arquivo
     inputImagemTime.onchange = function (event) {
         const arquivo = event.target.files[0];
         if (arquivo) {
             const urlImagem = URL.createObjectURL(arquivo);
             imgElement.style.width = "100%";
             imgElement.src = urlImagem;
-            currentImageFile = arquivo; // Armazena o novo arquivo
+            currentImageFile = arquivo;
         }
     };
 
@@ -347,7 +439,6 @@ const EditarTime = (time) => {
         if (currentImageFile) {
             formData.append("NovoEscudoTime", currentImageFile);
         } else {
-            // o back sempre espera um arquivo
             const response = await fetch(time.icon);
             const blob = await response.blob();
             formData.append("NovoEscudoTime", blob, "imagem_atual.png");
@@ -467,12 +558,6 @@ const CreateTeam = (maratona) => {
 
 document.getElementById("fecharEdicaoTime").onclick = function () {
     EditarTimeContainer.classList.remove('show');
-    overlayIntoMaratona.classList.remove('show');
-    intoMaratona.classList.remove("no-scroll");
-}
-
-document.getElementById("fecharCriacaoTime").onclick = function () {
-    criacaoTimeScreen.classList.remove('show');
     overlayIntoMaratona.classList.remove('show');
     intoMaratona.classList.remove("no-scroll");
 }

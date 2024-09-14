@@ -115,25 +115,6 @@ body::-webkit-scrollbar-thumb {
     visibility: visible;
 }
 
-/*.edicaoConta .fechar {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background-color: red;
-    color: white;
-    border: none;
-    border-radius: 50%;
-    width: 3%;
-    height: 6%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    margin-top: 10px !important;
-    margin-right: 10px !important;
-}*/
-
-
 .edicaoConta form {
     position: relative;
     top: 5px;
@@ -948,8 +929,8 @@ height: 40px;
 }
 
 #chaveamento{
-    background-image: linear-gradient(to left,  rgb(73, 73, 244), rgb(126, 126, 248));
-    background-size: 150% 100%;
+    background-image: linear-gradient(to right,  rgb(73, 73, 244), rgb(126, 126, 248));
+    background-size: 500% 100% ;
     border: none;
     cursor: pointer;
 }
@@ -972,6 +953,54 @@ height: 40px;
     animation-timing-function: ease-in-out;
     animation-iteration-count: infinite;
     animation-direction: alternate;
+}
+
+#chaveamento:hover .icon{
+    transform: rotate(90deg); 
+    transition: transform 0.3s ease; 
+}
+
+#containerExibirCompetidores li {
+    position: relative;
+    margin-bottom: 10px;
+    width: 100%;
+    list-style: none;
+    padding-left: 25px;
+    justify-self: center;
+}
+
+.delete-btn {
+    position: absolute;
+    left: 0;
+    background: red;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    text-align: center;
+    line-height: 20px;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+    transform-origin: center;
+}
+
+li:hover .delete-btn {
+    opacity: 1;
+}
+
+.delete-btn::before {
+    content: 'X';
+    font-size: 14px;
+    font-weight: bold;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.delete-btn:hover {
+    transform: scale(1.2);
 }
 
 .sidebar {
@@ -1567,6 +1596,10 @@ text-align: center;
 }
 
 @media only screen and (max-width: 491px) {
+
+    .delete-btn{
+        left: 40%;
+    }
 
 .limite {
     width: 20%; 

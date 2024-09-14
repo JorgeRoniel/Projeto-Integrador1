@@ -21,19 +21,20 @@ def listarCompetidores(id_time):
         conn = c.openBD()
         cursor = conn.cursor()
 
-        sql =  "SELECT c.nome_competidor FROM competidores c INNER JOIN times t ON t.id = %s;"
-
-        cursor.execute(sql, (id_time))
+        sql = """
+            SELECT c.id, c.nome_competidor 
+            FROM competidores c 
+            WHERE c.timeId = %s;
+        """
+        cursor.execute(sql, (int(id_time),))
         data = cursor.fetchall()
 
-        for i in data:
-            comp = mod.Player_le(None ,i.m.name, None)
-            lista = le.inserir_inicio(comp)
+        competidores = [{'id': row['id'], 'nome_competidor': row['nome_competidor']} for row in data]
+        return competidores
 
-        return lista
     except Exception as e:
-        print(e)
-        return []
+        print(f"Erro inesperado ao listar competidores: {e}")
+        raise e
 
 def atualizarCompetidores(id_comp, novo_nome):
     try:
