@@ -60,6 +60,8 @@ var maratonasSalvas = [];
 var timesSalvos = [];
 var partidasSalvas = [];
 
+var competidoresSalvos =[[]]
+
 let userLogado = null;
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -284,7 +286,7 @@ const IntoTeam = (time, rodadas) => {
 
         torneioContainer.appendChild(containerCampeao);
         torneioContainer.appendChild(rodadasContainer);
-        atualizarLayout(rodadas);
+        adicionarPartida();
     }
 
     document.getElementById("editorTimeButton").onclick = function () {
@@ -990,8 +992,8 @@ function atualizarLayout(rodadas) {
             } else {
                 const temDoisTimes = (partida.times[0].nome !== '' && partida.times[1].nome !== '');
                 const vence = partida.vencedor === null;
-                time1.disabled = !temDoisTimes || !vence;
-                time2.disabled = !temDoisTimes || !vence;
+                time1.disabled = true;
+                time2.disabled = true;
                 trof.style.pointerEvents = temDoisTimes && partida.vencedor === null ? 'auto' : 'none';
             }
 
@@ -1130,7 +1132,7 @@ function selecionarTime(partidaId, timeIndex, rodadas, time) {
     }
 
     // Atualiza a interface quando um time é selecionado
-    time.onchange = function () {
+    time.onchange = async function () {
         if (partida) {
 
             let isOption = true
@@ -1144,9 +1146,10 @@ function selecionarTime(partidaId, timeIndex, rodadas, time) {
                 alert("Time já foi selecionado!")
                 return;
             }
-
             const timeSelecionado = timesSalvos.find(t => t.nome === time.value);
-            if (timeSelecionado) {
+            console.log(timeSelecionado)
+            const validateCompetidor = await ValidarCompetidores(timeSelecionado.id);
+            if (timeSelecionado && validateCompetidor) {
                 partida.times[timeIndex] = {
                     nome: timeSelecionado.nome,
                     abreviacao: timeSelecionado.abreviacao,
@@ -1165,9 +1168,26 @@ function selecionarTime(partidaId, timeIndex, rodadas, time) {
             }
         }
     };
+}
 
-    if (!partida.vencedor) {
-        //.times[timeIndex] = prompt("Escolha o novo time:");
-        // atualizarLayout(rodadas);
+const ValidarCompetidores = async (id) =>{
+    const competidoresLista = [];
+    try {
+        const response = await fetch(`/competidor?time_id=${id}`, { method: 'GET' });
+        if (!response.ok) throw new Error(`Erro na requisição: ${response.status}`);
+
+        const competidores = await response.json();
+
+        if(competidores.length > 0){
+            return true;
+        }
+        else{
+            alert("Adicione ao menos 1 competidor ao time!");
+            return false;
+        }
+
+    } catch (error) {
+        console.error("Erro na requisição:", error);
+        return false;
     }
 }
