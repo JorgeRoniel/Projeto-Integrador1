@@ -990,8 +990,8 @@ function atualizarLayout(rodadas) {
             } else {
                 const temDoisTimes = (partida.times[0].nome !== '' && partida.times[1].nome !== '');
                 const vence = partida.vencedor === null;
-                time1.disabled = !temDoisTimes || !vence;
-                time2.disabled = !temDoisTimes || !vence;
+                time1.disabled = true;
+                time2.disabled = true;
                 trof.style.pointerEvents = temDoisTimes && partida.vencedor === null ? 'auto' : 'none';
             }
 
