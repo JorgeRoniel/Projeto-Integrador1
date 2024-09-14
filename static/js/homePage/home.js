@@ -1048,9 +1048,13 @@ function definirVencedor(partidaId, rodadas) {
         if (time1 && time2) {
             const vencedor = prompt("Escolha o vencedor: ", `${time1.abreviacao} ou ${time2.abreviacao}`);
             if (vencedor === time1.abreviacao || vencedor === time2.abreviacao) {
+                let objectVencedor = vencedor === time1.abreviacao ? time1 : time2 
                 partida.vencedor = {
-                    nome: vencedor === time1.abreviacao ? time1.nome : time2.nome,
-                    abreviacao: vencedor
+                    nome: objectVencedor.nome,
+                    abreviacao: vencedor,
+                    icon: objectVencedor.icon,
+                    id: objectVencedor.id,
+                    maratonaId: objectVencedor.maratonaId
                 };
                 if (rodadas[0].includes(partida)) {
                     const imagemCampeao = document.getElementById('imagemCampeao');
@@ -1145,7 +1149,10 @@ function selecionarTime(partidaId, timeIndex, rodadas, time) {
             if (timeSelecionado) {
                 partida.times[timeIndex] = {
                     nome: timeSelecionado.nome,
-                    abreviacao: timeSelecionado.abreviacao
+                    abreviacao: timeSelecionado.abreviacao,
+                    id: timeSelecionado.id,
+                    maratonaId: timeSelecionado.maratonaId,
+                    icon: timeSelecionado.icon
                 };  // Atualiza o objeto com nome e abreviação do time
                 atualizarLayout(rodadas);  // Atualiza a interface do torneio
             }
