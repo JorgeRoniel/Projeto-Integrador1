@@ -2,7 +2,7 @@ from database import conexao as c
 from Estruturas import ArvoreBinaria as ar
 from database import Models as m
 
-def criarCompeticao(data_partida, local, id_time1, id_time2, id_vencedor, maratonaId):
+def criarPartida(data_partida, local, id_time1, id_time2, id_vencedor, maratonaId):
     try:
         conn = c.openBD()
         cursor = conn.cursor()
@@ -16,7 +16,7 @@ def criarCompeticao(data_partida, local, id_time1, id_time2, id_vencedor, marato
         print(e)
         return False
 
-def atualizarCompetição(id, nova_data, novo_local, novo_time1, novo_time, novo_vencedor):
+def atualizarPartida(id, nova_data, novo_local, novo_time1, novo_time, novo_vencedor):
     try:
         conn = c.openBD()
         cursor = conn.cursor()
@@ -32,7 +32,7 @@ def atualizarCompetição(id, nova_data, novo_local, novo_time1, novo_time, novo
         print(e)
         return False
 
-def listarCompeticoes(id_maratona):
+def listarPartidas(id_maratona):
     try:
         conn = c.openBD()
         cursor = conn.cursor()
@@ -51,7 +51,7 @@ def listarCompeticoes(id_maratona):
         print(e)
         return []
 
-def deletarCompeticao(id_partida):
+def deletarPartida(id_partida):
     try:
         conn = c.openBD()
         cursor = conn.cursor()
