@@ -53,7 +53,7 @@ const filterTime = document.getElementById("filterTime");
 const rodadasContainer = document.getElementById('rodadas');
 const torneioContainer = document.getElementById("torneio-container");
 const containerCampeao = document.getElementById("containerCampeao");
-const body = document.getElementById("body");
+const body = document.getElementById("body"); 
 
 //Vetores que guardarão in memory os gets para tornar o programa performático
 var maratonasSalvas = [];
@@ -140,9 +140,11 @@ const exibirMaratonas = async () => {
         }
 
         containerItem.onclick = async () => {
-            if (containerItem.classList.contains('disabled')) return;
 
-            containerItem.classList.add('disabled');
+            if (backToHome.style.pointerEvents === 'none') return;
+
+            backToHome.style.pointerEvents = 'none';
+
             const atual = {
                 id: element.id,
                 nome_maratona: element.nome,
@@ -174,7 +176,6 @@ const IntoMaratona = (element, containerItem) => {
     };
 
     backToHome.onclick = function () {
-        containerItem.classList.remove("disabled");
         sidebar.classList.remove('show');
         sidebar.classList.add('hide');
         intoMaratona.classList.remove('show');
@@ -257,6 +258,7 @@ const ExibirTimes = async (maratona_id, getCacheTimes, rodadas) => {
     }
     const fragment = document.createDocumentFragment();
     loadingIndicator.style.display = 'none';
+    backToHome.style.pointerEvents = 'auto';
     timesSalvos.forEach((element) => {
         const containerItem = document.createElement('li');
         containerItem.classList.add('time-item');
