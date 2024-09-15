@@ -272,7 +272,6 @@ input {
     width: 40%;
     background-color: rgb(73, 73, 244);
     margin: 20px auto;
-    margin-top: 2.5%;
     display: block;
     border-radius: 50%;
     box-shadow: 0px 0px 3px rgb(73, 73, 244);
@@ -349,7 +348,6 @@ input {
     align-items: center;
     justify-content: center;
     overflow: hidden;
-    z-index: 0;
     flex-direction: column;
 
 }
@@ -446,13 +444,13 @@ input {
     display: flex;
     justify-content: center;
     width: 150px;
-    margin-right: 25px;
+    margin-right: 20px;
 }
 
 .OpcoesExpandidas {
     display: none;
     width: 150px;
-    margin-right: 25px;
+    margin-right: 20px;
     align-items: center;
     flex-direction: column;
     justify-content: center;
@@ -569,7 +567,6 @@ input {
 .animado {
     font-size: 250%;
     font-weight: 900;
-    justify-content: center;
 }
 
 .animado span {
@@ -716,7 +713,6 @@ input {
 
 .containerBotao #maratonas {
     color: rgb(38, 38, 101);
-    ;
     font-size: 19px;
 }
 
@@ -817,7 +813,6 @@ input {
     position: fixed;
     align-items: center;
     justify-items: center;
-    flex-direction: column;
     background-color: rgb(53, 53, 93);
     height: 100vh;
     overflow-x: auto;
@@ -850,7 +845,6 @@ input {
     display: grid;
     grid-template-columns: auto 1fr;
     justify-self: center;
-    flex-direction: column;
     align-items: flex-start;
     overflow-x: auto;
 }
@@ -913,6 +907,7 @@ input {
     border-radius: 50%;
     margin-left: 20px;
     background-color: white;
+    position: relative;
 }
 
 .selectBox {
@@ -931,6 +926,7 @@ input {
     width: 100%;
     height: 100%;
     border-radius: 50%;
+    object-fit: cover;
 }
 
 .time {
@@ -1611,8 +1607,8 @@ li:hover .delete-btn {
     }
 
     .IntoMaratona {
-        width: 80%;
-        left: 20%;
+        width: 68%;
+        left: 32%;
     }
 
     .sidebar {
@@ -1648,7 +1644,11 @@ li:hover .delete-btn {
     }
 
     .torneio-container {
-        margin-left: 30% !important;
+        margin-left: 20px;
+    }
+
+    .containerVencedor{
+        margin-right: 20px;
     }
 
     .criarParticipante {

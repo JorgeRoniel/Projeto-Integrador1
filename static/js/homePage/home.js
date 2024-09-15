@@ -995,12 +995,26 @@ function atualizarLayout(rodadas) {
                 time1.disabled = !vence;
                 time2.disabled = !vence;
                 trof.style.pointerEvents = (temDoisTimes && partida.vencedor === null) ? 'auto' : 'none';
+                if(vence && !temDoisTimes){
+                    trof.style.color = "black";
+            }else if(vence && temDoisTimes){
+                        trof.style.color = "green";
+                }else{
+                    trof.style.color = "gold";
+                }
             } else {
                 const temDoisTimes = (partida.times[0].nome !== '' && partida.times[1].nome !== '');
                 const vence = partida.vencedor === null;
                 time1.disabled = true;
                 time2.disabled = true;
                 trof.style.pointerEvents = temDoisTimes && partida.vencedor === null ? 'auto' : 'none';
+                if(!temDoisTimes && vence){
+                    trof.style.color = "gray";
+                }else if(temDoisTimes && vence){
+                    trof.style.color = "green";
+                }else{
+                    trof.style.color = "gold";
+                }
             }
 
             // Monta a estrutura da partida
