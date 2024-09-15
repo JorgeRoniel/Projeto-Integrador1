@@ -1153,31 +1153,31 @@ function selecionarTime(partidaId, timeIndex, rodadas, time) {
                 return;
             }
             const timeSelecionado = timesSalvos.find(t => t.nome === time.value);
-            console.log(timeSelecionado)
-            const validateCompetidor = await ValidarCompetidores(timeSelecionado.id);
-            if (timeSelecionado && validateCompetidor) {
-                partida.times[timeIndex] = {
-                    nome: timeSelecionado.nome,
-                    abreviacao: timeSelecionado.abreviacao,
-                    id: timeSelecionado.id,
-                    maratonaId: timeSelecionado.maratonaId,
-                    icon: timeSelecionado.icon
-                };  // Atualiza o objeto com nome e abreviação do time
-                atualizarLayout(rodadas);  // Atualiza a interface do torneio
+            if (timeSelecionado) {
+                const validateCompetidor = await ValidarCompetidores(timeSelecionado.id);
+                if (validateCompetidor) {
+                    partida.times[timeIndex] = {
+                        nome: timeSelecionado.nome,
+                        abreviacao: timeSelecionado.abreviacao,
+                        id: timeSelecionado.id,
+                        maratonaId: timeSelecionado.maratonaId,
+                        icon: timeSelecionado.icon
+                    };
+                    atualizarLayout(rodadas);
+                } 
             }
             else {
                 partida.times[timeIndex] = {
                     nome: '',
                     abreviacao: ''
-                };  // Atualiza o objeto com nome e abreviação do time
-                atualizarLayout(rodadas);  // Atualiza a interface do torneio
+                }; 
+                atualizarLayout(rodadas);
             }
         }
     };
 }
 
 const ValidarCompetidores = async (id) => {
-    const competidoresLista = [];
     try {
         const response = await fetch(`/competidor?time_id=${id}`, { method: 'GET' });
         if (!response.ok) throw new Error(`Erro na requisição: ${response.status}`);

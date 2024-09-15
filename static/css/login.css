@@ -165,4 +165,7 @@ form{
     .container{
         background-color: rgb(58, 57, 57);
     }
+    .visualizarSenha{
+        width: 20% !important;
+    }
 }
