@@ -60,7 +60,7 @@ var maratonasSalvas = [];
 var timesSalvos = [];
 var partidasSalvas = [];
 
-var competidoresSalvos =[[]]
+var competidoresSalvos = [[]]
 
 let userLogado = null;
 
@@ -140,6 +140,9 @@ const exibirMaratonas = async () => {
         }
 
         containerItem.onclick = async () => {
+            if (containerItem.classList.contains('disabled')) return;
+
+            containerItem.classList.add('disabled');
             const atual = {
                 id: element.id,
                 nome_maratona: element.nome,
@@ -147,12 +150,12 @@ const exibirMaratonas = async () => {
                 qtdTimes: element.qtdTimes,
                 premiacao: element.premiacao,
             };
-            IntoMaratona(atual);
+            IntoMaratona(atual, containerItem);
         };
     });
 };
 
-const IntoMaratona = (element) => {
+const IntoMaratona = (element, containerItem) => {
     let getCacheTimes = timesSalvos.length > 0 && element.id == timesSalvos[0].maratonaId ? true : false
     adicionarPartida(element);
     ExibirTimes(element.id, getCacheTimes, rodadas);
@@ -169,6 +172,18 @@ const IntoMaratona = (element) => {
     editorButton.onclick = function (event) {
         EditarMaratona(element);
     };
+
+    backToHome.onclick = function () {
+        containerItem.classList.remove("disabled");
+        sidebar.classList.remove('show');
+        sidebar.classList.add('hide');
+        intoMaratona.classList.remove('show');
+        intoMaratona.classList.add('hide');
+        setTimeout(function () {
+            container.classList.remove('no-scroll');
+        }, 200);
+        body.classList.remove("no-scrollbody");
+    }
 
     initCreationTeam.onclick = function (event) {
         if (timesSalvos.length === element.qtdTimes) {
@@ -628,17 +643,6 @@ const EditarMaratona = (element) => {
     };
 }
 
-backToHome.onclick = function () {
-    sidebar.classList.remove('show');
-    sidebar.classList.add('hide');
-    intoMaratona.classList.remove('show');
-    intoMaratona.classList.add('hide');
-    setTimeout(function () { // 200ms pro remove do scroll não cortar a animação da IntoMaratona
-        container.classList.remove('no-scroll');
-    }, 200);
-    body.classList.remove("no-scrollbody");
-}
-
 contaOpcoes.addEventListener('mouseenter', function () {
     opcoes.style.display = "flex";
     toggleIcon.classList.add("rotate");
@@ -1050,7 +1054,7 @@ function definirVencedor(partidaId, rodadas) {
         if (time1 && time2) {
             const vencedor = prompt("Escolha o vencedor: ", `${time1.abreviacao} ou ${time2.abreviacao}`);
             if (vencedor === time1.abreviacao || vencedor === time2.abreviacao) {
-                let objectVencedor = vencedor === time1.abreviacao ? time1 : time2 
+                let objectVencedor = vencedor === time1.abreviacao ? time1 : time2
                 partida.vencedor = {
                     nome: objectVencedor.nome,
                     abreviacao: vencedor,
@@ -1170,7 +1174,7 @@ function selecionarTime(partidaId, timeIndex, rodadas, time) {
     };
 }
 
-const ValidarCompetidores = async (id) =>{
+const ValidarCompetidores = async (id) => {
     const competidoresLista = [];
     try {
         const response = await fetch(`/competidor?time_id=${id}`, { method: 'GET' });
@@ -1178,10 +1182,10 @@ const ValidarCompetidores = async (id) =>{
 
         const competidores = await response.json();
 
-        if(competidores.length > 0){
+        if (competidores.length > 0) {
             return true;
         }
-        else{
+        else {
             alert("Adicione ao menos 1 competidor ao time!");
             return false;
         }

@@ -465,6 +465,11 @@ input {
     background-color: rgb(81, 85, 128);
 }
 
+.disabled {
+    pointer-events: none;
+    opacity: 0.5;
+}
+
 .overlay {
     position: fixed;
     top: 0;
@@ -782,7 +787,6 @@ height: 40px;
     visibility: hidden; 
     opacity: 0;
     transition: transform 0.5s ease, opacity 0.5s ease, visibility 0s 0.2s;
-    
 }
 
 .IntoMaratona.show {
@@ -800,13 +804,14 @@ height: 40px;
 }
 
 .torneio-container {
-    position: absolute;
+    position: relative;
     display: grid;
     grid-template-columns: auto 1fr;
     justify-self: center;
     flex-direction: column;
     align-items: flex-start;
     overflow-x: auto; 
+    justify-content: center;
   }
 
   .IntoMaratona button {
@@ -1573,6 +1578,10 @@ text-align: center;
 
     .imagemAddTime{
         width: 60%;
+    }
+
+    .rodadas{
+        width: 100%
     }
 }
 
