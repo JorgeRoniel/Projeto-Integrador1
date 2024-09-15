@@ -362,10 +362,9 @@ const IntoTeam = (time, rodadas) => {
                 li.textContent = nome_competidor;
                 li.dataset.id = id;
 
-                const deleteButton = document.createElement("button");
-                deleteButton.className = "delete-btn";
-                deleteButton.textContent = 'X';
-                deleteButton.addEventListener("click", async (event) => {
+            const deleteIcon = document.createElement("i");
+            deleteIcon.className = "bi bi-trash-fill";
+                deleteIcon.addEventListener("click", async (event) => {
                     event.stopPropagation();
                     const id = li.dataset.id;
                     try {
@@ -388,7 +387,7 @@ const IntoTeam = (time, rodadas) => {
                     }
                 });
 
-                li.appendChild(deleteButton);
+                li.appendChild(deleteIcon);
                 lista.appendChild(li);
             });
             loadingIndic.style.display = 'none';
@@ -713,12 +712,10 @@ editarContaAbrir.onclick = function () {
         const arquivo = event.target.files[0];
         if (arquivo) {
 
-            // Revoga a antiga pra não sobreescrever
             if (currentImageUrl) {
                 URL.revokeObjectURL(currentImageUrl);
             }
 
-            // Nova URL pra atualizar
             currentImageUrl = URL.createObjectURL(arquivo);
             imagemAtualizar.src = currentImageUrl;
 
@@ -1145,6 +1142,7 @@ function selecionarTime(partidaId, timeIndex, rodadas, time) {
     const timeOpcaoEsvaziar = document.createElement("option");
     timeOpcaoEsvaziar.textContent = "Remover"
     timeOpcaoEsvaziar.style.backgroundColor = "red"
+    timeOpcaoEsvaziar.style.color = "white"
     time.appendChild(timeOpcaoEsvaziar);
 
     if (partida && partida.times[timeIndex]) {
