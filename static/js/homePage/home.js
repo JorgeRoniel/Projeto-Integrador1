@@ -303,7 +303,6 @@ const IntoTeam = (time, rodadas) => {
 
         torneioContainer.appendChild(containerCampeao);
         torneioContainer.appendChild(rodadasContainer);
-        adicionarPartida();
     }
 
     document.getElementById("editorTimeButton").onclick = function () {
@@ -313,7 +312,13 @@ const IntoTeam = (time, rodadas) => {
     document.getElementById("ConfirmarCriacaoParticipante").onclick = async function (event) {
         event.preventDefault();
 
-        const nomeParticipante = document.querySelector("input[name='nomeParticipante']").value;
+        const lista = document.getElementById("containerExibirCompetidores");
+        lista.innerHTML = '';
+        const loadingIndic = document.getElementById('loadingDev');
+        loadingIndic.style.display = 'flex';
+
+        const nomeParticipanteInput = document.querySelector("input[name='nomeParticipante']");
+        const nomeParticipante = nomeParticipanteInput.value;
         const timeId = time.id;
 
         if (!nomeParticipante) {
@@ -335,17 +340,11 @@ const IntoTeam = (time, rodadas) => {
                 body: JSON.stringify(data),
             });
 
-            const result = await response.json();
-
-            if (result.status === "success") {
-                alert("Competidor criado com sucesso!");
-                AtualizarListaCompetidores(timeId);
-            } else {
-                alert("Erro ao criar competidor: " + result.message);
-            }
         } catch (error) {
             console.error("Erro ao criar competidor:", error);
         }
+        AtualizarListaCompetidores(timeId);
+        nomeParticipanteInput.value = '';
     }
 
     const AtualizarListaCompetidores = async (timeId) => {
@@ -1055,6 +1054,7 @@ function atualizarLayout(rodadas) {
         });
 
         rodadasContainer.appendChild(rodadaDiv);
+        $('.time').select2();
     });
 }
 
@@ -1131,6 +1131,7 @@ function selecionarTime(partidaId, timeIndex, rodadas, time) {
         alert("Nenhum time criado!");
         return;
     }
+
 
     for (let i = 0; i < timesSalvos.length; i++) {
         const timeOpcao = document.createElement("option");
