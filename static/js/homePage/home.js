@@ -158,6 +158,7 @@ const exibirMaratonas = async () => {
 };
 
 const IntoMaratona = (element, containerItem) => {
+    rodadasContainer.innerHTML = '';
     let getCacheTimes = timesSalvos.length > 0 && element.id == timesSalvos[0].maratonaId ? true : false
     ExibirTimes(element, getCacheTimes, rodadas);
     intoMaratona.classList.remove('hide');
@@ -984,11 +985,18 @@ function atualizarLayout(rodadas) {
             const time1 = document.createElement('select');
             time1.classList.add('time');
             selecionarTime(partida.id, 0, rodadas, time1);
+            
             // Adiciona as opções ao select
 
             const time2 = document.createElement('select');
             time2.classList.add('time');
             selecionarTime(partida.id, 1, rodadas, time2);
+            time2.addEventListener('click',function(){
+                if (timesSalvos.length === 0) {
+                    alert("Nenhum time criado!");
+                    return;
+                }
+            })
 
          
             const trof = document.createElement('div');
@@ -1181,6 +1189,12 @@ function selecionarTime(partidaId, timeIndex, rodadas, time) {
         return;
     }
 
+        for (let i = 0; i < timesSalvos.length; i++) {
+            const timeOpcao = document.createElement("option");
+            timeOpcao.value = timesSalvos[i].nome;
+            timeOpcao.textContent = timesSalvos[i].abreviacao;
+            time.appendChild(timeOpcao);
+        }
 
     for (let i = 0; i < timesSalvos.length; i++) {
         const timeOpcao = document.createElement("option");
@@ -1219,10 +1233,9 @@ function selecionarTime(partidaId, timeIndex, rodadas, time) {
 
             if (!isOption) {
                 alert("Time já foi selecionado!")
-                return;
             }
             const timeSelecionado = timesSalvos.find(t => t.nome === time.value);
-            if (timeSelecionado) {
+            if (timeSelecionado && isOption) {
                 const validateCompetidor = await ValidarCompetidores(timeSelecionado.id);
                 if (validateCompetidor) {
                     partida.times[timeIndex] = {
