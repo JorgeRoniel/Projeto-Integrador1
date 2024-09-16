@@ -985,18 +985,12 @@ function atualizarLayout(rodadas) {
             const time1 = document.createElement('select');
             time1.classList.add('time');
             selecionarTime(partida.id, 0, rodadas, time1);
-            
+
             // Adiciona as opções ao select
 
             const time2 = document.createElement('select');
             time2.classList.add('time');
             selecionarTime(partida.id, 1, rodadas, time2);
-            time2.addEventListener('click',function(){
-                if (timesSalvos.length === 0) {
-                    alert("Nenhum time criado!");
-                    return;
-                }
-            })
 
          
             const trof = document.createElement('div');
@@ -1196,12 +1190,6 @@ function selecionarTime(partidaId, timeIndex, rodadas, time) {
             time.appendChild(timeOpcao);
         }
 
-    for (let i = 0; i < timesSalvos.length; i++) {
-        const timeOpcao = document.createElement("option");
-        timeOpcao.value = timesSalvos[i].nome;
-        timeOpcao.textContent = timesSalvos[i].abreviacao;
-        time.appendChild(timeOpcao);
-    }
     rodadas.forEach(rodada => {
         rodada.forEach(partida => {
             partida.times.forEach((time) => {
