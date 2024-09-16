@@ -53,7 +53,7 @@ const filterTime = document.getElementById("filterTime");
 const rodadasContainer = document.getElementById('rodadas');
 const torneioContainer = document.getElementById("torneio-container");
 const containerCampeao = document.getElementById("containerCampeao");
-const body = document.getElementById("body");
+const body = document.getElementById("body"); 
 
 //Vetores que guardarão in memory os gets para tornar o programa performático
 var maratonasSalvas = [];
@@ -361,8 +361,8 @@ const IntoTeam = (time, rodadas) => {
                 li.textContent = nome_competidor;
                 li.dataset.id = id;
 
-                const deleteIcon = document.createElement("i");
-                deleteIcon.className = "bi bi-trash-fill";
+            const deleteIcon = document.createElement("i");
+            deleteIcon.className = "bi bi-trash-fill";
                 deleteIcon.addEventListener("click", async (event) => {
                     event.stopPropagation();
                     const id = li.dataset.id;
@@ -996,7 +996,7 @@ function atualizarLayout(rodadas) {
                 if (vence && !temDoisTimes) {
                     trof.style.color = "black";
                 } else if (vence && temDoisTimes) {
-                    trof.style.color = "green";
+                        trof.style.color = "green";
                 } else {
                     trof.style.color = "gold";
                 }
@@ -1225,13 +1225,13 @@ function selecionarTime(partidaId, timeIndex, rodadas, time) {
                         icon: timeSelecionado.icon
                     };
                     atualizarLayout(rodadas);
-                }
+                } 
             }
             else {
                 partida.times[timeIndex] = {
                     nome: '',
                     abreviacao: ''
-                };
+                }; 
                 atualizarLayout(rodadas);
             }
         }
