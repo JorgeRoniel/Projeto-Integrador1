@@ -160,8 +160,7 @@ const exibirMaratonas = async () => {
 
 const IntoMaratona = (element, containerItem) => {
     let getCacheTimes = timesSalvos.length > 0 && element.id == timesSalvos[0].maratonaId ? true : false
-    adicionarPartida(element);
-    ExibirTimes(element.id, getCacheTimes, rodadas);
+    ExibirTimes(element, getCacheTimes, rodadas);
     intoMaratona.classList.remove('hide');
     intoMaratona.classList.add('show');
     sidebar.style.display = "flex";
@@ -216,7 +215,7 @@ const IntoMaratona = (element, containerItem) => {
     };
 }
 
-const ExibirTimes = async (maratona_id, getCacheTimes, rodadas) => {
+const ExibirTimes = async (maratona, getCacheTimes, rodadas) => {
 
     const loadingIndicator = document.getElementById('loadingTimes');
     loadingIndicator.style.display = 'flex';
@@ -229,7 +228,7 @@ const ExibirTimes = async (maratona_id, getCacheTimes, rodadas) => {
         timesSalvos = [];
         const escudoTime = document.createElement("img");
         const formData = new FormData();
-        formData.append("maratona_id", maratona_id);
+        formData.append("maratona_id", maratona.id);
 
         const options = {
             method: 'POST',
@@ -257,6 +256,7 @@ const ExibirTimes = async (maratona_id, getCacheTimes, rodadas) => {
             console.error('ERRO: ', error);
         }
     }
+    adicionarPartida(maratona);
     const fragment = document.createDocumentFragment();
     loadingIndicator.style.display = 'none';
     backToHome.style.pointerEvents = 'auto';
@@ -965,23 +965,14 @@ function atualizarLayout(rodadas) {
 
             const time1 = document.createElement('select');
             time1.classList.add('time');
-            time1.onclick = () => selecionarTime(partida.id, 0, rodadas, time1);
+            selecionarTime(partida.id, 0, rodadas, time1);
 
             // Adiciona as opções ao select
-            const time1Option = document.createElement('option');
-            time1Option.value = partida.times[0].nome; // O valor do time
-            time1Option.textContent = partida.times[0].abreviacao; // O texto que será exibido
-            time1.appendChild(time1Option);
 
             const time2 = document.createElement('select');
             time2.classList.add('time');
-            time2.onclick = () => selecionarTime(partida.id, 1, rodadas, time2);
+            selecionarTime(partida.id, 1, rodadas, time2);
 
-            // Adiciona as opções ao select
-            const time2Option = document.createElement('option');
-            time2Option.value = partida.times[1].nome; // O valor do time
-            time2Option.textContent = partida.times[1].abreviacao; // O texto que será exibido
-            time2.appendChild(time2Option);
             // Adiciona o botão de escolha de vencedor
             const trof = document.createElement('div');
             trof.classList.add('seta');
@@ -1062,7 +1053,7 @@ function atualizarLayout(rodadas) {
 }
 
 function definirVencedor(partidaId, rodadas) {
-    criacaoPartida.classList.add('show');
+    criacaoPartida.classList.add('show')
 
     const partida = rodadas.flat().find(p => p.id === partidaId);
     if (partida && !partida.vencedor) {
@@ -1170,6 +1161,18 @@ function selecionarTime(partidaId, timeIndex, rodadas, time) {
 
     let vetorOpcoesSelecionadas = []
 
+        if (timesSalvos.length === 0) {
+            alert("Nenhum time criado!");
+            return;
+        }
+
+        for (let i = 0; i < timesSalvos.length; i++) {
+            const timeOpcao = document.createElement("option");
+            timeOpcao.value = timesSalvos[i].nome;
+            timeOpcao.textContent = timesSalvos[i].abreviacao;
+            time.appendChild(timeOpcao);
+        }
+
     rodadas.forEach(rodada => {
         rodada.forEach(partida => {
             partida.times.forEach((time) => {
@@ -1178,17 +1181,6 @@ function selecionarTime(partidaId, timeIndex, rodadas, time) {
         });
     });
 
-    if (timesSalvos.length === 0) {
-        alert("Nenhum time criado!");
-        return;
-    }
-
-    for (let i = 0; i < timesSalvos.length; i++) {
-        const timeOpcao = document.createElement("option");
-        timeOpcao.value = timesSalvos[i].nome;
-        timeOpcao.textContent = timesSalvos[i].abreviacao;
-        time.appendChild(timeOpcao);
-    }
 
     const timeOpcaoEsvaziar = document.createElement("option");
     timeOpcaoEsvaziar.textContent = "Remover"
