@@ -53,7 +53,7 @@ const filterTime = document.getElementById("filterTime");
 const rodadasContainer = document.getElementById('rodadas');
 const torneioContainer = document.getElementById("torneio-container");
 const containerCampeao = document.getElementById("containerCampeao");
-const body = document.getElementById("body"); 
+const body = document.getElementById("body");
 
 //Vetores que guardarão in memory os gets para tornar o programa performático
 var maratonasSalvas = [];
@@ -362,8 +362,8 @@ const IntoTeam = (time, rodadas) => {
                 li.textContent = nome_competidor;
                 li.dataset.id = id;
 
-            const deleteIcon = document.createElement("i");
-            deleteIcon.className = "bi bi-trash-fill";
+                const deleteIcon = document.createElement("i");
+                deleteIcon.className = "bi bi-trash-fill";
                 deleteIcon.addEventListener("click", async (event) => {
                     event.stopPropagation();
                     const id = li.dataset.id;
@@ -918,7 +918,8 @@ function adicionarPartida(maratona) {
         const partida = {
             id: idPartida++,
             times: [{ nome: '', abreviacao: '' }, { nome: '', abreviacao: '' }],
-            vencedor: null
+            vencedor: null,
+            maratonaId: maratona.id
         };
 
         rodadas[rodadas.length - 1].push(partida);
@@ -927,6 +928,7 @@ function adicionarPartida(maratona) {
         }
     }
     atualizarLayout(rodadas);
+
 }
 
 function atualizarLayout(rodadas) {
@@ -992,11 +994,11 @@ function atualizarLayout(rodadas) {
                 time1.disabled = !vence;
                 time2.disabled = !vence;
                 trof.style.pointerEvents = (temDoisTimes && partida.vencedor === null) ? 'auto' : 'none';
-                if(vence && !temDoisTimes){
+                if (vence && !temDoisTimes) {
                     trof.style.color = "black";
-            }else if(vence && temDoisTimes){
-                        trof.style.color = "green";
-                }else{
+                } else if (vence && temDoisTimes) {
+                    trof.style.color = "green";
+                } else {
                     trof.style.color = "gold";
                 }
             } else {
@@ -1005,11 +1007,11 @@ function atualizarLayout(rodadas) {
                 time1.disabled = true;
                 time2.disabled = true;
                 trof.style.pointerEvents = temDoisTimes && partida.vencedor === null ? 'auto' : 'none';
-                if(!temDoisTimes && vence){
+                if (!temDoisTimes && vence) {
                     trof.style.color = "gray";
-                }else if(temDoisTimes && vence){
+                } else if (temDoisTimes && vence) {
                     trof.style.color = "green";
-                }else{
+                } else {
                     trof.style.color = "gold";
                 }
             }
@@ -1079,6 +1081,7 @@ function definirVencedor(partidaId, rodadas) {
                     const imagemCampeao = document.getElementById('imagemCampeao');
                     imagemCampeao.src = partida.vencedor.icon;
                 } else {
+                    CriarPartida(partida, objectVencedor.id);
                     enviarVencedorProximaRodada(partida, rodadas);
                 }
             } else {
@@ -1111,6 +1114,51 @@ function enviarVencedorProximaRodada(partida, rodadas) {
 
     atualizarLayout(rodadas);
 }
+
+const CriarPartida = async (partida, idVencedor) => {
+
+    const dataAtual = new Date();
+
+    // Obtém o ano, mês, dia, hora, minuto e segundo
+    const ano = dataAtual.getFullYear();
+    const mes = dataAtual.getMonth() + 1; // Os meses são indexados a partir de 0 (Janeiro = 0)
+    const dia = dataAtual.getDate();
+    const hora = dataAtual.getHours();
+    const minuto = dataAtual.getMinutes();
+    const segundo = dataAtual.getSeconds();
+
+    // Formata a data e hora como 'YYYY-MM-DD HH:MM:SS'
+    const dataFormatada = `${ano}-${mes.toString().padStart(2, '0')}-${dia.toString().padStart(2, '0')} ${hora.toString().padStart(2, '0')}:${minuto.toString().padStart(2, '0')}:${segundo.toString().padStart(2, '0')}`;
+
+    const formData = new FormData();
+    formData.append("time1", partida.times[0].id);
+    formData.append("time2", partida.times[1].id);
+    formData.append("vencedor", idVencedor);
+    formData.append("maratonaId", partida.maratonaId);
+    formData.append("local_partida", "");
+    formData.append("data_partida", dataFormatada);
+
+    const options = {
+        method: 'POST',
+        body: formData, // Enviar diretamente o FormData
+    };
+
+    try {
+        const response = await fetch('/createPartida', options);
+        const data = await response.json();
+
+        if (data.status === "success") {
+            // Chamar método da próxima rodada
+            alert(data.message);
+        } else if (data.status === "error") {
+            alert("Erro ao criar partida");
+        } else if (data.status === "N/A") {
+            alert(data.message);
+        }
+    } catch (error) {
+        console.log("Erro: ", error);
+    }
+};
 
 
 function selecionarTime(partidaId, timeIndex, rodadas, time) {
@@ -1176,13 +1224,13 @@ function selecionarTime(partidaId, timeIndex, rodadas, time) {
                         icon: timeSelecionado.icon
                     };
                     atualizarLayout(rodadas);
-                } 
+                }
             }
             else {
                 partida.times[timeIndex] = {
                     nome: '',
                     abreviacao: ''
-                }; 
+                };
                 atualizarLayout(rodadas);
             }
         }
