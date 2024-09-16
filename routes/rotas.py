@@ -6,6 +6,7 @@ from services import MaratonaService as m
 from services import TimesService as t
 from services import CompetidoresService as cs
 from Estruturas import ListaDEncadeada as le
+from services import PartidasService as ps
 import base64
 
 rotas = Blueprint('rotas', __name__)
@@ -384,6 +385,85 @@ def delete_Competidor():
         response = {
             "status": "success",
             "message": "Competidor Deletado"
+        }
+    else:
+        response = {
+            "status": "error",
+            "message": "Erro ao deletar."
+        }
+    
+    return jsonify(response)
+
+
+
+@rotas.route('/createPartida', methods=['POST'])
+def create_Partida():
+    if request.content_type == 'application/json':
+        data = request.get_json()
+    else:
+        data = request.form.to_dict()
+
+    partida = Models.Match(data['data_partida'], data['local_partida'], data['time1'], data['time2'], data['vencedor'], data['maratonaId'])
+    
+    if ps.criarPartida(partida.date, partida.local, partida.blueTeam, partida.redTeam, partida.winner, partida.idMarathon):
+        response = {
+            "status": "success",
+            "message": "Partida criada!"
+        }
+    else:
+        response = {
+            "status": "error",
+            "message": "Erro ao criar partida."
+        }
+
+    return jsonify(response)
+
+
+@rotas.route("/partida", methods=['GET'])
+def show_Partida():
+    maratona_id = request.args.get('maratona_id')
+
+    if maratona_id is None:
+        return jsonify({"error": "maratona_id não fornecido"}), 400
+
+    data = ps.listarCompetidores(maratona_id)
+    lista_partidas = data.to_list()
+
+    return jsonify(lista_partidas)
+
+@rotas.route("/updatePartida", methods=['PUT'])
+def update_Partida():
+    if request.content_type == 'application/json':
+        data = request.get_json()
+    else:
+        data = request.form.to_dict()
+
+    partida = partida = Models.Match(data['data_partida'], data['local_partida'], data['time1'], data['time2'], data['vencedor'], data['maratonaId'])
+    if ps.atualizarPartida(partida.date, partida.local, partida.blueTeam, partida.redTeam, partida.winner):
+        response = {
+            'status': 'success',
+            'message': 'updated!'
+        }
+    else:
+        response = {
+            'status': 'error',
+            'message': 'erro ao atualizar partida!'
+        }
+
+    return jsonify(response)
+
+@rotas.route("/deletePartida", methods=['DELETE'])
+def delete_Partida():
+    if request.content_type == 'application/json':
+        data = request.get_json()
+    else:
+        data = request.form.to_dict()
+    
+    id = data['id']
+    if ps.deletarPartida(id):
+        response = {
+            "status": "success",
+            "message": "Partida Deletada."
         }
     else:
         response = {
