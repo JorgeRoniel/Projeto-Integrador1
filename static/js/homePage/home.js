@@ -17,7 +17,6 @@ const fecharCriacao = document.getElementById("fecharCriacao");
 const fecharEdicaoMaratona = document.getElementById("fecharEdicaoMaratona");
 const criarMaratona = document.getElementById("criarMaratona");
 const criarTime = document.getElementById("criarTime");
-const criarPartida = document.getElementById("criarPartida");
 const formMaratona = document.getElementById("criar-maratona-form");
 const exibirCategorias = document.getElementById("ExibirCategorias");
 const filter = document.getElementById("filter");
@@ -53,12 +52,8 @@ const filterTime = document.getElementById("filterTime");
 const rodadasContainer = document.getElementById('rodadas');
 const torneioContainer = document.getElementById("torneio-container");
 const containerCampeao = document.getElementById("containerCampeao");
-<<<<<<< HEAD
-const body = document.getElementById("body"); 
-=======
 const body = document.getElementById("body");
 const criacaoPartida = document.getElementById("criarPartida");
->>>>>>> a692a865ca87aadbcf3a71e9cf65871ddbeae377
 
 //Vetores que guardarão in memory os gets para tornar o programa performático
 var maratonasSalvas = [];
@@ -498,6 +493,24 @@ const EditarTime = (time) => {
         }
     };
 };
+
+const CreatePartida = (partida) => {
+    criacaoPartida.classList.add('show');
+    overlayIntoMaratona.classList.add('show');
+    intoMaratona.classList.add("no-scroll");
+
+    const LocalPartida = document.getElementById("LocalPartida");
+    const DataPartida = document.getElementById("DataPartida");
+    //LocalPartida.value = partida.Local;
+    //DataPartida.value = partida.Data;
+
+    document.getElementById("fecharCriacaoPartida").onclick = function () {
+        criacaoPartida.classList.remove('show');
+        overlayIntoMaratona.classList.remove('show');
+        intoMaratona.classList.remove("no-scroll");
+    }
+    
+}
 
 const CreateTeam = (maratona) => {
 
@@ -989,7 +1002,7 @@ function atualizarLayout(rodadas) {
             const trof = document.createElement('div');
             trof.classList.add('seta');
             trof.innerHTML = '<i class="bi bi-trophy-fill"></i>';
-            trof.onclick = () => definirVencedor(partida.id, rodadas);
+            trof.onclick = () => CreatePartida(partida);
 
             // Habilitar ou desabilitar baseando-se na rodada e no número de times
             if (indexRodada === rodadas.length - 2) {
@@ -1061,13 +1074,10 @@ function atualizarLayout(rodadas) {
         });
 
         rodadasContainer.appendChild(rodadaDiv);
-        $('.time').select2();
     });
 }
 
 function definirVencedor(partidaId, rodadas) {
-    criacaoPartida.classList.add('show');
-
     const partida = rodadas.flat().find(p => p.id === partidaId);
     if (partida && !partida.vencedor) {
         const time1 = partida.times[0];
@@ -1194,7 +1204,6 @@ function selecionarTime(partidaId, timeIndex, rodadas, time) {
         timeOpcao.textContent = timesSalvos[i].abreviacao;
         time.appendChild(timeOpcao);
     }
-
     const timeOpcaoEsvaziar = document.createElement("option");
     timeOpcaoEsvaziar.textContent = "Remover"
     timeOpcaoEsvaziar.style.backgroundColor = "red"

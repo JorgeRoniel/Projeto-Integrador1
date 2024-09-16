@@ -602,7 +602,7 @@ input {
     top: 0;
     background-color: rgb(192, 203, 246);
     ;
-    animation: curs .8s infinite, digita 17s steps(12) infinite;
+    animation: curs .8s infinite, digita 17s steps(17) infinite;
     width: 100%;
     right: -2px;
 }
@@ -939,6 +939,7 @@ input {
     justify-content: center;
     align-items: center;
     margin: 5px;
+    text-align: center;
 }
 
 .vertical2 {
