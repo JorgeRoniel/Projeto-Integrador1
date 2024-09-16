@@ -54,6 +54,7 @@ const rodadasContainer = document.getElementById('rodadas');
 const torneioContainer = document.getElementById("torneio-container");
 const containerCampeao = document.getElementById("containerCampeao");
 const body = document.getElementById("body");
+const criacaoPartida = document.getElementById("criarPartida");
 
 //Vetores que guardarão in memory os gets para tornar o programa performático
 var maratonasSalvas = [];
@@ -1061,6 +1062,8 @@ function atualizarLayout(rodadas) {
 }
 
 function definirVencedor(partidaId, rodadas) {
+    criacaoPartida.classList.add('show');
+
     const partida = rodadas.flat().find(p => p.id === partidaId);
     if (partida && !partida.vencedor) {
         const time1 = partida.times[0];
