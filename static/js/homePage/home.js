@@ -1081,7 +1081,7 @@ function atualizarLayout(rodadas) {
         });
 
         rodadasContainer.appendChild(rodadaDiv);
-        $('.time').select2({
+        $('.time, #TimeVencedor').select2({
             templateResult: function (data) {
                 if (!data.id) {
                     return data.text;

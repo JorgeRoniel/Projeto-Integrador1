@@ -1051,8 +1051,13 @@ li:hover .bi-trash-fill {
     margin:5px !important;
 }
 
+#TimeVencedor{
+    width: 30%;
+}
+
 .select2-search__field{
     background-color: white !important;
+    color: black !important;
 }
 
 .select2-results__options {
