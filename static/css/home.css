@@ -1051,8 +1051,38 @@ li:hover .bi-trash-fill {
     margin:5px !important;
 }
 
-#TimeVencedor{
-    width: 30%;
+#TimeVencedor + .select2-container {
+    width: 72% !important;
+}
+
+/* Ajustar a borda do contêiner de seleção */
+#TimeVencedor + .select2-container .select2-selection {
+    border: 5px solid rgb(20, 57, 111); /* Define a borda */
+    box-sizing: content-box; /* Exclui borda e padding do cálculo da largura e altura */
+}
+
+#TimeVencedor + .select2-container .select2-selection {
+    background-color: rgb(20, 57, 111) !important;
+}
+
+#TimeVencedor + .select2-container .select2-selection__rendered {
+    color: white !important;
+}
+
+#qtdTimes + .select2-container {
+    width: 72% !important;
+}
+
+/* Ajustar a borda do contêiner de seleção */
+#qtdTimes + .select2-container .select2-selection {
+    border: 5px solid rgb(20, 57, 111); /* Define a borda */
+    box-sizing: content-box; /* Exclui borda e padding do cálculo da largura e altura */
+    background-color: rgb(20, 57, 111) !important; /* Define a cor de fundo */
+}
+
+/* Ajustar a cor do texto dentro do contêiner de seleção */
+#qtdTimes + .select2-container .select2-selection__rendered {
+    color: white !important; /* Define a cor do texto */
 }
 
 .select2-search__field{
