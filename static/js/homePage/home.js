@@ -65,6 +65,8 @@ var competidoresSalvos = [[]]
 
 let userLogado = null;
 
+let primeiroChaveamento = true;
+
 document.addEventListener('DOMContentLoaded', function () {
     const options = {
         method: 'GET'
@@ -949,11 +951,11 @@ function adicionarPartida(maratona) {
         }
     }
     atualizarLayout(rodadas);
-
 }
 
 function atualizarLayout(rodadas) {
     rodadasContainer.innerHTML = '';
+    const vetorSorteioTimes = timesSalvos;
 
     rodadas.forEach((rodada, indexRodada) => {
         const rodadaDiv = document.createElement('div');
@@ -1104,6 +1106,7 @@ function atualizarLayout(rodadas) {
             }
         });
     });
+    primeiroChaveamento = false;
 }
 
 function definirVencedor(partida, rodadas, vencedor) {
@@ -1204,9 +1207,33 @@ const fecharTelaCriarPartida = () => {
     intoMaratona.classList.remove("no-scroll");
 }
 
+const setarTimePartida = (partida, id1, id2, rodadas) =>{
+    const time1 = timesSalvos.filter(x=>x.id == id1)
+    const time2 = timesSalvos.filter(x=>x.id == id2)
+
+    partida.times[0] = {
+        nome: time1.nome,
+        abreviacao: time1.abreviacao,
+        id: time1.id,
+        maratonaId: time1.maratonaId,
+        icon: time1.icon
+    };
+
+    partida.times[1] = {
+        nome: time2.nome,
+        abreviacao: time2.abreviacao,
+        id: time2.id,
+        maratonaId: time2.maratonaId,
+        icon: time2.icon
+    };
+
+    atualizarLayout(rodadas);
+}
+
 const insertPartida = async (partida) => {
     const LocalPartida = document.getElementById("LocalPartida");
     const DataPartida = document.getElementById("DataPartida");
+
     let vencedor = "Inexistente";
     if (LocalPartida.value === "" || DataPartida.value === "") {
         return vencedor;
@@ -1215,10 +1242,10 @@ const insertPartida = async (partida) => {
     const formData = new FormData();
     formData.append("time1", partida.times[0].id);
     formData.append("time2", partida.times[1].id);
-    formData.append("vencedor", idVencedor);
+    formData.append("vencedor", OptionsVencedor.value);
     formData.append("maratonaId", partida.maratonaId);
-    formData.append("local_partida", "");
-    formData.append("data_partida", dataFormatada);
+    formData.append("local_partida", LocalPartida.value);
+    formData.append("data_partida", DataPartida.value);
 
     const options = {
         method: 'POST',
@@ -1232,6 +1259,7 @@ const insertPartida = async (partida) => {
         if (data.status === "success") {
             // Chamar método da próxima rodada
             alert(data.message);
+            vencedor = OptionsVencedor.value;
         } else if (data.status === "error") {
             alert("Erro ao criar partida");
         } else if (data.status === "N/A") {
@@ -1241,6 +1269,30 @@ const insertPartida = async (partida) => {
         console.log("Erro: ", error);
     }
     return vencedor;
+}
+
+const vetorSorteioTimes = timesSalvos;
+
+const sorteioTimes = (vetorSorteioTimes) =>{
+    let maiorId = 0
+    timesSalvos.forEach(time => {
+        if(maiorId < time.id){
+            maiorId = time.id
+        }
+    });
+
+    let menorId = maiorId
+    timesSalvos.forEach(time => {
+        if(menorId > time.id){
+            menorId = time.id
+        }
+    });
+
+    const timeSorteado = Math.floor(Math.random() * (maiorId - menorId + 1)) + menorId;
+
+    vetorSorteioTimes = vetorSorteioTimes.filter(time => time.id !== timeSorteado);
+
+    return timeSorteado
 }
 
 function selecionarTime(partidaId, timeIndex, rodadas, time) {
