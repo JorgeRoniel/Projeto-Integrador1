@@ -83,6 +83,8 @@ document.addEventListener('DOMContentLoaded', function () {
         .catch((error) => {
             console.error('ERROR: ', error);
         });
+        
+        $('#qtdTimes').select2();
 
     exibirMaratonas();
 });
@@ -986,24 +988,24 @@ function atualizarLayout(rodadas) {
             const time1 = document.createElement('select');
             time1.classList.add('time');
             selecionarTime(partida.id, 0, rodadas, time1);
-            time1.addEventListener('click', function () {
+            time1.onclick = async () => {
                 if (timesSalvos.length === 0) {
                     alert("Nenhum time criado!");
                     return;
                 }
-            })
+            }
 
             // Adiciona as opções ao select
 
             const time2 = document.createElement('select');
             time2.classList.add('time');
             selecionarTime(partida.id, 1, rodadas, time2);
-            time2.addEventListener('click', function () {
+            time2.onclick = async () => {
                 if (timesSalvos.length === 0) {
                     alert("Nenhum time criado!");
                     return;
                 }
-            })
+            }
 
             const trof = document.createElement('div');
             trof.classList.add('seta');
@@ -1082,6 +1084,7 @@ function atualizarLayout(rodadas) {
 
         rodadasContainer.appendChild(rodadaDiv);
         $('.time, #TimeVencedor').select2({
+
             templateResult: function (data) {
                 if (!data.id) {
                     return data.text;
@@ -1215,7 +1218,7 @@ const insertPartida = async (partida) => {
     const formData = new FormData();
     formData.append("time1", partida.times[0].id);
     formData.append("time2", partida.times[1].id);
-    formData.append("vencedor", idVencedor);
+    formData.append("vencedor", vencedor);
     formData.append("maratonaId", partida.maratonaId);
     formData.append("local_partida", "");
     formData.append("data_partida", dataFormatada);
