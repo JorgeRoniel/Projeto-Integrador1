@@ -54,6 +54,7 @@ const torneioContainer = document.getElementById("torneio-container");
 const containerCampeao = document.getElementById("containerCampeao");
 const body = document.getElementById("body");
 const criacaoPartida = document.getElementById("criarPartida");
+const OptionsVencedor = document.getElementById("TimeVencedor");
 
 //Vetores que guardarão in memory os gets para tornar o programa performático
 var maratonasSalvas = [];
@@ -1007,7 +1008,7 @@ function atualizarLayout(rodadas) {
             const trof = document.createElement('div');
             trof.classList.add('seta');
             trof.innerHTML = '<i class="bi bi-trophy-fill"></i>';
-            trof.onclick = () => CreatePartida(partida);
+            trof.onclick = async () => CriarPartida(partida, rodadas);
 
             // Habilitar ou desabilitar baseando-se na rodada e no número de times
             if (indexRodada === rodadas.length - 2) {
@@ -1105,19 +1106,17 @@ function atualizarLayout(rodadas) {
     });
 }
 
-function definirVencedor(partidaId, rodadas) {
-    const partida = rodadas.flat().find(p => p.id === partidaId);
+function definirVencedor(partida, rodadas, vencedor) {
     if (partida && !partida.vencedor) {
         const time1 = partida.times[0];
         const time2 = partida.times[1];
 
         if (time1 && time2) {
-            const vencedor = prompt("Escolha o vencedor: ", `${time1.abreviacao} ou ${time2.abreviacao}`);
-            if (vencedor === time1.abreviacao || vencedor === time2.abreviacao) {
-                let objectVencedor = vencedor === time1.abreviacao ? time1 : time2
+            if (vencedor == time1.id || vencedor == time2.id) {
+                let objectVencedor = vencedor === time1.id ? time1 : time2
                 partida.vencedor = {
                     nome: objectVencedor.nome,
-                    abreviacao: vencedor,
+                    abreviacao: objectVencedor.abreviacao,
                     icon: objectVencedor.icon,
                     id: objectVencedor.id,
                     maratonaId: objectVencedor.maratonaId
@@ -1126,7 +1125,6 @@ function definirVencedor(partidaId, rodadas) {
                     const imagemCampeao = document.getElementById('imagemCampeao');
                     imagemCampeao.src = partida.vencedor.icon;
                 } else {
-                    CriarPartida(partida, objectVencedor.id);
                     enviarVencedorProximaRodada(partida, rodadas);
                 }
             } else {
@@ -1160,20 +1158,59 @@ function enviarVencedorProximaRodada(partida, rodadas) {
     atualizarLayout(rodadas);
 }
 
-const CriarPartida = async (partida, idVencedor) => {
+const CriarPartida = (partida, rodadas) => {
 
-    const dataAtual = new Date();
+    criacaoPartida.classList.add('show');
+    overlayIntoMaratona.classList.add('show');
+    intoMaratona.classList.add("no-scroll");
 
-    // Obtém o ano, mês, dia, hora, minuto e segundo
-    const ano = dataAtual.getFullYear();
-    const mes = dataAtual.getMonth() + 1; // Os meses são indexados a partir de 0 (Janeiro = 0)
-    const dia = dataAtual.getDate();
-    const hora = dataAtual.getHours();
-    const minuto = dataAtual.getMinutes();
-    const segundo = dataAtual.getSeconds();
+    const BotaoCriar = document.getElementById("ConfirmarCriacaoPartida");
 
-    // Formata a data e hora como 'YYYY-MM-DD HH:MM:SS'
-    const dataFormatada = `${ano}-${mes.toString().padStart(2, '0')}-${dia.toString().padStart(2, '0')} ${hora.toString().padStart(2, '0')}:${minuto.toString().padStart(2, '0')}:${segundo.toString().padStart(2, '0')}`;
+    const optionTime1 = document.createElement("option");
+    optionTime1.value = partida.times[0].id;
+    optionTime1.innerHTML = partida.times[0].abreviacao;
+
+    const optionTime2 = document.createElement("option");
+    optionTime2.value = partida.times[1].id;
+    optionTime2.innerHTML = partida.times[1].abreviacao;
+
+    OptionsVencedor.appendChild(optionTime1);
+    OptionsVencedor.appendChild(optionTime2);
+
+    document.getElementById("fecharCriacaoPartida").onclick = function () {
+        fecharTelaCriarPartida();
+    }
+
+    BotaoCriar.onclick = async function () {
+        const vencedor = await insertPartida(partida);
+        if (vencedor === "Inexistente") {
+            alert("Todos os campos são nesessários!");
+        }
+        else {
+            definirVencedor(partida, rodadas, vencedor)
+            fecharTelaCriarPartida();
+        }
+    }
+};
+
+const fecharTelaCriarPartida = () => {
+    const LocalPartida = document.getElementById("LocalPartida");
+    const DataPartida = document.getElementById("DataPartida");
+    LocalPartida.value = "";
+    DataPartida.value = "";
+    OptionsVencedor.innerHTML = "";
+    criacaoPartida.classList.remove('show');
+    overlayIntoMaratona.classList.remove('show');
+    intoMaratona.classList.remove("no-scroll");
+}
+
+const insertPartida = async (partida) => {
+    const LocalPartida = document.getElementById("LocalPartida");
+    const DataPartida = document.getElementById("DataPartida");
+    let vencedor = "Inexistente";
+    if (LocalPartida.value === "" || DataPartida.value === "") {
+        return vencedor;
+    }
 
     const formData = new FormData();
     formData.append("time1", partida.times[0].id);
@@ -1203,8 +1240,8 @@ const CriarPartida = async (partida, idVencedor) => {
     } catch (error) {
         console.log("Erro: ", error);
     }
-};
-
+    return vencedor;
+}
 
 function selecionarTime(partidaId, timeIndex, rodadas, time) {
     const partida = rodadas.flat().find(p => p.id === partidaId);
