@@ -1246,8 +1246,6 @@ const insertPartida = async (partida) => {
     formData.append("time1", partida.times[0].id);
     formData.append("time2", partida.times[1].id);
 
-  
-
     formData.append("vencedor", OptionsVencedor.value);
 
     formData.append("maratonaId", partida.maratonaId);

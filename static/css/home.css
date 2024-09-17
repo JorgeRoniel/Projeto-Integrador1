@@ -1073,16 +1073,26 @@ li:hover .bi-trash-fill {
     width: 72% !important;
 }
 
-/* Ajustar a borda do contêiner de seleção */
 #qtdTimes + .select2-container .select2-selection {
-    border: 5px solid rgb(20, 57, 111); /* Define a borda */
-    box-sizing: content-box; /* Exclui borda e padding do cálculo da largura e altura */
-    background-color: rgb(20, 57, 111) !important; /* Define a cor de fundo */
+    border: 5px solid rgb(20, 57, 111);
+    box-sizing: content-box;
+    background-color: rgb(20, 57, 111) !important;
 }
 
-/* Ajustar a cor do texto dentro do contêiner de seleção */
 #qtdTimes + .select2-container .select2-selection__rendered {
-    color: white !important; /* Define a cor do texto */
+    color: white !important;
+}
+
+::-webkit-calendar-picker-indicator{
+    background-color: #fff;
+    padding: 5px;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: transform 0.4s ease-in-out;
+}
+
+input[type="date"]:hover::-webkit-calendar-picker-indicator {
+    transform: scale(1.2);
 }
 
 .select2-search__field{
