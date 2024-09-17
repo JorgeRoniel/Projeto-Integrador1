@@ -37,13 +37,13 @@ def listarPartidas(id_maratona):
         conn = c.openBD()
         cursor = conn.cursor()
 
-        cursor.execute(f"SELECT p.data_partida, p.local_partida, p.time1, p.time2 FROM partidas p INNER JOIN maratona m ON m.id = {id_maratona};")
+        cursor.execute(f"SELECT p.data_partida, p.local_partida, p.time1, p.time2, p.vencedor, p.maratonaId FROM partidas p WHERE p.maratonaId = {id_maratona};")
         data = cursor.fetchall()
 
         arvore = ar.ArvoreBinaria()
 
         for dado in data:
-            partida = m.Match(dado['data_partida'], dado['local_partida'], dado['time1'], dado['time2'], dado['vencedor'])
+            partida = m.Match(dado['data_partida'], dado['local_partida'], dado['time1'], dado['time2'], dado['vencedor'], dado['maratonaId'])
             arvore.inserir(partida)
 
         return arvore
@@ -56,7 +56,7 @@ def deletarPartida(id_partida):
         conn = c.openBD()
         cursor = conn.cursor()
 
-        sql = "DELETE FROM competidores WHERE id = %s;"
+        sql = "DELETE FROM partidas WHERE id = %s;"
 
         cursor.execute(sql, (id_partida))
         conn.commit()

@@ -426,7 +426,7 @@ def show_Partida():
     if maratona_id is None:
         return jsonify({"error": "maratona_id não fornecido"}), 400
 
-    data = ps.listarCompetidores(maratona_id)
+    data = ps.listarPartidas(maratona_id)
     lista_partidas = data.to_list()
 
     return jsonify(lista_partidas)
@@ -438,8 +438,8 @@ def update_Partida():
     else:
         data = request.form.to_dict()
 
-    partida = partida = Models.Match(data['data_partida'], data['local_partida'], data['time1'], data['time2'], data['vencedor'], data['maratonaId'])
-    if ps.atualizarPartida(partida.date, partida.local, partida.blueTeam, partida.redTeam, partida.winner):
+    partida = Models.Match(data['data_partida'], data['local_partida'], data['time1'], data['time2'], data['vencedor'], None)
+    if ps.atualizarPartida(data['id'], partida.date, partida.local, partida.blueTeam, partida.redTeam, partida.winner):
         response = {
             'status': 'success',
             'message': 'updated!'

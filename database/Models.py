@@ -24,6 +24,12 @@ class Match:
         self.redTeam = redTeam
         self.winner = winner
         self.idMarathon = idMarathon
+    
+    def __lt__(self, other):
+        return self.date < other.date
+
+    def __eq__(self, other):
+        return self.date == other.date
         
 
 #classe dos times

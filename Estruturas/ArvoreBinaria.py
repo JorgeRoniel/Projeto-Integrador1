@@ -53,17 +53,19 @@ class ArvoreBinaria:
             self._pos_ordem(no_atual.direita)
             print(no_atual.valor, end=' ')
 
-def to_list(self):
+    def to_list(self):
         """Converte a árvore binária em uma lista de dicionários"""
         return self._to_list_recursivo(self.raiz)
 
-def _to_list_recursivo(self, no_atual):
-    if no_atual is None:
-        return []
+    def _to_list_recursivo(self, no_atual):
+        if no_atual is None:
+            return []
         
-    resultado = []
-    resultado.append(no_atual.valor.__dict__)
-    resultado += self._to_list_recursivo(no_atual.esquerda)  
-    resultado += self._to_list_recursivo(no_atual.direita) 
-        
-    return resultado
+        resultado = []
+        resultado.append(no_atual.valor.__dict__)
+        resultado += self._to_list_recursivo(no_atual.esquerda)  
+        resultado += self._to_list_recursivo(no_atual.direita) 
+            
+        return resultado
+    
+    
