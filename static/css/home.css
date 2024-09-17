@@ -1047,6 +1047,44 @@ li:hover .bi-trash-fill {
     transform: scale(1.5);
 }
 
+.select2-container{
+    margin:5px !important;
+}
+
+.select2-search__field{
+    background-color: white !important;
+}
+
+.select2-results__options {
+    overflow-x: hidden;
+}
+
+.select2-results__option--selectable{
+    text-align:center;
+}
+
+.select2-results__options::-webkit-scrollbar {
+    width: 3px;
+}
+
+.select2-results__options::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 10px;
+}
+
+.select2-results__options::-webkit-scrollbar-track {
+    background-color: #f1f1f1;
+}
+
+.select2-selection__rendered{
+    padding-left: 3px !important;
+    padding-right: 0px !important;
+}
+
+.select2-dropdown {
+    left: -5px !important;
+}
+
 .sidebar {
     width: 15%;
     height: 100vh;

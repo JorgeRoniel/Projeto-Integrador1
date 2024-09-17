@@ -362,8 +362,8 @@ const IntoTeam = (time, rodadas) => {
                 li.textContent = nome_competidor;
                 li.dataset.id = id;
 
-                const deleteIcon = document.createElement("i");
-                deleteIcon.className = "bi bi-trash-fill";
+            const deleteIcon = document.createElement("i");
+            deleteIcon.className = "bi bi-trash-fill";
                 deleteIcon.addEventListener("click", async (event) => {
                     event.stopPropagation();
                     const id = li.dataset.id;
@@ -510,7 +510,7 @@ const CreatePartida = (partida) => {
         overlayIntoMaratona.classList.remove('show');
         intoMaratona.classList.remove("no-scroll");
     }
-
+    
 }
 
 const CreateTeam = (maratona) => {
@@ -1004,7 +1004,6 @@ function atualizarLayout(rodadas) {
                 }
             })
 
-
             const trof = document.createElement('div');
             trof.classList.add('seta');
             trof.innerHTML = '<i class="bi bi-trophy-fill"></i>';
@@ -1020,7 +1019,7 @@ function atualizarLayout(rodadas) {
                 if (vence && !temDoisTimes) {
                     trof.style.color = "black";
                 } else if (vence && temDoisTimes) {
-                    trof.style.color = "green";
+                        trof.style.color = "green";
                 } else {
                     trof.style.color = "gold";
                 }
@@ -1043,6 +1042,7 @@ function atualizarLayout(rodadas) {
             partidaDiv.appendChild(time1);
             partidaDiv.appendChild(trof);
             partidaDiv.appendChild(time2);
+            
 
             // Se for uma partida par, adicionar a linha vertical que conecta à partida ímpar
             // Adiciona a linha vertical se a rodada estiver cheia
@@ -1080,6 +1080,28 @@ function atualizarLayout(rodadas) {
         });
 
         rodadasContainer.appendChild(rodadaDiv);
+        $('.time').select2({
+            templateResult: function (data) {
+                if (!data.id) {
+                    return data.text;
+                }
+        
+                // Se o value for "Remover", exibe apenas o ícone de lixeira
+                if (data.element && data.element.value === "Remover") {
+                    const $remover = $(`
+                        <span style="display: block; background-color: red; color: white; padding: 5px; border-radius: 5px;">
+                            <i class="bi bi-trash" style="color: white;"></i>
+                        </span>
+                    `);
+                    return $remover;
+                }
+        
+                return data.text; // Para as outras opções, exibe o texto normalmente
+            },
+            escapeMarkup: function (markup) {
+                return markup;
+            }
+        });
     });
 }
 
@@ -1190,17 +1212,12 @@ function selecionarTime(partidaId, timeIndex, rodadas, time) {
 
     let vetorOpcoesSelecionadas = []
 
-    if (timesSalvos.length === 0) {
-        alert("Nenhum time criado!");
-        return;
-    }
-
-    for (let i = 0; i < timesSalvos.length; i++) {
-        const timeOpcao = document.createElement("option");
-        timeOpcao.value = timesSalvos[i].nome;
-        timeOpcao.textContent = timesSalvos[i].abreviacao;
-        time.appendChild(timeOpcao);
-    }
+        for (let i = 0; i < timesSalvos.length; i++) {
+            const timeOpcao = document.createElement("option");
+            timeOpcao.value = timesSalvos[i].nome;
+            timeOpcao.textContent = timesSalvos[i].abreviacao;
+            time.appendChild(timeOpcao);
+        }
 
     rodadas.forEach(rodada => {
         rodada.forEach(partida => {
@@ -1211,9 +1228,7 @@ function selecionarTime(partidaId, timeIndex, rodadas, time) {
     });
 
     const timeOpcaoEsvaziar = document.createElement("option");
-    timeOpcaoEsvaziar.textContent = "Remover"
-    timeOpcaoEsvaziar.style.backgroundColor = "red"
-    timeOpcaoEsvaziar.style.color = "white"
+    timeOpcaoEsvaziar.value = "Remover";
     time.appendChild(timeOpcaoEsvaziar);
 
     if (partida && partida.times[timeIndex]) {
@@ -1246,13 +1261,13 @@ function selecionarTime(partidaId, timeIndex, rodadas, time) {
                         icon: timeSelecionado.icon
                     };
                     atualizarLayout(rodadas);
-                }
+                } 
             }
             else {
                 partida.times[timeIndex] = {
                     nome: '',
                     abreviacao: ''
-                };
+                }; 
                 atualizarLayout(rodadas);
             }
         }
