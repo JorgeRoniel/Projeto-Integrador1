@@ -588,10 +588,10 @@ const CreateTeam = (maratona) => {
                     criacaoTimeScreen.classList.remove('show');
                     overlayIntoMaratona.classList.remove('show');
                     intoMaratona.classList.remove("no-scroll");
-                    ExibirTimes(maratona.id, false);
+                    ExibirTimes(maratona, false, rodadas);
                     return;
                 }
-                ExibirTimes(maratona.id, false);
+                ExibirTimes(maratona, false, rodadas);
                 formTime.reset();
                 imgElement.src = 'static/img/escudoTime.png';
                 imgElement.style.width = "70%";
@@ -1267,6 +1267,7 @@ const insertPartida = async (partida) => {
     formData.append("maratonaId", partida.maratonaId);
     formData.append("local_partida", LocalPartida.value);
     formData.append("data_partida", DataPartida.value);
+    formData.append("num_rodada", null);
 
     const options = {
         method: 'POST',

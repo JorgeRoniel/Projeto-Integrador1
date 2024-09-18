@@ -236,9 +236,9 @@ def create_team():
         else:
             icon_blob = image_file.read()
     
-    time = Models.Team(nome_time, icon_blob, abreviacao, None)
+    time = Models.Team(None, nome_time, abreviacao, icon_blob, id_maratona)
 
-    if t.criarTime(time.shield, time.name, time.nick, id_maratona):
+    if t.criarTime(time.escudo, time.nome_time, time.abreviacao, time.maratonaId):
         response = {
             'status': 'success',
             'message': 'Time Criado!'
@@ -257,8 +257,9 @@ def showTeams():
     id = request.form.get('maratona_id')
 
     data = t.listarTimes(id)
+    lista_times = data.to_list()
 
-    return jsonify(data)
+    return jsonify(lista_times)
 
 @rotas.route("/updateTime", methods=['PUT'])
 def updateTeam():
@@ -275,9 +276,9 @@ def updateTeam():
         else:
             icon_blob = image_file.read()
     
-    time = Models.Team(nome_time, icon_blob, abreviacao, None)
+    time = Models.Team(id_time, nome_time, abreviacao, icon_blob, None)
 
-    if t.atualizarTime(id_time, time.name, time.nick, time.shield):
+    if t.atualizarTime(time.id, time.nome_time, time.abreviacao, time.escudo):
 
         response = {
             "status": "success",

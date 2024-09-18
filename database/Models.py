@@ -35,11 +35,12 @@ class Match:
 
 #classe dos times
 class Team:
-    def __init__(self, name, shield, nick, teamMates):
-        self.name = name
-        self.shield = shield
-        self.nick = nick
-        self.teamMates = teamMates
+    def __init__(self, id, nome_time, abreviacao, escudo, maratonaId):
+        self.id = id
+        self.nome_time = nome_time
+        self.escudo = escudo
+        self.abreviacao = abreviacao
+        self.maratonaId = maratonaId
 
 class Player:
     def __init__(self, name, teamId):

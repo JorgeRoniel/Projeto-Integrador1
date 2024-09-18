@@ -1,5 +1,7 @@
 from database import conexao as c
 import base64
+from database import Models
+from Estruturas import ListaDEncadeada as ls
 
 def criarTime(escudo, nome, abreviacao, maratona_id):
     try:
@@ -41,22 +43,18 @@ def listarTimes(maratona_id):
         data = cursor.fetchall()
 
         dados = []
+        lista = ls.ListaDuplamenteEncadeada()
+
         for acc in data:
             if acc['escudo']:
                 icon = base64.b64encode(acc['escudo']).decode('utf-8')
             else:
                 icon = None
 
-            time_data = {
-                'id': acc['id'],
-                'nome_time': acc['nome_time'],
-                'abreviacao': acc['abreviacao'],
-                'maratonaId': acc['maratonaId'],
-                'escudo': icon
-            }
-            dados.append(time_data)
+            time = Models.Team(acc['id'], acc['nome_time'], acc['abreviacao'], icon, acc['maratonaId'])
+            lista.inserir_inicio(time)
 
-        return dados
+        return lista
     except Exception as e:
         print(e)
         return []
