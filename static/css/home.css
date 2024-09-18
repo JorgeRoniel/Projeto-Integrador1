@@ -923,6 +923,7 @@ input {
 }
 
 .containerVencedor img {
+    position: absolute;
     width: 100%;
     height: 100%;
     border-radius: 50%;
@@ -1055,10 +1056,9 @@ li:hover .bi-trash-fill {
     width: 72% !important;
 }
 
-/* Ajustar a borda do contêiner de seleção */
 #TimeVencedor + .select2-container .select2-selection {
-    border: 5px solid rgb(20, 57, 111); /* Define a borda */
-    box-sizing: content-box; /* Exclui borda e padding do cálculo da largura e altura */
+    border: 5px solid rgb(20, 57, 111);
+    box-sizing: content-box;
 }
 
 #TimeVencedor + .select2-container .select2-selection {
@@ -1190,7 +1190,7 @@ input[type="date"]:hover::-webkit-calendar-picker-indicator {
     cursor: pointer;
     position: absolute;
     right: 15px;
-    top: 3px;
+    top: -1px;
     z-index: 3px;
 }
 

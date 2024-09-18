@@ -73,9 +73,13 @@ a{
     font-size: 150%;
     cursor: pointer;
     position: absolute;
-    right: 3%;
+    right: 10px;
    align-self: center;
    justify-self: center;
+}
+
+#senhaCriar{
+    padding-right: 45px;
 }
 
 label{
@@ -164,8 +168,5 @@ form{
     }
     .container{
         background-color: rgb(58, 57, 57);
-    }
-    .visualizarSenha{
-        width: 20% !important;
     }
 }

@@ -61,6 +61,8 @@ var maratonasSalvas = [];
 var timesSalvos = [];
 var partidasSalvas = [];
 
+let rodadas = [[]];
+
 var competidoresSalvos = [[]]
 
 let userLogado = null;
@@ -202,23 +204,54 @@ const IntoMaratona = (element, containerItem) => {
     const chaveamento = document.getElementById("chaveamento");
 
     chaveamento.onclick = function () {
-        if (rodadas[rodadas.length - 2]) { // caso o torneio nao tenha começado (nao teve nenhum vencedor nas partidas) é permitido o chaveamento
-            const partidasRodada = rodadas[rodadas.length - 2];
-
-            // Verifica se alguma partida tem um vencedor definido
-            const partidaComVencedor = partidasRodada.some(partida => partida.vencedor !== null);
-
-            // Se houver uma partida com vencedor, interrompe a ação
-            if (partidaComVencedor) {
-                alert("Existe uma partida com vencedor definido, o chaveamento não pode ser realizado");
-                return;
-            }
-
-            alert("Nenhum vencedor nas partidas então o chaveamento é permitido");
-            // Aqui é o código pra jogar os times nas partidas aleatoriamente, obivamente nas partidas mais à esquerda
+        const ultimaRodada = rodadas[rodadas.length - 2];
+        const partidasSemVencedor = ultimaRodada.filter(partida => partida.vencedor === null);
+    
+        if (partidasSemVencedor.length === 0) {
+            alert("Todas as partidas já têm vencedores.");
+            return;
         }
+    
+        const timesUsados = new Set();
+        rodadas.flat().forEach(partida => {
+            if (partida.vencedor) {
+                timesUsados.add(partida.times[0].id);
+                timesUsados.add(partida.times[1].id);
+            }
+        });
+    
+        const vetorSorteioTimes = timesSalvos.filter(time => !timesUsados.has(time.id));
+        let partidaIndex = 0;
+    
+        while (vetorSorteioTimes.length > 0 && partidaIndex < partidasSemVencedor.length) {
+            const partida = partidasSemVencedor[partidaIndex];
+            
+                const timeSorteado = sorteioTimes(vetorSorteioTimes);
+                if (timeSorteado) partida.times[0] = { ...timeSorteado };
+            
+                const timeSorteado2 = sorteioTimes(vetorSorteioTimes);
+                if (timeSorteado2) partida.times[1] = { ...timeSorteado2 };
+            
+                partidaIndex++;
+        }
+        atualizarLayout(rodadas);
+
+
     };
+
 }
+
+const sorteioTimes = (vetorSorteioTimes) => {
+    if (vetorSorteioTimes.length === 0) {
+        return null;
+    }
+
+    const indiceSorteado = Math.floor(Math.random() * vetorSorteioTimes.length);
+    
+    const timeSorteado = vetorSorteioTimes.splice(indiceSorteado, 1)[0];
+    
+    return timeSorteado;
+};
 
 const ExibirTimes = async (maratona, getCacheTimes, rodadas) => {
 
@@ -262,6 +295,18 @@ const ExibirTimes = async (maratona, getCacheTimes, rodadas) => {
         }
     }
     adicionarPartida(maratona);
+    const atualizarImagemCampeao = () => {
+        const imagemCampeao = document.getElementById('imagemCampeao');
+        const partidaFinal = rodadas[0][0];
+        
+        if (partidaFinal && partidaFinal.vencedor) {
+            imagemCampeao.src = partidaFinal.vencedor.icon;
+        } else {
+            imagemCampeao.src = 'static/img/hackathon.png';
+        }
+    };
+
+    atualizarImagemCampeao();
     const fragment = document.createDocumentFragment();
     loadingIndicator.style.display = 'none';
     backToHome.style.pointerEvents = 'auto';
@@ -499,24 +544,6 @@ const EditarTime = (time) => {
         }
     };
 };
-
-const CreatePartida = (partida) => {
-    criacaoPartida.classList.add('show');
-    overlayIntoMaratona.classList.add('show');
-    intoMaratona.classList.add("no-scroll");
-
-    const LocalPartida = document.getElementById("LocalPartida");
-    const DataPartida = document.getElementById("DataPartida");
-    //LocalPartida.value = partida.Local;
-    //DataPartida.value = partida.Data;
-
-    document.getElementById("fecharCriacaoPartida").onclick = function () {
-        criacaoPartida.classList.remove('show');
-        overlayIntoMaratona.classList.remove('show');
-        intoMaratona.classList.remove("no-scroll");
-    }
-    
-}
 
 const CreateTeam = (maratona) => {
 
@@ -936,13 +963,16 @@ let idPartida = 0; // Só pra poder ter o controle
 
 function adicionarPartida(maratona) {
 
-    let rodadas = [[]];
+    rodadas = [[]];
     let numPartidas = CalculaNumPartidas(maratona.qtdTimes / 2);
 
     for (let i = 0; i < numPartidas; i++) {
         const partida = {
             id: idPartida++,
-            times: [{ nome: '', abreviacao: '' }, { nome: '', abreviacao: '' }],
+            times: [
+                { nome: '', abreviacao: '', id: null, maratonaId: null, icon: '' },
+                { nome: '', abreviacao: '', id: null, maratonaId: null, icon: '' }
+            ],
             vencedor: null,
             maratonaId: maratona.id
         };
@@ -990,24 +1020,11 @@ function atualizarLayout(rodadas) {
             const time1 = document.createElement('select');
             time1.classList.add('time');
             selecionarTime(partida.id, 0, rodadas, time1);
-            time1.onclick = async () => {
-                if (timesSalvos.length === 0) {
-                    alert("Nenhum time criado!");
-                    return;
-                }
-            }
 
-            // Adiciona as opções ao select
 
             const time2 = document.createElement('select');
             time2.classList.add('time');
             selecionarTime(partida.id, 1, rodadas, time2);
-            time2.onclick = async () => {
-                if (timesSalvos.length === 0) {
-                    alert("Nenhum time criado!");
-                    return;
-                }
-            }
 
             const trof = document.createElement('div');
             trof.classList.add('seta');
@@ -1092,7 +1109,6 @@ function atualizarLayout(rodadas) {
                     return data.text;
                 }
         
-                // Se o value for "Remover", exibe apenas o ícone de lixeira
                 if (data.element && data.element.value === "Remover") {
                     const $remover = $(`
                         <span style="display: block; background-color: red; color: white; padding: 5px; border-radius: 5px;">
@@ -1102,7 +1118,7 @@ function atualizarLayout(rodadas) {
                     return $remover;
                 }
         
-                return data.text; // Para as outras opções, exibe o texto normalmente
+                return data.text;
             },
             escapeMarkup: function (markup) {
                 return markup;
@@ -1119,7 +1135,7 @@ function definirVencedor(partida, rodadas, vencedor) {
 
         if (time1 && time2) {
             if (vencedor == time1.id || vencedor == time2.id) {
-                let objectVencedor = vencedor === time1.id ? time1 : time2
+                let objectVencedor = vencedor == time1.id ? time1 : time2
                 partida.vencedor = {
                     nome: objectVencedor.nome,
                     abreviacao: objectVencedor.abreviacao,
@@ -1276,30 +1292,6 @@ const insertPartida = async (partida) => {
     return vencedor;
 }
 
-const vetorSorteioTimes = timesSalvos;
-
-const sorteioTimes = (vetorSorteioTimes) =>{
-    let maiorId = 0
-    timesSalvos.forEach(time => {
-        if(maiorId < time.id){
-            maiorId = time.id
-        }
-    });
-
-    let menorId = maiorId
-    timesSalvos.forEach(time => {
-        if(menorId > time.id){
-            menorId = time.id
-        }
-    });
-
-    const timeSorteado = Math.floor(Math.random() * (maiorId - menorId + 1)) + menorId;
-
-    vetorSorteioTimes = vetorSorteioTimes.filter(time => time.id !== timeSorteado);
-
-    return timeSorteado
-}
-
 function selecionarTime(partidaId, timeIndex, rodadas, time) {
     const partida = rodadas.flat().find(p => p.id === partidaId);
     time.innerHTML = '';
@@ -1355,7 +1347,13 @@ function selecionarTime(partidaId, timeIndex, rodadas, time) {
                         icon: timeSelecionado.icon
                     };
                     atualizarLayout(rodadas);
-                } 
+                } else {
+                    partida.times[timeIndex] = {
+                        nome: '',
+                        abreviacao: ''
+                    }; 
+                     atualizarLayout(rodadas);
+                }
             }
             else {
                 partida.times[timeIndex] = {
