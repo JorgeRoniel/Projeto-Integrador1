@@ -1323,7 +1323,7 @@ function selecionarTime(partidaId, timeIndex, rodadas, time) {
     }
 
     // Atualiza a interface quando um time é selecionado
-    time.onchange = async function () {
+    time.onchange = function () {
         if (partida) {
 
             let isOption = true
@@ -1338,7 +1338,7 @@ function selecionarTime(partidaId, timeIndex, rodadas, time) {
             }
             const timeSelecionado = timesSalvos.find(t => t.nome === time.value);
             if (timeSelecionado && isOption) {
-                const validateCompetidor = await ValidarCompetidores(timeSelecionado.id);
+                const validateCompetidor = ValidarCompetidores(timeSelecionado.id);
                 if (validateCompetidor) {
                     partida.times[timeIndex] = {
                         nome: timeSelecionado.nome,
