@@ -17,12 +17,13 @@ class Marathon:
 
 #classe da partida
 class Match:
-    def __init__(self, date, local, blueTeam, redTeam, winner, idMarathon):
+    def __init__(self, date, local, blueTeam, redTeam, winner, num_rodada, idMarathon):
         self.date = date
         self.local = local
         self.blueTeam = blueTeam
         self.redTeam = redTeam
         self.winner = winner
+        self.num_rodada = num_rodada
         self.idMarathon = idMarathon
     
     def __lt__(self, other):

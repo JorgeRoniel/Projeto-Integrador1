@@ -403,9 +403,9 @@ def create_Partida():
     else:
         data = request.form.to_dict()
 
-    partida = Models.Match(data['data_partida'], data['local_partida'], data['time1'], data['time2'], data['vencedor'], data['maratonaId'])
+    partida = Models.Match(data['data_partida'], data['local_partida'], data['time1'], data['time2'], data['vencedor'], data['num_rodada'], data['maratonaId'])
     
-    if ps.criarPartida(partida.date, partida.local, partida.blueTeam, partida.redTeam, partida.winner, partida.idMarathon):
+    if ps.criarPartida(partida.date, partida.local, partida.blueTeam, partida.redTeam, partida.winner, partida.num_rodada, partida.idMarathon):
         response = {
             "status": "success",
             "message": "Partida criada!"
@@ -438,8 +438,8 @@ def update_Partida():
     else:
         data = request.form.to_dict()
 
-    partida = Models.Match(data['data_partida'], data['local_partida'], data['time1'], data['time2'], data['vencedor'], None)
-    if ps.atualizarPartida(data['id'], partida.date, partida.local, partida.blueTeam, partida.redTeam, partida.winner):
+    partida = Models.Match(data['data_partida'], data['local_partida'], data['time1'], data['time2'], data['vencedor'], data['num_rodada'], None)
+    if ps.atualizarPartida(data['id'], partida.date, partida.local, partida.blueTeam, partida.redTeam, partida.winner, partida.num_rodada):
         response = {
             'status': 'success',
             'message': 'updated!'
