@@ -20,7 +20,8 @@ MySQL
 
 ### Tela Principal: 
 
-![Imagem da Home](https://drive.google.com/file/d/1C31gGPwo2LSd3-DwBhvflTIjTcG1c8jB/view?usp=drive_link)
+<img src="static/img/Captura de tela de 2024-10-08 11-09-00.png" alt="Tela principal"></img>
+
 
 
 ## Passo a passo para rodar o projeto: 
